@@ -1,0 +1,21 @@
+Starting up round ID .
+-------------------------
+Initialized Title Screen subsystem within 0 seconds!
+Initialized Research subsystem within 0 seconds!
+Initialized Jobs subsystem within 0 seconds!
+Initialized Ticker subsystem within 0 seconds!
+Loading Box Station...
+Loaded Station in 10s!
+Initialized Mapping subsystem within 13.5 seconds!
+Initialized Economy subsystem within 0 seconds!
+Initialized Atoms subsystem within 21.6 seconds!
+Initialized Language subsystem within 0 seconds!
+Initialized Machines subsystem within 0.3 seconds!
+## WARNING: There are 99 active turfs at roundstart, this is a mapping error caused by a difference of the air between the adjacent turfs. You can see its coordinates using "Mapping -> Show roundstart AT list" verb (debug verbs required)
+## WARNING: HEY! LISTEN! 0.3 seconds were wasted processing 99 turf(s) (connected to 4596 other turfs) with atmos differences at round start.
+Initialized Atmospherics subsystem within 9.3 seconds!
+Initialized Assets subsystem within 0 seconds!
+Initialized Icon Smoothing subsystem within 3.1 seconds!
+Initialized Overlay subsystem within 0 seconds!
+Initialized Shuttle subsystem within 7.4 seconds!
+Initializations complete within 55.2 seconds!
