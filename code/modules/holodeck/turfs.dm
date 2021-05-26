@@ -4,16 +4,16 @@
 	flags_1 = NONE
 
 /turf/open/floor/holofloor/attackby(obj/item/I, mob/living/user)
-	return // HOLOFLOOR DOES NOT GIVE A FUCK
+	return
 
 /turf/open/floor/holofloor/tool_act(mob/living/user, obj/item/I, tool_type)
 	return
 
 /turf/open/floor/holofloor/burn_tile()
-	return //you can't burn a hologram!
+	return
 
 /turf/open/floor/holofloor/break_tile()
-	return //you can't break a hologram!
+	return
 
 /turf/open/floor/holofloor/plating
 	name = "holodeck projector floor"
@@ -80,7 +80,7 @@
 	icon_state = "0"
 
 /turf/open/floor/holofloor/space/Initialize()
-	icon_state = SPACE_ICON_STATE // so realistic
+	icon_state = SPACE_ICON_STATE
 	. = ..()
 
 /turf/open/floor/holofloor/hyperspace

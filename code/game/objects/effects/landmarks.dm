@@ -7,16 +7,6 @@
 	invisibility = INVISIBILITY_ABSTRACT
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
-/obj/effect/landmark/singularity_act()
-	return
-
-// Please stop bombing the Observer-Start landmark.
-/obj/effect/landmark/ex_act()
-	return
-
-/obj/effect/landmark/singularity_pull()
-	return
-
 INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 
 /obj/effect/landmark/Initialize()
@@ -38,27 +28,25 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	var/used = FALSE
 
 /obj/effect/landmark/start/proc/after_round_start()
-	if(delete_after_roundstart)
+	if (delete_after_roundstart)
 		qdel(src)
 
 /obj/effect/landmark/start/New()
 	GLOB.start_landmarks_list += src
-	if(jobspawn_override)
-		if(!GLOB.jobspawn_overrides[name])
-			GLOB.jobspawn_overrides[name] = list()
-		GLOB.jobspawn_overrides[name] += src
+	//if(jobspawn_override)
+	//	if(!GLOB.jobspawn_overrides[name])
+	//		GLOB.jobspawn_overrides[name] = list()
+	//	GLOB.jobspawn_overrides[name] += src
 	..()
-	if(name != "start")
-		tag = "start*[name]"
+	//if(name != "start")
+	//	tag = "start*[name]"
 
 /obj/effect/landmark/start/Destroy()
 	GLOB.start_landmarks_list -= src
-	if(jobspawn_override)
-		GLOB.jobspawn_overrides[name] -= src
+	//if(jobspawn_override)
+	//	GLOB.jobspawn_overrides[name] -= src
 	return ..()
 
-// START LANDMARKS FOLLOW. Don't change the names unless
-// you are refactoring shitty landmark code.
 /obj/effect/landmark/start/assistant
 	name = "Assistant"
 	icon_state = "Assistant"
@@ -195,8 +183,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	var/latejoin_active = TRUE
 
 /obj/effect/landmark/start/ai/after_round_start()
-	if(latejoin_active && !used)
-		new /obj/structure/AIcore/latejoin_inactive(loc)
+	//if(latejoin_active && !used)
+	//	new /obj/structure/AIcore/latejoin_inactive(loc)
 	return ..()
 
 /obj/effect/landmark/start/ai/secondary
@@ -205,70 +193,10 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	primary_ai = FALSE
 	latejoin_active = FALSE
 
-//Department Security spawns
-
-/obj/effect/landmark/start/depsec
-	name = "department_sec"
-	icon_state = "Security Officer"
-
-/obj/effect/landmark/start/depsec/New()
-	..()
-	GLOB.department_security_spawns += src
-
-/obj/effect/landmark/start/depsec/Destroy()
-	GLOB.department_security_spawns -= src
-	return ..()
-
-/obj/effect/landmark/start/depsec/supply
-	name = "supply_sec"
-
-/obj/effect/landmark/start/depsec/medical
-	name = "medical_sec"
-
-/obj/effect/landmark/start/depsec/engineering
-	name = "engineering_sec"
-
-/obj/effect/landmark/start/depsec/science
-	name = "science_sec"
-
-//Antagonist spawns
-
-/obj/effect/landmark/start/wizard
-	name = "wizard"
-	icon = 'icons/effects/landmarks_static.dmi'
-	icon_state = "wiznerd_spawn"
-
-/obj/effect/landmark/start/wizard/Initialize()
-	..()
-	GLOB.wizardstart += loc
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/landmark/start/nukeop
-	name = "nukeop"
-	icon = 'icons/effects/landmarks_static.dmi'
-	icon_state = "snukeop_spawn"
-
-/obj/effect/landmark/start/nukeop/Initialize()
-	..()
-	GLOB.nukeop_start += loc
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/landmark/start/nukeop_leader
-	name = "nukeop leader"
-	icon = 'icons/effects/landmarks_static.dmi'
-	icon_state = "snukeop_leader_spawn"
-
-/obj/effect/landmark/start/nukeop_leader/Initialize()
-	..()
-	GLOB.nukeop_leader_start += loc
-	return INITIALIZE_HINT_QDEL
-
-// Must be immediate because players will
-// join before SSatom initializes everything.
-INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
-
 /obj/effect/landmark/start/new_player
 	name = "New Player"
+
+INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 
 /obj/effect/landmark/start/new_player/Initialize()
 	..()
@@ -283,158 +211,10 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	SSjob.latejoin_trackers += loc
 	return INITIALIZE_HINT_QDEL
 
-//space carps, magicarps, lone ops, slaughter demons, possibly revenants spawn here
 /obj/effect/landmark/carpspawn
 	name = "carpspawn"
 	icon_state = "carp_spawn"
 
-//observer start
 /obj/effect/landmark/observer_start
 	name = "Observer-Start"
 	icon_state = "observer_start"
-
-//xenos, morphs and nightmares spawn here
-/obj/effect/landmark/xeno_spawn
-	name = "xeno_spawn"
-	icon_state = "xeno_spawn"
-
-/obj/effect/landmark/xeno_spawn/Initialize(mapload)
-	..()
-	GLOB.xeno_spawn += loc
-	return INITIALIZE_HINT_QDEL
-
-//objects with the stationloving component (nuke disk) respawn here. 
-//also blobs that have their spawn forcemoved (running out of time when picking their spawn spot), santa and respawning devils
-/obj/effect/landmark/blobstart
-	name = "blobstart"
-	icon_state = "blob_start"
-
-/obj/effect/landmark/blobstart/Initialize(mapload)
-	..()
-	GLOB.blobstart += loc
-	return INITIALIZE_HINT_QDEL
-
-//spawns sec equipment lockers depending on the number of sec officers
-/obj/effect/landmark/secequipment
-	name = "secequipment"
-	icon_state = "secequipment"
-
-/obj/effect/landmark/secequipment/Initialize(mapload)
-	..()
-	GLOB.secequipment += loc
-	return INITIALIZE_HINT_QDEL
-
-//players that get put in admin jail show up here
-/obj/effect/landmark/prisonwarp
-	name = "prisonwarp"
-	icon_state = "prisonwarp"
-
-/obj/effect/landmark/prisonwarp/Initialize(mapload)
-	..()
-	GLOB.prisonwarp += loc
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/landmark/ert_spawn
-	name = "Emergencyresponseteam"
-	icon_state = "ert_spawn"
-
-/obj/effect/landmark/ert_spawn/Initialize(mapload)
-	..()
-	GLOB.emergencyresponseteamspawn += loc
-	return INITIALIZE_HINT_QDEL
-
-//ninja energy nets teleport victims here
-/obj/effect/landmark/holding_facility
-	name = "Holding Facility"
-	icon_state = "holding_facility"
-
-/obj/effect/landmark/holding_facility/Initialize(mapload)
-	..()
-	GLOB.holdingfacility += loc
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/landmark/thunderdome/observe
-	name = "tdomeobserve"
-	icon_state = "tdome_observer"
-
-/obj/effect/landmark/thunderdome/observe/Initialize(mapload)
-	..()
-	GLOB.tdomeobserve += loc
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/landmark/thunderdome/one
-	name = "tdome1"
-	icon_state = "tdome_t1"
-
-/obj/effect/landmark/thunderdome/one/Initialize(mapload)
-	..()
-	GLOB.tdome1	+= loc
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/landmark/thunderdome/two
-	name = "tdome2"
-	icon_state = "tdome_t2"
-
-/obj/effect/landmark/thunderdome/two/Initialize(mapload)
-	..()
-	GLOB.tdome2 += loc
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/landmark/thunderdome/admin
-	name = "tdomeadmin"
-	icon_state = "tdome_admin"
-
-/obj/effect/landmark/thunderdome/admin/Initialize(mapload)
-	..()
-	GLOB.tdomeadmin += loc
-	return INITIALIZE_HINT_QDEL
-
-//Servant spawn locations
-/obj/effect/landmark/servant_of_ratvar
-	name = "servant of ratvar spawn"
-	icon_state = "clockwork_orange"
-	layer = MOB_LAYER
-
-/obj/effect/landmark/servant_of_ratvar/Initialize(mapload)
-	..()
-	GLOB.servant_spawns += loc
-	return INITIALIZE_HINT_QDEL
-
-//City of Cogs entrances
-/obj/effect/landmark/city_of_cogs
-	name = "city of cogs entrance"
-	icon_state = "city_of_cogs"
-
-/obj/effect/landmark/city_of_cogs/Initialize(mapload)
-	..()
-	GLOB.city_of_cogs_spawns += loc
-	return INITIALIZE_HINT_QDEL
-
-//handles clockwork portal+eminence teleport destinations
-/obj/effect/landmark/event_spawn
-	name = "generic event spawn"
-	icon_state = "generic_event"
-	layer = HIGH_LANDMARK_LAYER
-
-
-/obj/effect/landmark/event_spawn/New()
-	..()
-	GLOB.generic_event_spawns += src
-
-/obj/effect/landmark/event_spawn/Destroy()
-	GLOB.generic_event_spawns -= src
-	return ..()
-
-/obj/effect/landmark/ruin
-	var/datum/map_template/ruin/ruin_template
-
-/obj/effect/landmark/ruin/New(loc, my_ruin_template)
-	name = "ruin_[GLOB.ruin_landmarks.len + 1]"
-	..(loc)
-	ruin_template = my_ruin_template
-	GLOB.ruin_landmarks |= src
-
-/obj/effect/landmark/ruin/Destroy()
-	GLOB.ruin_landmarks -= src
-	ruin_template = null
-	. = ..()

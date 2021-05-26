@@ -3,11 +3,11 @@
 	desc = "A crate designed for safe transport of animals. It has an oxygen tank for safe transport in space."
 	icon_state = "crittercrate"
 	horizontal = FALSE
-	allow_objects = FALSE
+	//allow_objects = FALSE
 	breakout_time = 600
 	material_drop = /obj/item/stack/sheet/mineral/wood
 	material_drop_amount = 4
-	delivery_icon = "deliverybox"
+	//delivery_icon = "deliverybox"
 	var/obj/item/tank/internals/emergency_oxygen/tank
 
 /obj/structure/closet/crate/critter/Initialize()

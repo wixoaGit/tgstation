@@ -1,14 +1,3 @@
-/*
-	This datum should be used for handling mineral contents of machines and whatever else is supposed to hold minerals and make use of them.
-
-	Variables:
-		amount - raw amount of the mineral this container is holding, calculated by the defined value MINERAL_MATERIAL_AMOUNT=2000.
-		max_amount - max raw amount of mineral this container can hold.
-		sheet_type - type of the mineral sheet the container handles, used for output.
-		parent - object that this container is being used by, used for output.
-		MAX_STACK_SIZE - size of a stack of mineral sheets. Constant.
-*/
-
 /datum/component/material_container
 	var/total_amount = 0
 	var/max_amount
@@ -65,7 +54,8 @@
 		return
 	if(I.item_flags & ABSTRACT)
 		return
-	if((I.flags_1 & HOLOGRAM_1) || (I.item_flags & NO_MAT_REDEMPTION) || (tc && !is_type_in_typecache(I, tc)))
+	//if((I.flags_1 & HOLOGRAM_1) || (I.item_flags & NO_MAT_REDEMPTION) || (tc && !is_type_in_typecache(I, tc)))
+	if((I.flags_1 & HOLOGRAM_1) || (I.item_flags & NO_MAT_REDEMPTION))//not_actual
 		to_chat(user, "<span class='warning'>[parent] won't accept [I]!</span>")
 		return
 	. = COMPONENT_NO_AFTERATTACK
@@ -84,7 +74,7 @@
 /datum/component/material_container/proc/user_insert(obj/item/I, mob/living/user)
 	set waitfor = FALSE
 	var/requested_amount
-	var/active_held = user.get_active_held_item()  // differs from I when using TK
+	var/active_held = user.get_active_held_item()
 	if(istype(I, /obj/item/stack) && precise_insertion)
 		var/atom/current_parent = parent
 		var/obj/item/stack/S = I
@@ -102,7 +92,7 @@
 			var/obj/item/stack/S = I
 			to_chat(user, "<span class='notice'>You insert [inserted] [S.singular_name][inserted>1 ? "s" : ""] into [parent].</span>")
 			if(!QDELETED(I) && I == active_held && !user.put_in_hands(I))
-				stack_trace("Warning: User could not put object back in hand during material container insertion, line [__LINE__]! This can lead to issues.")
+				//stack_trace("Warning: User could not put object back in hand during material container insertion, line [__LINE__]! This can lead to issues.")
 				I.forceMove(user.drop_location())
 		else
 			to_chat(user, "<span class='notice'>You insert a material total of [inserted] into [parent].</span>")
@@ -112,7 +102,6 @@
 	else if(I == active_held)
 		user.put_in_active_hand(I)
 
-//For inserting an amount of material
 /datum/component/material_container/proc/insert_amount(amt, id = null)
 	if(amt > 0 && has_space(amt))
 		var/total_amount_saved = total_amount
@@ -164,7 +153,7 @@
 	last_inserted_id = insert_materials(I, multiplier)
 	return material_amount
 
-/datum/component/material_container/proc/insert_materials(obj/item/I, multiplier = 1) //for internal usage only
+/datum/component/material_container/proc/insert_materials(obj/item/I, multiplier = 1)
 	var/datum/material/M
 	var/primary_mat
 	var/max_mat_value = 0
@@ -176,8 +165,6 @@
 			primary_mat = MAT
 	return primary_mat
 
-//For consuming material
-//mats is a list of types of material to use and the corresponding amounts, example: list(MAT_METAL=100, MAT_GLASS=200)
 /datum/component/material_container/proc/use_amount(list/mats, multiplier=1)
 	if(!mats || !mats.len)
 		return FALSE
@@ -196,7 +183,6 @@
 
 	return total_amount_save - total_amount
 
-
 /datum/component/material_container/proc/use_amount_type(amt, id)
 	var/datum/material/M = materials[id]
 	if(M)
@@ -206,45 +192,6 @@
 			return amt
 	return FALSE
 
-/datum/component/material_container/proc/transer_amt_to(var/datum/component/material_container/T, amt, id)
-	if((amt==0)||(!T)||(!id))
-		return FALSE
-	if(amt<0)
-		return T.transer_amt_to(src, -amt, id)
-	var/datum/material/M = materials[id]
-
-	if(M)
-		var/tr = min(amt, M.amount,T.can_insert_amount(amt, id))
-		if(tr)
-			use_amount_type(tr, id)
-			T.insert_amount(tr, id)
-			return tr
-	return FALSE
-
-/datum/component/material_container/proc/can_insert_amount(amt, id)
-	if(amt && id)
-		var/datum/material/M = materials[id]
-		if(M)
-			if((total_amount + amt) <= max_amount)
-				return amt
-			else
-				return	(max_amount-total_amount)
-
-/datum/component/material_container/proc/can_use_amount(amt, id, list/mats)
-	if(amt && id)
-		var/datum/material/M = materials[id]
-		if(M && M.amount >= amt)
-			return TRUE
-	else if(istype(mats))
-		for(var/M in mats)
-			if(materials[M] && (mats[M] <= materials[M]))
-				continue
-			else
-				return FALSE
-		return TRUE
-	return FALSE
-
-//For spawning mineral sheets; internal use only
 /datum/component/material_container/proc/retrieve(sheet_amt, datum/material/M, target = null)
 	if(!M.sheet_type)
 		return 0
@@ -271,9 +218,6 @@
 	if(materials[id])
 		return retrieve(sheet_amt, materials[id], target)
 	return FALSE
-
-/datum/component/material_container/proc/retrieve_amount(amt, id, target)
-	return retrieve_sheets(amount2sheet(amt), id, target)
 
 /datum/component/material_container/proc/retrieve_all(target = null)
 	var/result = 0
@@ -302,17 +246,10 @@
 		return round(amt / MINERAL_MATERIAL_AMOUNT)
 	return FALSE
 
-/datum/component/material_container/proc/sheet2amount(sheet_amt)
-	if(sheet_amt > 0)
-		return sheet_amt * MINERAL_MATERIAL_AMOUNT
-	return FALSE
-
 /datum/component/material_container/proc/amount(id)
 	var/datum/material/M = materials[id]
 	return M ? M.amount : 0
 
-//returns the amount of material relevant to this container;
-//if this container does not support glass, any glass in 'I' will not be taken into account
 /datum/component/material_container/proc/get_item_material_amount(obj/item/I)
 	if(!istype(I))
 		return FALSE
@@ -320,7 +257,6 @@
 	for(var/MAT in materials)
 		material_amount += I.materials[MAT]
 	return material_amount
-
 
 /datum/material
 	var/name
@@ -333,7 +269,7 @@
 	name = "Metal"
 	id = MAT_METAL
 	sheet_type = /obj/item/stack/sheet/metal
-	coin_type = /obj/item/coin/iron
+	//coin_type = /obj/item/coin/iron
 
 /datum/material/glass
 	name = "Glass"
@@ -343,48 +279,48 @@
 /datum/material/silver
 	name = "Silver"
 	id = MAT_SILVER
-	sheet_type = /obj/item/stack/sheet/mineral/silver
-	coin_type = /obj/item/coin/silver
+	//sheet_type = /obj/item/stack/sheet/mineral/silver
+	//coin_type = /obj/item/coin/silver
 
 /datum/material/gold
 	name = "Gold"
 	id = MAT_GOLD
-	sheet_type = /obj/item/stack/sheet/mineral/gold
-	coin_type = /obj/item/coin/gold
+	//sheet_type = /obj/item/stack/sheet/mineral/gold
+	//coin_type = /obj/item/coin/gold
 
 /datum/material/diamond
 	name = "Diamond"
 	id = MAT_DIAMOND
-	sheet_type = /obj/item/stack/sheet/mineral/diamond
-	coin_type = /obj/item/coin/diamond
+	//sheet_type = /obj/item/stack/sheet/mineral/diamond
+	//coin_type = /obj/item/coin/diamond
 
 /datum/material/uranium
 	name = "Uranium"
 	id = MAT_URANIUM
-	sheet_type = /obj/item/stack/sheet/mineral/uranium
-	coin_type = /obj/item/coin/uranium
+	//sheet_type = /obj/item/stack/sheet/mineral/uranium
+	//coin_type = /obj/item/coin/uranium
 
 /datum/material/plasma
 	name = "Solid Plasma"
 	id = MAT_PLASMA
-	sheet_type = /obj/item/stack/sheet/mineral/plasma
-	coin_type = /obj/item/coin/plasma
+	//sheet_type = /obj/item/stack/sheet/mineral/plasma
+	//coin_type = /obj/item/coin/plasma
 
 /datum/material/bluespace
 	name = "Bluespace Mesh"
 	id = MAT_BLUESPACE
-	sheet_type = /obj/item/stack/sheet/bluespace_crystal
+	//sheet_type = /obj/item/stack/sheet/bluespace_crystal
 
 /datum/material/bananium
 	name = "Bananium"
 	id = MAT_BANANIUM
-	sheet_type = /obj/item/stack/sheet/mineral/bananium
-	coin_type = /obj/item/coin/bananium
+	//sheet_type = /obj/item/stack/sheet/mineral/bananium
+	//coin_type = /obj/item/coin/bananium
 
 /datum/material/titanium
 	name = "Titanium"
 	id = MAT_TITANIUM
-	sheet_type = /obj/item/stack/sheet/mineral/titanium
+	//sheet_type = /obj/item/stack/sheet/mineral/titanium
 
 /datum/material/biomass
 	name = "Biomass"
@@ -393,4 +329,4 @@
 /datum/material/plastic
 	name = "Plastic"
 	id = MAT_PLASTIC
-	sheet_type = /obj/item/stack/sheet/plastic
+	//sheet_type = /obj/item/stack/sheet/plastic

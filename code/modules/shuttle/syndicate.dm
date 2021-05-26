@@ -1,4 +1,4 @@
-#define SYNDICATE_CHALLENGE_TIMER 12000 //20 minutes
+#define SYNDICATE_CHALLENGE_TIMER 12000
 
 /obj/machinery/computer/shuttle/syndicate
 	name = "syndicate shuttle terminal"
@@ -40,8 +40,8 @@
 	light_color = LIGHT_COLOR_BLUE
 	req_access = list(ACCESS_SYNDICATE)
 	shuttleId = "steel_rain"
-	possible_destinations = null
-	clockwork = TRUE //it'd look weird
+	//possible_destinations = null
+	clockwork = TRUE
 
 /obj/machinery/computer/shuttle/syndicate/drop_pod/Topic(href, href_list)
 	if(href_list["move"])
@@ -50,18 +50,18 @@
 			return 0
 	..()
 
-/obj/machinery/computer/camera_advanced/shuttle_docker/syndicate
-	name = "syndicate shuttle navigation computer"
-	desc = "Used to designate a precise transit location for the syndicate shuttle."
-	icon_screen = "syndishuttle"
-	icon_keyboard = "syndie_key"
-	shuttleId = "syndicate"
-	lock_override = CAMERA_LOCK_STATION
-	shuttlePortId = "syndicate_custom"
-	jumpto_ports = list("syndicate_ne" = 1, "syndicate_nw" = 1, "syndicate_n" = 1, "syndicate_se" = 1, "syndicate_sw" = 1, "syndicate_s" = 1)
-	view_range = 13
-	x_offset = -7
-	y_offset = -1
-	see_hidden = TRUE
+///obj/machinery/computer/camera_advanced/shuttle_docker/syndicate
+//	name = "syndicate shuttle navigation computer"
+//	desc = "Used to designate a precise transit location for the syndicate shuttle."
+//	icon_screen = "syndishuttle"
+//	icon_keyboard = "syndie_key"
+//	shuttleId = "syndicate"
+//	lock_override = CAMERA_LOCK_STATION
+//	shuttlePortId = "syndicate_custom"
+//	jumpto_ports = list("syndicate_ne" = 1, "syndicate_nw" = 1, "syndicate_n" = 1, "syndicate_se" = 1, "syndicate_sw" = 1, "syndicate_s" = 1)
+//	view_range = 13
+//	x_offset = -7
+//	y_offset = -1
+//	see_hidden = TRUE
 
 #undef SYNDICATE_CHALLENGE_TIMER

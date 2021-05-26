@@ -1,5 +1,4 @@
 
-//Preference toggles
 #define SOUND_ADMINHELP			(1<<0)
 #define SOUND_MIDI				(1<<1)
 #define SOUND_AMBIENCE			(1<<2)
@@ -18,7 +17,6 @@
 
 #define TOGGLES_DEFAULT (SOUND_ADMINHELP|SOUND_MIDI|SOUND_AMBIENCE|SOUND_LOBBY|MEMBER_PUBLIC|INTENT_STYLE|MIDROUND_ANTAG|SOUND_INSTRUMENTS|SOUND_SHIP_AMBIENCE|SOUND_PRAYERS|SOUND_ANNOUNCEMENTS)
 
-//Chat toggles
 #define CHAT_OOC			(1<<0)
 #define CHAT_DEAD			(1<<1)
 #define CHAT_GHOSTEARS		(1<<2)
@@ -32,11 +30,11 @@
 
 #define TOGGLES_DEFAULT_CHAT (CHAT_OOC|CHAT_DEAD|CHAT_GHOSTEARS|CHAT_GHOSTSIGHT|CHAT_PRAYER|CHAT_RADIO|CHAT_PULLR|CHAT_GHOSTWHISPER|CHAT_GHOSTPDA|CHAT_GHOSTRADIO)
 
-#define PARALLAX_INSANE -1 //for show offs
-#define PARALLAX_HIGH    0 //default.
+#define PARALLAX_INSANE -1
+#define PARALLAX_HIGH    0
 #define PARALLAX_MED     1
 #define PARALLAX_LOW     2
-#define PARALLAX_DISABLE 3 //this option must be the highest number
+#define PARALLAX_DISABLE 3
 
 #define PARALLAX_DELAY_DEFAULT world.tick_lag
 #define PARALLAX_DELAY_MED     1
@@ -49,7 +47,6 @@
 #define SEC_DEPT_SCIENCE "Science"
 #define SEC_DEPT_SUPPLY "Supply"
 
-// Playtime tracking system, see jobs_exp.dm
 #define EXP_TYPE_LIVING			"Living"
 #define EXP_TYPE_CREW			"Crew"
 #define EXP_TYPE_COMMAND		"Command"
@@ -65,7 +62,6 @@
 #define EXP_TYPE_GHOST			"Ghost"
 #define EXP_TYPE_ADMIN			"Admin"
 
-//Flags in the players table in the db
 #define DB_FLAG_EXEMPT 1
 
 #define DEFAULT_CYBORG_NAME "Default Cyborg Name"

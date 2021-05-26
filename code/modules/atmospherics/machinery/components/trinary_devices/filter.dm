@@ -12,7 +12,7 @@
 	var/frequency = 0
 	var/datum/radio_frequency/radio_connection
 
-	construction_type = /obj/item/pipe/trinary/flippable
+	//construction_type = /obj/item/pipe/trinary/flippable
 	pipe_state = "filter"
 
 /obj/machinery/atmospherics/components/trinary/filter/proc/set_frequency(new_frequency)
@@ -57,7 +57,6 @@
 	if(!on || !(nodes[1] && nodes[2] && nodes[3]) || !is_operational())
 		return
 
-	//Early return
 	var/datum/gas_mixture/air1 = airs[1]
 	if(!air1 || air1.temperature <= 0)
 		return
@@ -68,13 +67,9 @@
 	var/output_starting_pressure = air3.return_pressure()
 
 	if(output_starting_pressure >= target_pressure)
-		//No need to transfer if target is already full!
 		return
 
-	//Calculate necessary moles to transfer using PV=nRT, no need to create a new var that will be used only once (delta)
 	var/transfer_moles = (target_pressure - output_starting_pressure)*air3.volume/(air1.temperature * R_IDEAL_GAS_EQUATION)
-
-	//Actually transfer the gas
 
 	if(transfer_moles <= 0)
 		return
@@ -87,7 +82,7 @@
 	var/filtering = TRUE
 	if(!ispath(filter_type))
 		if(filter_type)
-			filter_type = gas_id2path(filter_type) //support for mappers so they don't need to type out paths
+			filter_type = gas_id2path(filter_type)
 		else
 			filtering = FALSE
 
@@ -101,7 +96,7 @@
 		removed.gases[filter_type][MOLES] = 0
 		removed.garbage_collect()
 
-		var/datum/gas_mixture/target = (air2.return_pressure() < target_pressure ? air2 : air1) //if there's no room for the filtered gas; just leave it in air1
+		var/datum/gas_mixture/target = (air2.return_pressure() < target_pressure ? air2 : air1)
 		target.merge(filtered_out)
 
 	air3.merge(removed)
@@ -139,7 +134,7 @@
 	switch(action)
 		if("power")
 			on = !on
-			investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", INVESTIGATE_ATMOS)
+			//investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", INVESTIGATE_ATMOS)
 			. = TRUE
 		if("pressure")
 			var/pressure = params["pressure"]
@@ -155,7 +150,7 @@
 				. = TRUE
 			if(.)
 				target_pressure = CLAMP(pressure, 0, MAX_OUTPUT_PRESSURE)
-				investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
+				//investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
 		if("filter")
 			filter_type = null
 			var/filter_name = "nothing"
@@ -163,7 +158,7 @@
 			if(gas in GLOB.meta_gas_info)
 				filter_type = gas
 				filter_name	= GLOB.meta_gas_info[gas][META_GAS_NAME]
-			investigate_log("was set to filter [filter_name] by [key_name(usr)]", INVESTIGATE_ATMOS)
+			//investigate_log("was set to filter [filter_name] by [key_name(usr)]", INVESTIGATE_ATMOS)
 			. = TRUE
 	update_icon()
 
@@ -172,8 +167,6 @@
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")
 		return FALSE
-
-// mapping
 
 /obj/machinery/atmospherics/components/trinary/filter/layer1
 	piping_layer = 1
@@ -215,7 +208,7 @@
 	piping_layer = 3
 	icon_state = "filter_on_f_map-3"
 
-/obj/machinery/atmospherics/components/trinary/filter/atmos //Used for atmos waste loops
+/obj/machinery/atmospherics/components/trinary/filter/atmos
 	on = TRUE
 	icon_state = "filter_on"
 /obj/machinery/atmospherics/components/trinary/filter/atmos/n2
@@ -234,7 +227,7 @@
 	name = "plasma filter"
 	filter_type = "plasma"
 
-/obj/machinery/atmospherics/components/trinary/filter/atmos/flipped //This feels wrong, I know
+/obj/machinery/atmospherics/components/trinary/filter/atmos/flipped
 	icon_state = "filter_on_f"
 	flipped = TRUE
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/n2
@@ -252,8 +245,6 @@
 /obj/machinery/atmospherics/components/trinary/filter/atmos/flipped/plasma
 	name = "plasma filter"
 	filter_type = "plasma"
-
-// These two filter types have critical_machine flagged to on and thus causes the area they are in to be exempt from the Grid Check event.
 
 /obj/machinery/atmospherics/components/trinary/filter/critical
 	critical_machine = TRUE

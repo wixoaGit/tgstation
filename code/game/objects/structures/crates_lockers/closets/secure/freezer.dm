@@ -16,8 +16,8 @@
 	..()
 	for(var/i = 0, i < 3, i++)
 		new /obj/item/reagent_containers/food/condiment/flour(src)
-	new /obj/item/reagent_containers/food/condiment/rice(src)
-	new /obj/item/reagent_containers/food/condiment/sugar(src)
+	//new /obj/item/reagent_containers/food/condiment/rice(src)
+	//new /obj/item/reagent_containers/food/condiment/sugar(src)
 
 /obj/structure/closet/secure_closet/freezer/kitchen/maintenance
 	name = "maintenance refrigerator"
@@ -26,12 +26,12 @@
 
 /obj/structure/closet/secure_closet/freezer/kitchen/maintenance/PopulateContents()
 	..()
-	for(var/i = 0, i < 5, i++)
-		new /obj/item/reagent_containers/food/condiment/milk(src)
-	for(var/i = 0, i < 5, i++)
-		new /obj/item/reagent_containers/food/condiment/soymilk(src)
-	for(var/i = 0, i < 2, i++)
-		new /obj/item/storage/fancy/egg_box(src)
+	//for(var/i = 0, i < 5, i++)
+	//	new /obj/item/reagent_containers/food/condiment/milk(src)
+	//for(var/i = 0, i < 5, i++)
+	//	new /obj/item/reagent_containers/food/condiment/soymilk(src)
+	//for(var/i = 0, i < 2, i++)
+	//	new /obj/item/storage/fancy/egg_box(src)
 
 /obj/structure/closet/secure_closet/freezer/kitchen/mining
 	req_access = list()
@@ -51,12 +51,12 @@
 
 /obj/structure/closet/secure_closet/freezer/fridge/PopulateContents()
 	..()
-	for(var/i = 0, i < 5, i++)
-		new /obj/item/reagent_containers/food/condiment/milk(src)
-	for(var/i = 0, i < 5, i++)
-		new /obj/item/reagent_containers/food/condiment/soymilk(src)
-	for(var/i = 0, i < 2, i++)
-		new /obj/item/storage/fancy/egg_box(src)
+	//for(var/i = 0, i < 5, i++)
+	//	new /obj/item/reagent_containers/food/condiment/milk(src)
+	//for(var/i = 0, i < 5, i++)
+	//	new /obj/item/reagent_containers/food/condiment/soymilk(src)
+	//for(var/i = 0, i < 2, i++)
+	//	new /obj/item/storage/fancy/egg_box(src)
 
 /obj/structure/closet/secure_closet/freezer/money
 	name = "freezer"
@@ -65,12 +65,12 @@
 
 /obj/structure/closet/secure_closet/freezer/money/PopulateContents()
 	..()
-	for(var/i = 0, i < 3, i++)
-		new /obj/item/stack/spacecash/c1000(src)
-	for(var/i = 0, i < 5, i++)
-		new /obj/item/stack/spacecash/c500(src)
-	for(var/i = 0, i < 6, i++)
-		new /obj/item/stack/spacecash/c200(src)
+	//for(var/i = 0, i < 3, i++)
+	//	new /obj/item/stack/spacecash/c1000(src)
+	//for(var/i = 0, i < 5, i++)
+	//	new /obj/item/stack/spacecash/c500(src)
+	//for(var/i = 0, i < 6, i++)
+	//	new /obj/item/stack/spacecash/c200(src)
 
 /obj/structure/closet/secure_closet/freezer/cream_pie
 	name = "cream pie closet"
@@ -79,4 +79,4 @@
 
 /obj/structure/closet/secure_closet/freezer/cream_pie/PopulateContents()
 	..()
-	new /obj/item/reagent_containers/food/snacks/pie/cream(src)
+	//new /obj/item/reagent_containers/food/snacks/pie/cream(src)

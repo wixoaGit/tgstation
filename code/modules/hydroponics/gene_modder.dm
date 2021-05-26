@@ -16,36 +16,36 @@
 
 	var/datum/plant_gene/target
 	var/operation = ""
-	var/max_potency = 50 // See RefreshParts() for how these work
+	var/max_potency = 50
 	var/max_yield = 2
 	var/min_production = 12
-	var/max_endurance = 10 // IMPT: ALSO AFFECTS LIFESPAN
+	var/max_endurance = 10
 	var/min_wchance = 67
 	var/min_wrate = 10
 
-/obj/machinery/plantgenes/RefreshParts() // Comments represent the max you can set per tier, respectively. seeds.dm [219] clamps these for us but we don't want to mislead the viewer.
+/obj/machinery/plantgenes/RefreshParts()
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		if(M.rating > 3)
 			max_potency = 95
 		else
-			max_potency = initial(max_potency) + (M.rating**3) // 53,59,77,95 	 Clamps at 100
+			max_potency = initial(max_potency) + (M.rating**3)
 
-		max_yield = initial(max_yield) + (M.rating*2) // 4,6,8,10 	Clamps at 10
+		max_yield = initial(max_yield) + (M.rating*2)
 
 	for(var/obj/item/stock_parts/scanning_module/SM in component_parts)
-		if(SM.rating > 3) //If you create t5 parts I'm a step ahead mwahahaha!
+		if(SM.rating > 3)
 			min_production = 1
 		else
-			min_production = 12 - (SM.rating * 3) //9,6,3,1. Requires if to avoid going below clamp [1]
+			min_production = 12 - (SM.rating * 3)
 
-		max_endurance = initial(max_endurance) + (SM.rating * 25) // 35,60,85,100	Clamps at 10min 100max
+		max_endurance = initial(max_endurance) + (SM.rating * 25)
 
 	for(var/obj/item/stock_parts/micro_laser/ML in component_parts)
 		var/wratemod = ML.rating * 2.5
-		min_wrate = FLOOR(10-wratemod,1) // 7,5,2,0	Clamps at 0 and 10	You want this low
-		min_wchance = 67-(ML.rating*16) // 48,35,19,3 	Clamps at 0 and 67	You want this low
+		min_wrate = FLOOR(10-wratemod,1)
+		min_wchance = 67-(ML.rating*16)
 	for(var/obj/item/circuitboard/machine/plantgenes/vaultcheck in component_parts)
-		if(istype(vaultcheck, /obj/item/circuitboard/machine/plantgenes/vault)) // TRAIT_DUMB BOTANY TUTS
+		if(istype(vaultcheck, /obj/item/circuitboard/machine/plantgenes/vault))
 			max_potency = 100
 			max_yield = 10
 			min_production = 1
@@ -245,7 +245,6 @@
 	popup.set_content(dat)
 	popup.open()
 
-
 /obj/machinery/plantgenes/Topic(var/href, var/list/href_list)
 	if(..())
 		return
@@ -275,7 +274,7 @@
 			disk = I
 			to_chat(usr, "<span class='notice'>You add [I] to the machine.</span>")
 	else if(href_list["op"] == "insert" && disk && disk.gene && seed)
-		if(!operation) // Wait for confirmation
+		if(!operation)
 			operation = "insert"
 		else
 			if(!istype(disk.gene, /datum/plant_gene/core) && disk.gene.can_add(seed))
@@ -293,7 +292,7 @@
 			interact(usr)
 			return
 
-		if(!operation || target != G) // Wait for confirmation
+		if(!operation || target != G) 
 			target = G
 			operation = href_list["op"]
 
@@ -313,7 +312,7 @@
 							if(istype(G, /datum/plant_gene/core/potency))
 								gene.value = min(gene.value, max_potency)
 							else if(istype(G, /datum/plant_gene/core/lifespan))
-								gene.value = min(gene.value, max_endurance) //INTENDED
+								gene.value = min(gene.value, max_endurance)
 							else if(istype(G, /datum/plant_gene/core/endurance))
 								gene.value = min(gene.value, max_endurance)
 							else if(istype(G, /datum/plant_gene/core/production))
@@ -399,17 +398,9 @@
 	if(!seed)
 		return
 	if(copytext(seed.name, 1, 13) == "experimental")
-		return // Already modded name and icon
+		return
 	seed.name = "experimental " + seed.name
 	seed.icon_state = "seed-x"
-
-// Gene modder for seed vault ship, built with high tech alien parts.
-/obj/machinery/plantgenes/seedvault
-	circuit = /obj/item/circuitboard/machine/plantgenes/vault
-
-/*
- *  Plant DNA disk
- */
 
 /obj/item/disk/plantgene
 	name = "plant data disk"
@@ -417,7 +408,7 @@
 	icon_state = "datadisk_hydro"
 	materials = list(MAT_METAL=30, MAT_GLASS=10)
 	var/datum/plant_gene/gene
-	var/read_only = 0 //Well, it's still a floppy disk
+	var/read_only = 0
 	obj_flags = UNIQUE_RENAME
 
 /obj/item/disk/plantgene/Initialize()

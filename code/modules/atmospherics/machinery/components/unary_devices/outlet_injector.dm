@@ -8,7 +8,7 @@
 	can_unwrench = TRUE
 	shift_underlay_only = FALSE
 
-	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF //really helpful in building gas chambers for xenomorphs
+	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 	var/injecting = 0
 
@@ -30,7 +30,6 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/update_icon_nopipes()
 	cut_overlays()
 	if(showpipe)
-		// everything is already shifted so don't shift the cap
 		add_overlay(getpipeimage(icon, "inje_cap", initialize_directions))
 
 	if(!nodes[1] || !on || !is_operational())
@@ -79,7 +78,7 @@
 		loc.assume_air(removed)
 		update_parents()
 
-	flick("inje_inject", src)
+	//flick("inje_inject", src)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/proc/set_frequency(new_frequency)
 	SSradio.remove_object(src, frequency)
@@ -97,7 +96,6 @@
 		"device" = "AO",
 		"power" = on,
 		"volume_rate" = volume_rate,
-		//"timestamp" = world.time,
 		"sigtype" = "status"
 	))
 	radio_connection.post_signal(src, signal)
@@ -119,7 +117,7 @@
 		on = !on
 
 	if("inject" in signal.data)
-		spawn inject()
+		//spawn inject()
 		return
 
 	if("set_volume_rate" in signal.data)
@@ -130,13 +128,12 @@
 	if("status" in signal.data)
 		spawn(2)
 			broadcast_status()
-		return //do not update_icon
+		return
 
 	spawn(2)
 		broadcast_status()
 
 	update_icon()
-
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, \
 																		datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
@@ -159,7 +156,7 @@
 	switch(action)
 		if("power")
 			on = !on
-			investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", INVESTIGATE_ATMOS)
+			//investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", INVESTIGATE_ATMOS)
 			. = TRUE
 		if("rate")
 			var/rate = params["rate"]
@@ -175,7 +172,7 @@
 				. = TRUE
 			if(.)
 				volume_rate = CLAMP(rate, 0, MAX_TRANSFER_RATE)
-				investigate_log("was set to [volume_rate] L/s by [key_name(usr)]", INVESTIGATE_ATMOS)
+				//investigate_log("was set to [volume_rate] L/s by [key_name(usr)]", INVESTIGATE_ATMOS)
 	update_icon()
 	broadcast_status()
 
@@ -184,8 +181,6 @@
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")
 		return FALSE
-
-// mapping
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/layer1
 	piping_layer = 1

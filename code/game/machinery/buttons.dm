@@ -64,7 +64,7 @@
 			update_icon()
 		else
 			to_chat(user, "<span class='danger'>Maintenance Access Denied</span>")
-			flick("[skin]-denied", src)
+			//flick("[skin]-denied", src)
 		return
 
 	if(panel_open)
@@ -102,21 +102,6 @@
 		return attack_hand(user)
 	else
 		return ..()
-
-/obj/machinery/button/emag_act(mob/user)
-	if(obj_flags & EMAGGED)
-		return
-	req_access = list()
-	req_one_access = list()
-	playsound(src, "sparks", 100, 1)
-	obj_flags |= EMAGGED
-
-/obj/machinery/button/attack_ai(mob/user)
-	if(!panel_open)
-		return attack_hand(user)
-
-/obj/machinery/button/attack_robot(mob/user)
-	return attack_ai(user)
 
 /obj/machinery/button/proc/setup_device()
 	if(id && istype(device, /obj/item/assembly/control))
@@ -160,7 +145,7 @@
 
 	if(!allowed(user))
 		to_chat(user, "<span class='danger'>Access Denied</span>")
-		flick("[skin]-denied", src)
+		//flick("[skin]-denied", src)
 		return
 
 	use_power(5)
@@ -171,16 +156,11 @@
 
 	addtimer(CALLBACK(src, .proc/update_icon), 15)
 
-/obj/machinery/button/power_change()
-	..()
-	update_icon()
-
-
 /obj/machinery/button/door
 	name = "door button"
 	desc = "A door remote control switch."
 	var/normaldoorcontrol = FALSE
-	var/specialfunctions = OPEN // Bitflag, see assembly file
+	var/specialfunctions = OPEN
 	var/sync_doors = TRUE
 
 /obj/machinery/button/door/indestructible
@@ -197,86 +177,6 @@
 			C.sync_doors = sync_doors
 			device = C
 	..()
-
-/obj/machinery/button/door/incinerator_vent_toxmix
-	name = "combustion chamber vent control"
-	id = INCINERATOR_TOXMIX_VENT
-	req_access = list(ACCESS_TOX)
-
-/obj/machinery/button/door/incinerator_vent_atmos_main
-	name = "turbine vent control"
-	id = INCINERATOR_ATMOS_MAINVENT
-	req_one_access = list(ACCESS_ATMOSPHERICS, ACCESS_MAINT_TUNNELS)
-
-/obj/machinery/button/door/incinerator_vent_atmos_aux
-	name = "combustion chamber vent control"
-	id = INCINERATOR_ATMOS_AUXVENT
-	req_one_access = list(ACCESS_ATMOSPHERICS, ACCESS_MAINT_TUNNELS)
-
-/obj/machinery/button/door/incinerator_vent_syndicatelava_main
-	name = "turbine vent control"
-	id = INCINERATOR_SYNDICATELAVA_MAINVENT
-	req_access = list(ACCESS_SYNDICATE)
-
-/obj/machinery/button/door/incinerator_vent_syndicatelava_aux
-	name = "combustion chamber vent control"
-	id = INCINERATOR_SYNDICATELAVA_AUXVENT
-	req_access = list(ACCESS_SYNDICATE)
-
-/obj/machinery/button/massdriver
-	name = "mass driver button"
-	desc = "A remote control switch for a mass driver."
-	icon_state = "launcher"
-	skin = "launcher"
-	device_type = /obj/item/assembly/control/massdriver
-
-/obj/machinery/button/massdriver/indestructible
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-
-/obj/machinery/button/ignition
-	name = "ignition switch"
-	desc = "A remote control switch for a mounted igniter."
-	icon_state = "launcher"
-	skin = "launcher"
-	device_type = /obj/item/assembly/control/igniter
-
-/obj/machinery/button/ignition/indestructible
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-
-/obj/machinery/button/ignition/incinerator
-	name = "combustion chamber ignition switch"
-	desc = "A remote control switch for the combustion chamber's igniter."
-
-/obj/machinery/button/ignition/incinerator/toxmix
-	id = INCINERATOR_TOXMIX_IGNITER
-
-/obj/machinery/button/ignition/incinerator/atmos
-	id = INCINERATOR_ATMOS_IGNITER
-
-/obj/machinery/button/ignition/incinerator/syndicatelava
-	id = INCINERATOR_SYNDICATELAVA_IGNITER
-
-/obj/machinery/button/flasher
-	name = "flasher button"
-	desc = "A remote control switch for a mounted flasher."
-	icon_state = "launcher"
-	skin = "launcher"
-	device_type = /obj/item/assembly/control/flasher
-
-/obj/machinery/button/flasher/indestructible
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-
-/obj/machinery/button/crematorium
-	name = "crematorium igniter"
-	desc = "Burn baby burn!"
-	icon_state = "launcher"
-	skin = "launcher"
-	device_type = /obj/item/assembly/control/crematorium
-	req_access = list()
-	id = 1
-
-/obj/machinery/button/crematorium/indestructible
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/item/wallframe/button
 	name = "button frame"

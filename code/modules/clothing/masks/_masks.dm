@@ -8,23 +8,6 @@
 	var/mask_adjusted = 0
 	var/adjusted_flags = null
 
-
-/obj/item/clothing/mask/worn_overlays(isinhands = FALSE)
-	. = list()
-	if(!isinhands)
-		if(body_parts_covered & HEAD)
-			if(damaged_clothes)
-				. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-			IF_HAS_BLOOD_DNA(src)
-				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
-
-/obj/item/clothing/mask/update_clothes_damaged_state(damaging = TRUE)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_inv_wear_mask()
-
-//Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
 /obj/item/clothing/mask/proc/adjustmask(mob/living/user)
 	if(user && user.incapacitated())
 		return
@@ -50,4 +33,4 @@
 			slot_flags = adjusted_flags
 	if(user)
 		user.wear_mask_update(src, toggle_off = mask_adjusted)
-		user.update_action_buttons_icon() //when mask is adjusted out, we update all buttons icon so the user's potential internal tank correctly shows as off.
+		//user.update_action_buttons_icon()

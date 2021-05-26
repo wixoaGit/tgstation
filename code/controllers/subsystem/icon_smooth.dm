@@ -29,14 +29,13 @@ SUBSYSTEM_DEF(icon_smooth)
 
 /datum/controller/subsystem/icon_smooth/Initialize()
 	smooth_zlevel(1,TRUE)
-	smooth_zlevel(2,TRUE)
+	//smooth_zlevel(2,TRUE)
 	var/queue = smooth_queue
 	smooth_queue = list()
-	for(var/V in queue)
+	for (var/V in queue)
 		var/atom/A = V
-		if(!A || A.z <= 2)
+		if(!A/* || A.z <= 2*/)
 			continue
 		smooth_icon(A)
-		CHECK_TICK
 
 	return ..()

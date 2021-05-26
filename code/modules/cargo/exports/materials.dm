@@ -1,12 +1,10 @@
 /datum/export/material
-	cost = 5 // Cost per MINERAL_MATERIAL_AMOUNT, which is 2000cm3 as of April 2016.
+	cost = 5
 	message = "cm3 of developer's tears. Please, report this on github"
 	var/material_id = null
 	export_types = list(
 		/obj/item/stack/sheet/mineral, /obj/item/stack/tile/mineral,
 		/obj/item/stack/ore, /obj/item/coin)
-// Yes, it's a base type containing export_types.
-// But it has no material_id, so any applies_to check will return false, and these types reduce amount of copypasta a lot
 
 /datum/export/material/get_amount(obj/O)
 	if(!material_id)
@@ -23,11 +21,9 @@
 		var/obj/item/stack/S = I
 		amount *= S.amount
 		if(istype(I, /obj/item/stack/ore))
-			amount *= 0.8 // Station's ore redemption equipment is really goddamn good.
+			amount *= 0.8
 
 	return round(amount/MINERAL_MATERIAL_AMOUNT)
-
-// Materials. Nothing but plasma is really worth selling. Better leave it all to RnD and sell some plasma instead.
 
 /datum/export/material/bananium
 	cost = 1000
@@ -66,8 +62,8 @@
 	message = "cm3 of titanium"
 
 /datum/export/material/plastitanium
-	cost = 325 // plasma + titanium costs
-	material_id = MAT_TITANIUM // code can only check for one material_id; plastitanium is half plasma, half titanium
+	cost = 325
+	material_id = MAT_TITANIUM
 	message = "cm3 of plastitanium"
 
 /datum/export/material/metal

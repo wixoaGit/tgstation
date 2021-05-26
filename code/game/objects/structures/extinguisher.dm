@@ -67,7 +67,6 @@
 	else
 		return ..()
 
-
 /obj/structure/extinguisher_cabinet/attack_hand(mob/user)
 	. = ..()
 	if(.)
@@ -86,20 +85,19 @@
 		toggle_cabinet(user)
 
 
-/obj/structure/extinguisher_cabinet/attack_tk(mob/user)
-	if(stored_extinguisher)
-		stored_extinguisher.forceMove(loc)
-		to_chat(user, "<span class='notice'>You telekinetically remove [stored_extinguisher] from [src].</span>")
-		stored_extinguisher = null
-		opened = 1
-		playsound(loc, 'sound/machines/click.ogg', 15, 1, -3)
-		update_icon()
-	else
-		toggle_cabinet(user)
+///obj/structure/extinguisher_cabinet/attack_tk(mob/user)
+//	if(stored_extinguisher)
+//		stored_extinguisher.forceMove(loc)
+//		to_chat(user, "<span class='notice'>You telekinetically remove [stored_extinguisher] from [src].</span>")
+//		stored_extinguisher = null
+//		opened = 1
+//		playsound(loc, 'sound/machines/click.ogg', 15, 1, -3)
+//		update_icon()
+//	else
+//		toggle_cabinet(user)
 
-
-/obj/structure/extinguisher_cabinet/attack_paw(mob/user)
-	return attack_hand(user)
+///obj/structure/extinguisher_cabinet/attack_paw(mob/user)
+//	return attack_hand(user)
 
 /obj/structure/extinguisher_cabinet/AltClick(mob/living/user)
 	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
@@ -134,7 +132,6 @@
 			stored_extinguisher.forceMove(loc)
 			stored_extinguisher = null
 		update_icon()
-
 
 /obj/structure/extinguisher_cabinet/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1))

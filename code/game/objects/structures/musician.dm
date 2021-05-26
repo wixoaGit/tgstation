@@ -1,4 +1,3 @@
-
 #define MUSICIAN_HEARCHECK_MINDELAY 4
 #define MUSIC_MAXLINES 300
 #define MUSIC_MAXLINECHARS 50
@@ -6,17 +5,17 @@
 /datum/song
 	var/name = "Untitled"
 	var/list/lines = new()
-	var/tempo = 5			// delay between notes
+	var/tempo = 5
 
-	var/playing = 0			// if we're playing
-	var/help = 0			// if help is open
-	var/edit = 1			// if we're in editing mode
-	var/repeat = 0			// number of times remaining to repeat
-	var/max_repeats = 10	// maximum times we can repeat
+	var/playing = 0
+	var/help = 0
+	var/edit = 1
+	var/repeat = 0
+	var/max_repeats = 10
 
-	var/instrumentDir = "piano"		// the folder with the sounds
-	var/instrumentExt = "ogg"		// the file extension
-	var/obj/instrumentObj = null	// the associated obj playing the sound
+	var/instrumentDir = "piano"
+	var/instrumentExt = "ogg"
+	var/obj/instrumentObj = null
 	var/last_hearcheck = 0
 	var/list/hearing_mobs
 
@@ -30,39 +29,31 @@
 	instrumentObj = null
 	return ..()
 
-// note is a number from 1-7 for A-G
-// acc is either "b", "n", or "#"
-// oct is 1-8 (or 9 for C)
 /datum/song/proc/playnote(mob/user, note, acc as text, oct)
-	// handle accidental -> B<>C of E<>F
-	if(acc == "b" && (note == 3 || note == 6)) // C or F
+	if(acc == "b" && (note == 3 || note == 6))
 		if(note == 3)
 			oct--
 		note--
 		acc = "n"
-	else if(acc == "#" && (note == 2 || note == 5)) // B or E
+	else if(acc == "#" && (note == 2 || note == 5))
 		if(note == 2)
 			oct++
 		note++
 		acc = "n"
-	else if(acc == "#" && (note == 7)) //G#
+	else if(acc == "#" && (note == 7))
 		note = 1
 		acc = "b"
-	else if(acc == "#") // mass convert all sharps to flats, octave jump already handled
+	else if(acc == "#")
 		acc = "b"
 		note++
 
-	// check octave, C is allowed to go to 9
 	if(oct < 1 || (note == 3 ? oct > 9 : oct > 8))
 		return
 
-	// now generate name
 	var/soundfile = "sound/instruments/[instrumentDir]/[ascii2text(note+64)][acc][oct].[instrumentExt]"
 	soundfile = file(soundfile)
-	// make sure the note exists
 	if(!fexists(soundfile))
 		return
-	// and play
 	var/turf/source = get_turf(instrumentObj)
 	if((world.time - MUSICIAN_HEARCHECK_MINDELAY) > last_hearcheck)
 		LAZYCLEARLIST(hearing_mobs)
@@ -73,28 +64,31 @@
 	var/sound/music_played = sound(soundfile)
 	for(var/i in hearing_mobs)
 		var/mob/M = i
-		if(user.has_trait(TRAIT_MUSICIAN) && isliving(M))
-			var/mob/living/L = M
-			L.apply_status_effect(STATUS_EFFECT_GOOD_MUSIC)
-		if(!M.client || !(M.client.prefs.toggles & SOUND_INSTRUMENTS))
-			continue
+		//if(user.has_trait(TRAIT_MUSICIAN) && isliving(M))
+		//	var/mob/living/L = M
+		//	L.apply_status_effect(STATUS_EFFECT_GOOD_MUSIC)
+		//if(!M.client || !(M.client.prefs.toggles & SOUND_INSTRUMENTS))
+		//	continue
 		M.playsound_local(source, null, 100, falloff = 5, S = music_played)
 
 /datum/song/proc/updateDialog(mob/user)
-	instrumentObj.updateDialog()		// assumes it's an object in world, override if otherwise
+	instrumentObj.updateDialog()
 
 /datum/song/proc/shouldStopPlaying(mob/user)
 	if(instrumentObj)
 		if(!user.canUseTopic(instrumentObj, BE_CLOSE, FALSE, NO_TK))
 			return TRUE
-		return !instrumentObj.anchored		// add special cases to stop in subclasses
+		return !instrumentObj.anchored
 	else
 		return TRUE
 
 /datum/song/proc/playsong(mob/user)
 	while(repeat >= 0)
-		var/cur_oct[7]
-		var/cur_acc[7]
+		//var/cur_oct[7]
+		//var/cur_acc[7]
+		//not_actual
+		var/list/cur_oct = new /list(7)
+		var/list/cur_acc = new /list(7)
 		for(var/i = 1 to 7)
 			cur_oct[i] = 3
 			cur_acc[i] = "n"
@@ -103,7 +97,7 @@
 			for(var/beat in splittext(lowertext(line), ","))
 				var/list/notes = splittext(beat, "/")
 				for(var/note in splittext(notes[1], "-"))
-					if(!playing || shouldStopPlaying(user))//If the instrument is playing, or special case
+					if(!playing || shouldStopPlaying(user))
 						playing = FALSE
 						hearing_mobs = null
 						return
@@ -118,7 +112,7 @@
 							if(ni == "#" || ni == "b" || ni == "n")
 								cur_acc[cur_note] = ni
 							else if(ni == "s")
-								cur_acc[cur_note] = "#" // so shift is never required
+								cur_acc[cur_note] = "#"
 						else
 							cur_oct[cur_note] = text2num(ni)
 					if(user.dizziness > 0 && prob(user.dizziness / 2))
@@ -194,19 +188,18 @@
 
 	var/datum/browser/popup = new(user, "instrument", instrumentObj.name, 700, 500)
 	popup.set_content(dat)
-	popup.set_title_image(user.browse_rsc_icon(instrumentObj.icon, instrumentObj.icon_state))
+	//popup.set_title_image(user.browse_rsc_icon(instrumentObj.icon, instrumentObj.icon_state))
 	popup.open()
 
 /datum/song/proc/ParseSong(text)
 	set waitfor = FALSE
-	//split into lines
 	lines = splittext(text, "\n")
 	if(lines.len)
 		if(copytext(lines[1],1,6) == "BPM: ")
 			tempo = sanitize_tempo(600 / text2num(copytext(lines[1],6)))
 			lines.Cut(1,2)
 		else
-			tempo = sanitize_tempo(5) // default 120 BPM
+			tempo = sanitize_tempo(5)
 		if(lines.len > MUSIC_MAXLINES)
 			to_chat(usr, "Too many lines!")
 			lines.Cut(MUSIC_MAXLINES + 1)
@@ -217,7 +210,7 @@
 				lines.Remove(l)
 			else
 				linenum++
-		updateDialog(usr)		// make sure updates when complete
+		updateDialog(usr)
 
 /datum/song/Topic(href, href_list)
 	if(!usr.canUseTopic(instrumentObj, BE_CLOSE, FALSE, NO_TK))
@@ -229,7 +222,7 @@
 
 	if(href_list["newsong"])
 		lines = new()
-		tempo = sanitize_tempo(5) // default 120 BPM
+		tempo = sanitize_tempo(5)
 		name = ""
 
 	else if(href_list["import"])
@@ -254,9 +247,9 @@
 	else if(href_list["edit"])
 		edit = text2num(href_list["edit"]) - 1
 
-	if(href_list["repeat"]) //Changing this from a toggle to a number of repeats to avoid infinite loops.
+	if(href_list["repeat"])
 		if(playing)
-			return //So that people cant keep adding to repeat. If the do it intentionally, it could result in the server crashing.
+			return
 		repeat += round(text2num(href_list["repeat"]))
 		if(repeat < 0)
 			repeat = 0
@@ -309,7 +302,6 @@
 	new_tempo = abs(new_tempo)
 	return max(round(new_tempo, world.tick_lag), world.tick_lag)
 
-// subclass for handheld instruments, like violin
 /datum/song/handheld
 
 /datum/song/handheld/updateDialog(mob/user)
@@ -320,10 +312,6 @@
 		return !isliving(instrumentObj.loc)
 	else
 		return TRUE
-
-
-//////////////////////////////////////////////////////////////////////////
-
 
 /obj/structure/piano
 	name = "space minimoog"
@@ -357,7 +345,7 @@
 /obj/structure/piano/Initialize(mapload)
 	. = ..()
 	if(mapload)
-		song.tempo = song.sanitize_tempo(song.tempo) // tick_lag isn't set when the map is loaded
+		song.tempo = song.sanitize_tempo(song.tempo)
 
 /obj/structure/piano/attack_hand(mob/user)
 	. = ..()

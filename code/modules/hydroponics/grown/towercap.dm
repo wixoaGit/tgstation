@@ -43,11 +43,11 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
 	var/plank_type = /obj/item/stack/sheet/mineral/wood
 	var/plank_name = "wooden planks"
-	var/static/list/accepted = typecacheof(list(/obj/item/reagent_containers/food/snacks/grown/tobacco,
-	/obj/item/reagent_containers/food/snacks/grown/tea,
-	/obj/item/reagent_containers/food/snacks/grown/ambrosia/vulgaris,
-	/obj/item/reagent_containers/food/snacks/grown/ambrosia/deus,
-	/obj/item/reagent_containers/food/snacks/grown/wheat))
+	//var/static/list/accepted = typecacheof(list(/obj/item/reagent_containers/food/snacks/grown/tobacco,
+	///obj/item/reagent_containers/food/snacks/grown/tea,
+	///obj/item/reagent_containers/food/snacks/grown/ambrosia/vulgaris,
+	///obj/item/reagent_containers/food/snacks/grown/ambrosia/deus,
+	///obj/item/reagent_containers/food/snacks/grown/wheat))
 
 /obj/item/grown/log/attackby(obj/item/W, mob/user, params)
 	if(W.sharpness)
@@ -59,18 +59,19 @@
 		var/old_plank_amount = plank.amount
 		for(var/obj/item/stack/ST in user.loc)
 			if(ST != plank && istype(ST, plank_type) && ST.amount < ST.max_amount)
-				ST.attackby(plank, user) //we try to transfer all old unfinished stacks to the new stack we created.
+				ST.attackby(plank, user)
 		if(plank.amount > old_plank_amount)
 			to_chat(user, "<span class='notice'>You add the newly-formed [plank_name] to the stack. It now contains [plank.amount] [plank_name].</span>")
 		qdel(src)
 
-	if(CheckAccepted(W))
+	//if(CheckAccepted(W))
+	if(FALSE)
 		var/obj/item/reagent_containers/food/snacks/grown/leaf = W
 		if(leaf.dry)
 			user.show_message("<span class='notice'>You wrap \the [W] around the log, turning it into a torch!</span>")
-			var/obj/item/flashlight/flare/torch/T = new /obj/item/flashlight/flare/torch(user.loc)
+			//var/obj/item/flashlight/flare/torch/T = new /obj/item/flashlight/flare/torch(user.loc)
 			usr.dropItemToGround(W)
-			usr.put_in_active_hand(T)
+			//usr.put_in_active_hand(T)
 			qdel(leaf)
 			qdel(src)
 			return
@@ -79,8 +80,8 @@
 	else
 		return ..()
 
-/obj/item/grown/log/proc/CheckAccepted(obj/item/I)
-	return is_type_in_typecache(I, accepted)
+///obj/item/grown/log/proc/CheckAccepted(obj/item/I)
+//	return is_type_in_typecache(I, accepted)
 
 /obj/item/grown/log/tree
 	seed = null
@@ -95,10 +96,8 @@
 	plank_type = /obj/item/stack/rods
 	plank_name = "rods"
 
-/obj/item/grown/log/steel/CheckAccepted(obj/item/I)
-	return FALSE
-
-/////////BONFIRES//////////
+///obj/item/grown/log/steel/CheckAccepted(obj/item/I)
+//	return FALSE
 
 /obj/structure/bonfire
 	name = "bonfire"
@@ -110,7 +109,7 @@
 	anchored = TRUE
 	buckle_lying = 0
 	var/burning = 0
-	var/burn_icon = "bonfire_on_fire" //for a softer more burning embers icon, use "bonfire_warm"
+	var/burn_icon = "bonfire_on_fire"
 	var/grill = FALSE
 	var/fire_stack_strength = 5
 
@@ -140,7 +139,7 @@
 				to_chat(user, "<span class='italics'>You add a rod to \the [src].")
 				var/mutable_appearance/rod_underlay = mutable_appearance('icons/obj/hydroponics/equipment.dmi', "bonfire_rod")
 				rod_underlay.pixel_y = 16
-				underlays += rod_underlay
+				//underlays += rod_underlay
 			if("Grill")
 				R.use(1)
 				grill = TRUE
@@ -155,10 +154,8 @@
 			if(user.temporarilyRemoveItemFromInventory(W))
 				W.forceMove(get_turf(src))
 				var/list/click_params = params2list(params)
-				//Center the icon where the user clicked.
 				if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
 					return
-				//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
 				W.pixel_x = CLAMP(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
 				W.pixel_y = CLAMP(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
 		else
@@ -199,8 +196,8 @@
 		Burn()
 		START_PROCESSING(SSobj, src)
 
-/obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
-	StartBurning()
+///obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
+//	StartBurning()
 
 /obj/structure/bonfire/Crossed(atom/movable/AM)
 	if(burning & !grill)
@@ -214,24 +211,24 @@
 			continue
 		if(isobj(A))
 			var/obj/O = A
-			O.fire_act(1000, 500)
+			//O.fire_act(1000, 500)
 		else if(isliving(A))
 			var/mob/living/L = A
-			L.adjust_fire_stacks(fire_stack_strength)
-			L.IgniteMob()
+			//L.adjust_fire_stacks(fire_stack_strength)
+			//L.IgniteMob()
 
 /obj/structure/bonfire/proc/Cook()
 	var/turf/current_location = get_turf(src)
 	for(var/A in current_location)
 		if(A == src)
 			continue
-		else if(isliving(A)) //It's still a fire, idiot.
+		else if(isliving(A))
 			var/mob/living/L = A
-			L.adjust_fire_stacks(fire_stack_strength)
-			L.IgniteMob()
+			//L.adjust_fire_stacks(fire_stack_strength)
+			//L.IgniteMob()
 		else if(istype(A, /obj/item) && prob(20))
 			var/obj/item/O = A
-			O.microwave_act()
+			//O.microwave_act()
 
 /obj/structure/bonfire/process()
 	if(!CheckOxygen())
@@ -249,10 +246,10 @@
 		set_light(0)
 		STOP_PROCESSING(SSobj, src)
 
-/obj/structure/bonfire/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
-	if(..())
-		M.pixel_y += 13
+///obj/structure/bonfire/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+//	if(..())
+//		M.pixel_y += 13
 
-/obj/structure/bonfire/unbuckle_mob(mob/living/buckled_mob, force=FALSE)
-	if(..())
-		buckled_mob.pixel_y -= 13
+///obj/structure/bonfire/unbuckle_mob(mob/living/buckled_mob, force=FALSE)
+//	if(..())
+//		buckled_mob.pixel_y -= 13

@@ -3,7 +3,7 @@
 	var/width = 0
 	var/height = 0
 	var/mappath = null
-	var/loaded = 0 // Times loaded this round
+	var/loaded = 0
 	var/datum/parsed_map/cached_map
 	var/keep_cached_map = FALSE
 
@@ -17,9 +17,10 @@
 
 /datum/map_template/proc/preload_size(path, cache = FALSE)
 	var/datum/parsed_map/parsed = new(file(path))
-	var/bounds = parsed?.bounds
+	//var/bounds = parsed?.bounds
+	var/bounds = parsed ? parsed.bounds : null//not_actual
 	if(bounds)
-		width = bounds[MAP_MAXX] // Assumes all templates are rectangular, have a single Z level, and begin at 1,1,1
+		width = bounds[MAP_MAXX]
 		height = bounds[MAP_MAXY]
 		if(cache)
 			cached_map = parsed
@@ -48,31 +49,12 @@
 				atmos_machines += A
 	for(var/L in border)
 		var/turf/T = L
-		T.air_update_turf(TRUE) //calculate adjacent turfs along the border to prevent runtimes
+		T.air_update_turf(TRUE)
 
 	SSmapping.reg_in_areas_in_z(areas)
 	SSatoms.InitializeAtoms(atoms)
 	SSmachines.setup_template_powernets(cables)
 	SSair.setup_template_machinery(atmos_machines)
-
-/datum/map_template/proc/load_new_z()
-	var/x = round((world.maxx - width)/2)
-	var/y = round((world.maxy - height)/2)
-
-	var/datum/space_level/level = SSmapping.add_new_zlevel(name, list(ZTRAIT_AWAY = TRUE))
-	var/datum/parsed_map/parsed = load_map(file(mappath), x, y, level.z_value, no_changeturf=(SSatoms.initialized == INITIALIZATION_INSSATOMS), placeOnTop=TRUE)
-	var/list/bounds = parsed.bounds
-	if(!bounds)
-		return FALSE
-
-	repopulate_sorted_areas()
-
-	//initialize things that are normally initialized after map load
-	parsed.initTemplateBounds()
-	smooth_zlevel(world.maxz)
-	log_game("Z-level [name] loaded at at [x],[y],[world.maxz]")
-
-	return level
 
 /datum/map_template/proc/load(turf/T, centered = FALSE)
 	if(centered)
@@ -84,8 +66,6 @@
 	if(T.y+height > world.maxy)
 		return
 
-	// Accept cached maps, but don't save them automatically - we don't want
-	// ruins clogging up memory for the whole round.
 	var/datum/parsed_map/parsed = cached_map || new(file(mappath))
 	cached_map = keep_cached_map ? parsed : null
 	if(!parsed.load(T.x, T.y, T.z, cropMap=TRUE, no_changeturf=(SSatoms.initialized == INITIALIZATION_INSSATOMS), placeOnTop=TRUE))
@@ -94,10 +74,9 @@
 	if(!bounds)
 		return
 
-	if(!SSmapping.loading_ruins) //Will be done manually during mapping ss init
+	if(!SSmapping.loading_ruins)
 		repopulate_sorted_areas()
 
-	//initialize things that are normally initialized after map load
 	parsed.initTemplateBounds()
 
 	log_game("[name] loaded at at [T.x],[T.y],[T.z]")
@@ -110,10 +89,3 @@
 		if(corner)
 			placement = corner
 	return block(placement, locate(placement.x+width-1, placement.y+height-1, placement.z))
-
-
-//for your ever biggening badminnery kevinz000
-//❤ - Cyberboss
-/proc/load_new_z_level(var/file, var/name)
-	var/datum/map_template/template = new(file, name)
-	template.load_new_z()

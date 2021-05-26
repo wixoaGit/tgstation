@@ -1,22 +1,4 @@
-/*
-
-### This file contains a list of all the areas in your station. Format is as follows:
-
-/area/CATEGORY/OR/DESCRIPTOR/NAME 	(you can make as many subdivisions as you want)
-	name = "NICE NAME" 				(not required but makes things really nice)
-	icon = 'ICON FILENAME' 			(defaults to 'icons/turf/areas.dmi')
-	icon_state = "NAME OF ICON" 	(defaults to "unknown" (blank))
-	requires_power = FALSE 				(defaults to true)
-	ambientsounds = list()				(defaults to GENERIC from sound.dm. override it as "ambientsounds = list('sound/ambience/signal.ogg')" or using another define.
-
-NOTE: there are two lists of areas in the end of this file: centcom and station itself. Please maintain these lists valid. --rastaf0
-
-*/
-
-
-/*-----------------------------------------------------------------------------*/
-
-/area/ai_monitored	//stub defined ai_monitored.dm
+/area/ai_monitored
 
 /area/ai_monitored/turret_protected
 
@@ -29,9 +11,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_equip = FALSE
 	power_environ = FALSE
 	valid_territory = FALSE
-	outdoors = TRUE
+	//outdoors = TRUE
 	ambientsounds = SPACE
-	blob_allowed = FALSE //Eating up space doesn't count for victory as a blob.
+	blob_allowed = FALSE
 
 /area/space/nearstation
 	icon_state = "space_near"
@@ -50,14 +32,12 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Test Room"
 	icon_state = "storage"
 
-//EXTRA
-
 /area/asteroid
 	name = "Asteroid"
 	icon_state = "asteroid"
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
-	blob_allowed = FALSE //Nope, no winning on the asteroid as a blob. Gotta eat the station.
+	blob_allowed = FALSE
 	valid_territory = FALSE
 	ambientsounds = MINING
 
@@ -71,16 +51,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/asteroid/nearstation/bomb_site
 	name = "Bomb Testing Asteroid"
 
-//STATION13
-
-//Maintenance
-
 /area/maintenance
 	ambientsounds = MAINTENANCE
 	valid_territory = FALSE
-
-
-//Departments
 
 /area/maintenance/department/chapel
 	name = "Chapel Maintenance"
@@ -153,10 +126,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/maintenance/department/science/xenobiology
 	name = "Xenobiology Maintenance"
 	icon_state = "xenomaint"
-	xenobiology_compatible = TRUE
-
-
-//Maintenance - Generic
+	//xenobiology_compatible = TRUE
 
 /area/maintenance/aft
 	name = "Aft Maintenance"
@@ -230,9 +200,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Incinerator"
 	icon_state = "disposal"
 
-
-//Hallway
-
 /area/hallway/primary/aft
 	name = "Aft Primary Hallway"
 	icon_state = "hallA"
@@ -276,8 +243,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/hallway/secondary/service
 	name = "Service Hallway"
 	icon_state = "hall_service"
-
-//Command
 
 /area/bridge
 	name = "Bridge"
@@ -331,8 +296,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/server
 	name = "Messaging Server Room"
 	icon_state = "server"
-
-//Crew
 
 /area/crew_quarters/dorms
 	name = "Dormitories"
@@ -460,9 +423,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Law Office"
 	icon_state = "law"
 
-
-//Engineering
-
 /area/engine
 	ambientsounds = ENGINEERING
 
@@ -508,9 +468,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/engine/transit_tube
 	name = "Transit Tube"
 	icon_state = "transit_tube"
-
-
-//Solars
 
 /area/solar
 	requires_power = FALSE
@@ -560,9 +517,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Port Bow Solar Array"
 	icon_state = "panelsFP"
 
-
-//Solar Maint
-
 /area/maintenance/solars
 	name = "Solar Maintenance"
 	icon_state = "yellow"
@@ -591,8 +545,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Starboard Bow Solar Maintenance"
 	icon_state = "SolarcontrolFS"
 
-//Teleporter
-
 /area/teleporter
 	name = "Teleporter Room"
 	icon_state = "teleporter"
@@ -602,8 +554,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Gateway"
 	icon_state = "gateway"
 	ambientsounds = ENGINEERING
-
-//MedBay
 
 /area/medical
 	name = "Medical"
@@ -622,8 +572,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/medical/medbay/lobby
 	name = "Medbay Lobby"
 	icon_state = "medbay"
-
-	//Medbay is a large area, these additional areas help level out APC load.
 
 /area/medical/medbay/zone2
 	name = "Medbay"
@@ -686,9 +634,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/medical/sleeper
 	name = "Medbay Treatment Center"
 	icon_state = "exam_room"
-
-
-//Security
 
 /area/security
 	name = "Security"
@@ -790,9 +735,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/security/checkpoint/customs/auxiliary
 	icon_state = "customs_point_aux"
 
-
-//Service
-
 /area/quartermaster
 	name = "Quartermasters"
 	icon_state = "quart"
@@ -845,9 +787,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/hydroponics/garden/monastery
 	name = "Monastery Garden"
 	icon_state = "hydro"
-
-
-//Science
 
 /area/science
 	name = "Science Division"
@@ -919,8 +858,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Nanite Lab"
 	icon_state = "toxmisc"
 
-//Storage
-
 /area/storage/tools
 	name = "Auxiliary Tool Storage"
 	icon_state = "storage"
@@ -955,8 +892,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Technical Storage"
 	icon_state = "auxstorage"
 
-//Construction
-
 /area/construction
 	name = "Construction Area"
 	icon_state = "yellow"
@@ -970,7 +905,11 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Storage Wing"
 	icon_state = "storage_wing"
 
-// Vacant Rooms
+/area/construction
+	name = "Construction Area"
+	icon_state = "yellow"
+	ambientsounds = ENGINEERING
+
 /area/vacant_room
 	name = "Vacant Room"
 	icon_state = "yellow"
@@ -984,8 +923,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/vacant_room/commissary
 	name = "Vacant Commissary"
 	icon_state = "vacant_commissary"
-
-//AI
 
 /area/ai_monitored/security/armory
 	name = "Armory"
@@ -1001,8 +938,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "AI Satellite Maint"
 	icon_state = "storage"
 	ambientsounds = HIGHSEC
-
-	//Turret_protected
 
 /area/ai_monitored/turret_protected
 	ambientsounds = list('sound/ambience/ambimalf.ogg', 'sound/ambience/ambitech.ogg', 'sound/ambience/ambitech2.ogg', 'sound/ambience/ambiatmos.ogg', 'sound/ambience/ambiatmos2.ogg')
@@ -1054,9 +989,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/ai_monitored/turret_protected/AIsatextAP
 	name = "AI Sat Ext"
 	icon_state = "storage"
-
-
-// Telecommunications Satellite
 
 /area/tcommsat
 	clockwork_warp_allowed = FALSE

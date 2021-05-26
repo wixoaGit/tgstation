@@ -6,25 +6,14 @@
 #define FOOTSTEP_GRASS "grass"
 #define FOOTSTEP_WATER "water"
 #define FOOTSTEP_LAVA "lava"
-//barefoot sounds
+
 #define FOOTSTEP_WOOD_BAREFOOT "woodbarefoot"
 #define FOOTSTEP_WOOD_CLAW "woodclaw"
 #define FOOTSTEP_HARD_BAREFOOT "hardbarefoot"
 #define FOOTSTEP_HARD_CLAW "hardclaw"
 #define FOOTSTEP_CARPET_BAREFOOT "carpetbarefoot"
-//misc footstep sounds
+
 #define FOOTSTEP_GENERIC_HEAVY "heavy"
-
-/*
-
-id = list(
-list(sounds),
-base volume,
-extra range addition
-)
-
-
-*/
 
 GLOBAL_LIST_INIT(footstep, list(
 	FOOTSTEP_WOOD = list(list(
@@ -72,7 +61,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		'sound/effects/footstep/lava2.ogg',
 		'sound/effects/footstep/lava3.ogg'), 100, 0),
 ))
-//bare footsteps lists
+
 GLOBAL_LIST_INIT(barefootstep, list(
 	FOOTSTEP_WOOD_BAREFOOT = list(list(
 		'sound/effects/footstep/woodbarefoot1.ogg',
@@ -114,7 +103,6 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		'sound/effects/footstep/lava3.ogg'), 100, 0),
 ))
 
-//claw footsteps lists
 GLOBAL_LIST_INIT(clawfootstep, list(
 	FOOTSTEP_WOOD_CLAW = list(list(
 		'sound/effects/footstep/woodclaw1.ogg',
@@ -156,7 +144,6 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		'sound/effects/footstep/lava3.ogg'), 100, 0),
 ))
 
-//heavy footsteps list
 GLOBAL_LIST_INIT(heavyfootstep, list(
 	FOOTSTEP_GENERIC_HEAVY = list(list(
 		'sound/effects/footstep/heavy1.ogg',
@@ -171,4 +158,3 @@ GLOBAL_LIST_INIT(heavyfootstep, list(
 		'sound/effects/footstep/lava2.ogg',
 		'sound/effects/footstep/lava3.ogg'), 100, 0),
 ))
-

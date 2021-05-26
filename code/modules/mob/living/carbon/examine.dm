@@ -9,8 +9,8 @@
 	var/msg = "<span class='info'>*---------*\nThis is [icon2html(src, user)] \a <EM>[src]</EM>!\n"
 	var/list/obscured = check_obscured_slots()
 
-	if (handcuffed)
-		msg += "<span class='warning'>[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!</span>\n"
+	//if (handcuffed)
+	//	msg += "<span class='warning'>[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!</span>\n"
 	if (head)
 		msg += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head. \n"
 	if(wear_mask && !(SLOT_WEAR_MASK in obscured))
@@ -27,10 +27,11 @@
 	var/appears_dead = 0
 	if (stat == DEAD)
 		appears_dead = 1
-		if(getorgan(/obj/item/organ/brain))
+		//if(getorgan(/obj/item/organ/brain))
+		if(TRUE)//not_actual
 			msg += "<span class='deadsay'>[t_He] [t_is] limp and unresponsive, with no signs of life.</span>\n"
-		else if(get_bodypart(BODY_ZONE_HEAD))
-			msg += "<span class='deadsay'>It appears that [t_his] brain is missing...</span>\n"
+		//else if(get_bodypart(BODY_ZONE_HEAD))
+		//	msg += "<span class='deadsay'>It appears that [t_his] brain is missing...</span>\n"
 
 	var/list/missing = get_missing_limbs()
 	for(var/t in missing)
@@ -41,7 +42,8 @@
 
 	msg += "<span class='warning'>"
 	var/temp = getBruteLoss()
-	if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY)) //fake healthy
+	//if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY))
+	if(TRUE)//not_actual
 		if(temp)
 			if (temp < 25)
 				msg += "[t_He] [t_has] minor bruising.\n"
@@ -92,21 +94,21 @@
 
 	msg += common_trait_examine()
 
-	GET_COMPONENT_FROM(mood, /datum/component/mood, src)
-	if(mood)
-		switch(mood.shown_mood)
-			if(-INFINITY to MOOD_LEVEL_SAD4)
-				msg += "[t_He] look[p_s()] depressed.\n"
-			if(MOOD_LEVEL_SAD4 to MOOD_LEVEL_SAD3)
-				msg += "[t_He] look[p_s()] very sad.\n"
-			if(MOOD_LEVEL_SAD3 to MOOD_LEVEL_SAD2)
-				msg += "[t_He] look[p_s()] a bit down.\n"
-			if(MOOD_LEVEL_HAPPY2 to MOOD_LEVEL_HAPPY3)
-				msg += "[t_He] look[p_s()] quite happy.\n"
-			if(MOOD_LEVEL_HAPPY3 to MOOD_LEVEL_HAPPY4)
-				msg += "[t_He] look[p_s()] very happy.\n"
-			if(MOOD_LEVEL_HAPPY4 to INFINITY)
-				msg += "[t_He] look[p_s()] ecstatic.\n"
+	//GET_COMPONENT_FROM(mood, /datum/component/mood, src)
+	//if(mood)
+	//	switch(mood.shown_mood)
+	//		if(-INFINITY to MOOD_LEVEL_SAD4)
+	//			msg += "[t_He] look[p_s()] depressed.\n"
+	//		if(MOOD_LEVEL_SAD4 to MOOD_LEVEL_SAD3)
+	//			msg += "[t_He] look[p_s()] very sad.\n"
+	//		if(MOOD_LEVEL_SAD3 to MOOD_LEVEL_SAD2)
+	//			msg += "[t_He] look[p_s()] a bit down.\n"
+	//		if(MOOD_LEVEL_HAPPY2 to MOOD_LEVEL_HAPPY3)
+	//			msg += "[t_He] look[p_s()] quite happy.\n"
+	//		if(MOOD_LEVEL_HAPPY3 to MOOD_LEVEL_HAPPY4)
+	//			msg += "[t_He] look[p_s()] very happy.\n"
+	//		if(MOOD_LEVEL_HAPPY4 to INFINITY)
+	//			msg += "[t_He] look[p_s()] ecstatic.\n"
 	msg += "*---------*</span>"
 
 	to_chat(user, msg)

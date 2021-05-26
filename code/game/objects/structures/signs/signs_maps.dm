@@ -1,5 +1,3 @@
-//map and direction signs
-
 /obj/structure/sign/map
 	name = "station map"
 	desc = "A framed picture of the station."

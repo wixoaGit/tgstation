@@ -10,11 +10,19 @@
 	var/admin_controlled
 	var/no_destination_swap = 0
 
+	use_power = 0//not_actual
+
 /obj/machinery/computer/shuttle/ui_interact(mob/user)
 	. = ..()
 	var/list/options = params2list(possible_destinations)
 	var/obj/docking_port/mobile/M = SSshuttle.getShuttle(shuttleId)
-	var/dat = "Status: [M ? M.getStatusText() : "*Missing*"]<br><br>"
+	//var/dat = "Status: [M ? M.getStatusText() : "*Missing*"]<br><br>"
+	//not_actual
+	var/dat
+	if (M)
+		dat = "Status: [M.getStatusText()]<br><br>"
+	else
+		dat = "Status: *Missing*<br><br>"
 	if(M)
 		var/destination_found
 		for(var/obj/docking_port/stationary/S in SSshuttle.stationary)
@@ -26,14 +34,14 @@
 			dat += "<A href='?src=[REF(src)];move=[S.id]'>Send to [S.name]</A><br>"
 		if(!destination_found)
 			dat += "<B>Shuttle Locked</B><br>"
-			if(admin_controlled)
-				dat += "Authorized personnel only<br>"
-				dat += "<A href='?src=[REF(src)];request=1]'>Request Authorization</A><br>"
+			//if(admin_controlled)
+			//	dat += "Authorized personnel only<br>"
+			//	dat += "<A href='?src=[REF(src)];request=1]'>Request Authorization</A><br>"
 	dat += "<a href='?src=[REF(user)];mach_close=computer'>Close</a>"
 
 	var/datum/browser/popup = new(user, "computer", M ? M.name : "shuttle", 300, 200)
 	popup.set_content("<center>[dat]</center>")
-	popup.set_title_image(usr.browse_rsc_icon(src.icon, src.icon_state))
+	//popup.set_title_image(usr.browse_rsc_icon(src.icon, src.icon_state))
 	popup.open()
 
 /obj/machinery/computer/shuttle/Topic(href, href_list)

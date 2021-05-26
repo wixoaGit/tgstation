@@ -15,17 +15,6 @@
 	var/id_tag
 	var/target_layer = PIPING_LAYER_DEFAULT
 
-/obj/machinery/meter/atmos
-	frequency = FREQ_ATMOS_STORAGE
-
-/obj/machinery/meter/atmos/atmos_waste_loop
-	name = "waste loop gas flow meter"
-	id_tag = ATMOS_GAS_MONITOR_LOOP_ATMOS_WASTE
-
-/obj/machinery/meter/atmos/distro_loop
-	name = "distribution loop gas flow meter"
-	id_tag = ATMOS_GAS_MONITOR_LOOP_DISTRIBUTION
-
 /obj/machinery/meter/Destroy()
 	SSair.atmos_machinery -= src
 	target = null
@@ -85,19 +74,19 @@
 	else
 		icon_state = "meter4"
 
-	if(frequency)
-		var/datum/radio_frequency/radio_connection = SSradio.return_frequency(frequency)
+	//if(frequency)
+	//	var/datum/radio_frequency/radio_connection = SSradio.return_frequency(frequency)
 
-		if(!radio_connection)
-			return
+	//	if(!radio_connection)
+	//		return
 
-		var/datum/signal/signal = new(list(
-			"id_tag" = id_tag,
-			"device" = "AM",
-			"pressure" = round(env_pressure),
-			"sigtype" = "status"
-		))
-		radio_connection.post_signal(src, signal)
+	//	var/datum/signal/signal = new(list(
+	//		"id_tag" = id_tag,
+	//		"device" = "AM",
+	//		"pressure" = round(env_pressure),
+	//		"sigtype" = "status"
+	//	))
+	//	radio_connection.post_signal(src, signal)
 
 /obj/machinery/meter/proc/status()
 	if (target)
@@ -134,13 +123,6 @@
 	else
 		to_chat(user, status())
 
-/obj/machinery/meter/singularity_pull(S, current_size)
-	..()
-	if(current_size >= STAGE_FIVE)
-		deconstruct()
-
-// TURF METER - REPORTS A TILE'S AIR CONTENTS
-//	why are you yelling?
 /obj/machinery/meter/turf
 
 /obj/machinery/meter/turf/reattach_to_layer()

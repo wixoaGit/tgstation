@@ -1,7 +1,3 @@
-
-//These are shuttle areas; all subtypes are only used as teleportation markers, they have no actual function beyond that.
-//Multi area shuttles are a thing now, use subtypes! ~ninjanomnom
-
 /area/shuttle
 	name = "Shuttle"
 	requires_power = FALSE
@@ -10,7 +6,6 @@
 	always_unpowered = FALSE
 	valid_territory = FALSE
 	icon_state = "shuttle"
-	// Loading the same shuttle map at a different time will produce distinct area instances.
 	unique = FALSE
 
 /area/shuttle/Initialize()
@@ -21,13 +16,9 @@
 /area/shuttle/PlaceOnTopReact(list/new_baseturfs, turf/fake_turf_type, flags)
 	. = ..()
 	if(length(new_baseturfs) > 1 || fake_turf_type)
-		return // More complicated larger changes indicate this isn't a player
+		return
 	if(ispath(new_baseturfs[1], /turf/open/floor/plating))
 		new_baseturfs.Insert(1, /turf/baseturf_skipover/shuttle)
-
-////////////////////////////Multi-area shuttles////////////////////////////
-
-////////////////////////////Syndicate infiltrator////////////////////////////
 
 /area/shuttle/syndicate
 	name = "Syndicate Infiltrator"
@@ -52,15 +43,11 @@
 /area/shuttle/syndicate/airlock
 	name = "Syndicate Infiltrator Airlock"
 
-////////////////////////////Pirate Shuttle////////////////////////////
-
 /area/shuttle/pirate
 	name = "Pirate Shuttle"
 	blob_allowed = FALSE
 	requires_power = TRUE
 	canSmoothWithAreas = /area/shuttle/pirate
-
-////////////////////////////White Ship////////////////////////////
 
 /area/shuttle/abandoned
 	name = "Abandoned Ship"
@@ -89,8 +76,6 @@
 /area/shuttle/abandoned/pod
 	name = "Abandoned Ship Pod"
 
-////////////////////////////Single-area shuttles////////////////////////////
-
 /area/shuttle/transit
 	name = "Hyperspace"
 	desc = "Weeeeee"
@@ -101,7 +86,7 @@
 
 /area/shuttle/arrival
 	name = "Arrival Shuttle"
-	unique = TRUE  // SSjob refers to this area for latejoiners
+	unique = TRUE
 
 /area/shuttle/pod_1
 	name = "Escape Pod One"

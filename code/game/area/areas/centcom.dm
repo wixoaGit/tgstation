@@ -1,6 +1,3 @@
-
-// CENTCOM
-
 /area/centcom
 	name = "CentCom"
 	icon_state = "centcom"
@@ -8,7 +5,7 @@
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	noteleport = TRUE
-	blob_allowed = FALSE //Should go without saying, no blobs should take over centcom as a win condition.
+	blob_allowed = FALSE
 	flags_1 = NONE
 
 /area/centcom/control
@@ -57,7 +54,6 @@
 
 /area/centcom/supplypod/loading/four
 	name = "Supplypod Loading Bay #4"
-//THUNDERDOME
 
 /area/tdome
 	name = "Thunderdome"
@@ -94,9 +90,6 @@
 	icon_state = "purple"
 
 
-//ENEMY
-
-//Wizard
 /area/wizard_station
 	name = "Wizard's Den"
 	icon_state = "yellow"
@@ -106,7 +99,6 @@
 	noteleport = TRUE
 	flags_1 = NONE
 
-//Abductors
 /area/abductor_ship
 	name = "Abductor Ship"
 	icon_state = "yellow"
@@ -115,14 +107,13 @@
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE
 
-//Syndicates
 /area/syndicate_mothership
 	name = "Syndicate Mothership"
 	icon_state = "syndie-ship"
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	noteleport = TRUE
-	blob_allowed = FALSE //Not... entirely sure this will ever come up... but if the bus makes blobs AND ops, it shouldn't aim for the ops to win.
+	blob_allowed = FALSE
 	flags_1 = NONE
 	ambientsounds = HIGHSEC
 
@@ -142,8 +133,6 @@
 	noteleport = TRUE
 	blob_allowed = FALSE
 	var/turf/origin
-
-//CAPTURE THE FLAG
 
 /area/ctf
 	name = "Capture the Flag"
@@ -177,8 +166,6 @@
 
 /area/ctf/flag_room2
 	name = "Flag Room B"
-
-// REEBE
 
 /area/reebe
 	name = "Reebe"

@@ -3,10 +3,10 @@
 	for (var/i = max(1, pellets), i > 0, i--)
 		var/targloc = get_turf(target)
 		ready_proj(target, user, quiet, zone_override)
-		if(distro) //We have to spread a pixel-precision bullet. throw_proj was called before so angles should exist by now...
+		if(distro)
 			if(randomspread)
 				spread = round((rand() - 0.5) * distro)
-			else //Smart spread
+			else
 				spread = round((i / pellets - 0.5) * distro)
 		if(!throw_proj(target, targloc, user, params, spread))
 			return 0
@@ -32,7 +32,7 @@
 	BB.suppressed = quiet
 
 	if(reagents && BB.reagents)
-		reagents.trans_to(BB, reagents.total_volume, transfered_by = user) //For chemical darts/bullets
+		reagents.trans_to(BB, reagents.total_volume, transfered_by = user)
 		qdel(reagents)
 
 /obj/item/ammo_casing/proc/throw_proj(atom/target, turf/targloc, mob/living/user, params, spread)
@@ -48,15 +48,10 @@
 
 	var/direct_target
 	if(targloc == curloc)
-		if(target) //if the target is right on our location we'll skip the travelling code in the proj's fire()
+		if(target)
 			direct_target = target
 	if(!direct_target)
 		BB.preparePixelProjectile(target, user, params, spread)
 	BB.fire(null, direct_target)
 	BB = null
 	return 1
-
-/obj/item/ammo_casing/proc/spread(turf/target, turf/current, distro)
-	var/dx = abs(target.x - current.x)
-	var/dy = abs(target.y - current.y)
-	return locate(target.x + round(gaussian(0, distro) * (dy+2)/8, 1), target.y + round(gaussian(0, distro) * (dx+2)/8, 1), target.z)

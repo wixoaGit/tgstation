@@ -18,7 +18,8 @@
 	..()
 	SSair.atmos_machinery += src
 
-	air_contents = new
+	//air_contents = new
+	air_contents = new /datum/gas_mixture()//not_actual
 	air_contents.volume = volume
 	air_contents.temperature = T20C
 
@@ -34,7 +35,7 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/process_atmos()
-	if(!connected_port) // Pipe network handles reactions if connected.
+	if(!connected_port)
 		air_contents.react(src)
 	else
 		update_icon()
@@ -43,21 +44,18 @@
 	return air_contents
 
 /obj/machinery/portable_atmospherics/proc/connect(obj/machinery/atmospherics/components/unary/portables_connector/new_port)
-	//Make sure not already connected to something else
 	if(connected_port || !new_port || new_port.connected_device)
 		return FALSE
 
-	//Make sure are close enough for a valid connection
 	if(new_port.loc != get_turf(src))
 		return FALSE
 
-	//Perform the connection
 	connected_port = new_port
 	connected_port.connected_device = src
 	var/datum/pipeline/connected_port_parent = connected_port.parents[1]
 	connected_port_parent.reconcile_air()
 
-	anchored = TRUE //Prevent movement
+	anchored = TRUE
 	pixel_x = new_port.pixel_x
 	pixel_y = new_port.pixel_y
 	return TRUE
@@ -144,11 +142,3 @@
 
 /obj/machinery/portable_atmospherics/analyzer_act(mob/living/user, obj/item/I)
 	atmosanalyzer_scan(air_contents, user, src)
-
-/obj/machinery/portable_atmospherics/attacked_by(obj/item/I, mob/user)
-	if(I.force < 10 && !(stat & BROKEN))
-		take_damage(0)
-	else
-		investigate_log("was smacked with \a [I] by [key_name(user)].", INVESTIGATE_ATMOS)
-		add_fingerprint(user)
-		..()

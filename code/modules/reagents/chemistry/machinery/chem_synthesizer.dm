@@ -1,4 +1,4 @@
-/obj/machinery/chem_dispenser/chem_synthesizer //formerly SCP-294 made by mrty, but now only for testing purposes
+/obj/machinery/chem_dispenser/chem_synthesizer
 	name = "\improper debug chemical synthesizer"
 	desc = "If you see this, yell at adminbus."
 	icon = 'icons/obj/chemical.dmi'
@@ -7,7 +7,12 @@
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	flags_1 = NODECONSTRUCT_1
 	use_power = NO_POWER_USE
-	var/static/list/shortcuts = list(
+	//var/static/list/shortcuts = list(
+	//	"meth" = "methamphetamine",
+	//	"tricord" = "tricordrazine"
+	//)
+	//not_actual
+	var/list/shortcuts = list(
 		"meth" = "methamphetamine",
 		"tricord" = "tricordrazine"
 	)
@@ -31,7 +36,7 @@
 				beaker = null
 				. = TRUE
 		if("input")
-			var/input_reagent = replacetext(lowertext(input("Enter the name of any liquid", "Input") as text), " ", "") //95% of the time, the reagent id is a lowercase/no spaces version of the name
+			var/input_reagent = replacetext(lowertext(input("Enter the name of any liquid", "Input") as text), " ", "")
 			if(shortcuts[input_reagent])
 				input_reagent = shortcuts[input_reagent]
 			else
@@ -48,8 +53,8 @@
 		if("makecup")
 			if(beaker)
 				return
-			beaker = new /obj/item/reagent_containers/glass/beaker/bluespace(src)
-			visible_message("<span class='notice'>[src] dispenses a bluespace beaker.</span>")
+			//beaker = new /obj/item/reagent_containers/glass/beaker/bluespace(src)
+			//visible_message("<span class='notice'>[src] dispenses a bluespace beaker.</span>")
 		if("amount")
 			var/input = input("Units to dispense", "Units") as num|null
 			if(input)
@@ -58,7 +63,7 @@
 
 /obj/machinery/chem_dispenser/chem_synthesizer/proc/find_reagent(input)
 	. = FALSE
-	if(GLOB.chemical_reagents_list[input]) //prefer IDs!
+	if(GLOB.chemical_reagents_list[input])
 		return input
 	else
 		for(var/X in GLOB.chemical_reagents_list)

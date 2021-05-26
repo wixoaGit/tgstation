@@ -51,12 +51,12 @@
 	AddComponent(/datum/component/material_container, list(MAT_METAL, MAT_GLASS), 0, TRUE, null, null, CALLBACK(src, .proc/AfterMaterialInsert))
 	. = ..()
 
-	wires = new /datum/wires/autolathe(src)
+	//wires = new /datum/wires/autolathe(src)
 	stored_research = new /datum/techweb/specialized/autounlocking/autolathe
 	matching_designs = list()
 
 /obj/machinery/autolathe/Destroy()
-	QDEL_NULL(wires)
+	//QDEL_NULL(wires)
 	return ..()
 
 /obj/machinery/autolathe/ui_interact(mob/user)
@@ -64,8 +64,8 @@
 	if(!is_operational())
 		return
 
-	if(shocked && !(stat & NOPOWER))
-		shock(user,50)
+	//if(shocked && !(stat & NOPOWER))
+	//	shock(user,50)
 
 	var/dat
 
@@ -97,11 +97,11 @@
 	if(default_deconstruction_crowbar(O))
 		return TRUE
 
-	if(panel_open && is_wire_tool(O))
-		wires.interact(user)
-		return TRUE
+	//if(panel_open && is_wire_tool(O))
+	//	wires.interact(user)
+	//	return TRUE
 
-	if(user.a_intent == INTENT_HARM) //so we can hit the machine
+	if(user.a_intent == INTENT_HARM)
 		return ..()
 
 	if(stat)
@@ -123,14 +123,15 @@
 	return ..()
 
 /obj/machinery/autolathe/proc/AfterMaterialInsert(type_inserted, id_inserted, amount_inserted)
-	if(ispath(type_inserted, /obj/item/stack/ore/bluespace_crystal))
+	//if(ispath(type_inserted, /obj/item/stack/ore/bluespace_crystal))
+	if(FALSE)//not_actual
 		use_power(MINERAL_MATERIAL_AMOUNT / 10)
 	else
-		switch(id_inserted)
-			if (MAT_METAL)
-				flick("autolathe_o",src)//plays metal insertion animation
-			if (MAT_GLASS)
-				flick("autolathe_r",src)//plays glass insertion animation
+		//switch(id_inserted)
+		//	if (MAT_METAL)
+		//		flick("autolathe_o",src)
+		//	if (MAT_GLASS)
+		//		flick("autolathe_r",src)
 		use_power(min(1000, amount_inserted / 100))
 	updateUsrDialog()
 
@@ -147,9 +148,6 @@
 			updateUsrDialog()
 
 		if(href_list["make"])
-
-			/////////////////
-			//href protection
 			being_built = stored_research.isDesignResearchedID(href_list["make"])
 			if(!being_built)
 				return
@@ -158,9 +156,7 @@
 			var/is_stack = ispath(being_built.build_path, /obj/item/stack)
 			multiplier = CLAMP(multiplier,1,50)
 
-			/////////////////
-
-			var/coeff = (is_stack ? 1 : prod_coeff) //stacks are unaffected by production coefficient
+			var/coeff = (is_stack ? 1 : prod_coeff)
 			var/metal_cost = being_built.materials[MAT_METAL]
 			var/glass_cost = being_built.materials[MAT_GLASS]
 
@@ -220,7 +216,7 @@
 	T=1.2
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		T -= M.rating*0.2
-	prod_coeff = min(1,max(0,T)) // Coeff going 1 -> 0,8 -> 0,6 -> 0,4
+	prod_coeff = min(1,max(0,T))
 
 /obj/machinery/autolathe/examine(mob/user)
 	..()
@@ -346,31 +342,6 @@
 		dat += "[D.materials[MAT_GLASS] * coeff] glass"
 	return dat
 
-/obj/machinery/autolathe/proc/reset(wire)
-	switch(wire)
-		if(WIRE_HACK)
-			if(!wires.is_cut(wire))
-				adjust_hacked(FALSE)
-		if(WIRE_SHOCK)
-			if(!wires.is_cut(wire))
-				shocked = FALSE
-		if(WIRE_DISABLE)
-			if(!wires.is_cut(wire))
-				disabled = FALSE
-
-/obj/machinery/autolathe/proc/shock(mob/user, prb)
-	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
-		return FALSE
-	if(!prob(prb))
-		return FALSE
-	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
-	s.set_up(5, 1, src)
-	s.start()
-	if (electrocute_mob(user, get_area(src), src, 0.7, TRUE))
-		return TRUE
-	else
-		return FALSE
-
 /obj/machinery/autolathe/proc/adjust_hacked(state)
 	hacked = state
 	for(var/id in SSresearch.techweb_designs)
@@ -385,7 +356,5 @@
 	. = ..()
 	adjust_hacked(TRUE)
 
-//Called when the object is constructed by an autolathe
-//Has a reference to the autolathe so you can do !!FUN!! things with hacked lathes
 /obj/item/proc/autolathe_crafted(obj/machinery/autolathe/A)
 	return

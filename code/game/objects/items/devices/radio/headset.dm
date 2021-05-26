@@ -1,4 +1,3 @@
-// Used for translating channels to tokens on examination
 GLOBAL_LIST_INIT(channel_tokens, list(
 	RADIO_CHANNEL_COMMON = RADIO_KEY_COMMON,
 	RADIO_CHANNEL_SCIENCE = RADIO_TOKEN_SCIENCE,
@@ -21,7 +20,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	item_state = "headset"
 	materials = list(MAT_METAL=75)
 	subspace_transmission = TRUE
-	canhear_range = 0 // can't hear headsets from very far away
+	canhear_range = 0
 
 	slot_flags = ITEM_SLOT_EARS
 	var/obj/item/encryptionkey/keyslot2 = null
@@ -35,7 +34,6 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	..()
 
 	if(item_flags & IN_INVENTORY && loc == user)
-		// construction of frequency description
 		var/list/avail_chans = list("Use [RADIO_KEY_COMMON] for the currently tuned frequency")
 		if(translate_binary)
 			avail_chans += "use [MODE_TOKEN_BINARY] for [MODE_BINARY]"
@@ -74,33 +72,6 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 		return ..(freq, level)
 	return FALSE
 
-/obj/item/radio/headset/syndicate //disguised to look like a normal headset for stealth ops
-
-/obj/item/radio/headset/syndicate/alt //undisguised bowman with flash protection
-	name = "syndicate headset"
-	desc = "A syndicate headset that can be used to hear all radio frequencies. Protects ears from flashbangs."
-	icon_state = "syndie_headset"
-	item_state = "syndie_headset"
-
-/obj/item/radio/headset/syndicate/alt/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
-
-/obj/item/radio/headset/syndicate/alt/leader
-	name = "team leader headset"
-	command = TRUE
-
-/obj/item/radio/headset/syndicate/Initialize()
-	. = ..()
-	make_syndie()
-
-/obj/item/radio/headset/binary
-/obj/item/radio/headset/binary/Initialize()
-	. = ..()
-	qdel(keyslot)
-	keyslot = new /obj/item/encryptionkey/binary
-	recalculateChannels()
-
 /obj/item/radio/headset/headset_sec
 	name = "security radio headset"
 	desc = "This is used by your elite security force."
@@ -115,7 +86,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/headset_sec/alt/ComponentInitialize()
 	. = ..()
-	AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
+	//AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
 
 /obj/item/radio/headset/headset_eng
 	name = "engineering radio headset"
@@ -170,7 +141,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/heads/captain/alt/ComponentInitialize()
 	. = ..()
-	AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
+	//AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
 
 /obj/item/radio/headset/heads/rd
 	name = "\proper the research director's headset"
@@ -192,7 +163,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/heads/hos/ComponentInitialize()
 	. = ..()
-	AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
+	//AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
 
 /obj/item/radio/headset/heads/ce
 	name = "\proper the chief engineer's headset"
@@ -253,7 +224,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/headset_cent/alt/ComponentInitialize()
 	. = ..()
-	AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
+	//AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_EARS))
 
 /obj/item/radio/headset/ai
 	name = "\proper Integrated Subspace Transceiver "
@@ -262,51 +233,6 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/ai/can_receive(freq, level)
 	return ..(freq, level, TRUE)
-
-/obj/item/radio/headset/attackby(obj/item/W, mob/user, params)
-	user.set_machine(src)
-
-	if(W.tool_behaviour == TOOL_SCREWDRIVER)
-		if(keyslot || keyslot2)
-			for(var/ch_name in channels)
-				SSradio.remove_object(src, GLOB.radiochannels[ch_name])
-				secure_radio_connections[ch_name] = null
-
-			var/turf/T = user.drop_location()
-			if(T)
-				if(keyslot)
-					keyslot.forceMove(T)
-					keyslot = null
-				if(keyslot2)
-					keyslot2.forceMove(T)
-					keyslot2 = null
-
-			recalculateChannels()
-			to_chat(user, "<span class='notice'>You pop out the encryption keys in the headset.</span>")
-
-		else
-			to_chat(user, "<span class='warning'>This headset doesn't have any unique encryption keys!  How useless...</span>")
-
-	else if(istype(W, /obj/item/encryptionkey))
-		if(keyslot && keyslot2)
-			to_chat(user, "<span class='warning'>The headset can't hold another key!</span>")
-			return
-
-		if(!keyslot)
-			if(!user.transferItemToLoc(W, src))
-				return
-			keyslot = W
-
-		else
-			if(!user.transferItemToLoc(W, src))
-				return
-			keyslot2 = W
-
-
-		recalculateChannels()
-	else
-		return ..()
-
 
 /obj/item/radio/headset/recalculateChannels()
 	..()
@@ -324,10 +250,3 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 	for(var/ch_name in channels)
 		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
-
-/obj/item/radio/headset/AltClick(mob/living/user)
-	if(!istype(user) || !Adjacent(user) || user.incapacitated())
-		return
-	if (command)
-		use_command = !use_command
-		to_chat(user, "<span class='notice'>You toggle high-volume mode [use_command ? "on" : "off"].</span>")

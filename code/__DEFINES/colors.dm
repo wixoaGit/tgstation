@@ -1,28 +1,14 @@
-// This is eventually for wjohn to add more color standardization stuff like I keep asking him >:(
-
 #define COLOR_INPUT_DISABLED "#F0F0F0"
 #define COLOR_INPUT_ENABLED "#D3B5B5"
 
-//#define COLOR_WHITE            "#EEEEEE"
-//#define COLOR_SILVER           "#C0C0C0"
-//#define COLOR_GRAY             "#808080"
 #define COLOR_FLOORTILE_GRAY   "#8D8B8B"
 #define COLOR_ALMOST_BLACK	   "#333333"
-//#define COLOR_BLACK            "#000000"
 #define COLOR_RED              "#FF0000"
-//#define COLOR_RED_LIGHT        "#FF3333"
-//#define COLOR_MAROON           "#800000"
 #define COLOR_YELLOW           "#FFFF00"
-//#define COLOR_OLIVE            "#808000"
-//#define COLOR_LIME             "#32CD32"
 #define COLOR_GREEN            "#008000"
 #define COLOR_CYAN             "#00FFFF"
-//#define COLOR_TEAL             "#008080"
 #define COLOR_BLUE             "#0000FF"
-//#define COLOR_BLUE_LIGHT       "#33CCFF"
-//#define COLOR_NAVY             "#000080"
 #define COLOR_PINK             "#FFC0CB"
-//#define COLOR_MAGENTA          "#FF00FF"
 #define COLOR_PURPLE           "#800080"
 #define COLOR_ORANGE           "#FF9900"
 #define COLOR_BEIGE            "#CEB689"
@@ -38,7 +24,6 @@
 #define COLOR_PALE_PURPLE_GRAY "#CBB1CA"
 #define COLOR_PURPLE_GRAY      "#AE8CA8"
 
-//Color defines used by the assembly detailer.
 #define COLOR_ASSEMBLY_BLACK   "#545454"
 #define COLOR_ASSEMBLY_BGRAY   "#9497AB"
 #define COLOR_ASSEMBLY_WHITE   "#E2E2E2"

@@ -7,14 +7,14 @@
 	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 3
 	throw_range = 7
-	var/obj/item/pen/haspen		//The stored pen.
-	var/obj/item/paper/toppaper	//The topmost piece of paper.
+	var/obj/item/pen/haspen
+	var/obj/item/paper/toppaper
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
 
 /obj/item/clipboard/suicide_act(mob/living/carbon/user)
 	user.visible_message("<span class='suicide'>[user] begins putting [user.p_their()] head into the clip of \the [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
-	return BRUTELOSS//the clipboard's clip is very strong. industrial duty. can kill a man easily.
+	return BRUTELOSS
 
 /obj/item/clipboard/Initialize()
 	update_icon()
@@ -22,7 +22,7 @@
 
 /obj/item/clipboard/Destroy()
 	QDEL_NULL(haspen)
-	QDEL_NULL(toppaper)	//let movable/Destroy handle the rest
+	QDEL_NULL(toppaper)
 	return ..()
 
 /obj/item/clipboard/update_icon()
@@ -35,7 +35,6 @@
 		dat += "clipboard_pen"
 	dat += "clipboard_over"
 	add_overlay(dat)
-
 
 /obj/item/clipboard/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/paper))
@@ -56,7 +55,6 @@
 	else
 		dat += "<A href='?src=[REF(src)];addpen=1'>Add Pen</A><BR><HR>"
 
-	//The topmost paper. You can't organise contents directly in byond, so this is what we're stuck with.	-Pete
 	if(toppaper)
 		var/obj/item/paper/P = toppaper
 		dat += "<A href='?src=[REF(src)];write=[REF(P)]'>Write</A> <A href='?src=[REF(src)];remove=[REF(P)]'>Remove</A> - <A href='?src=[REF(src)];read=[REF(P)]'>[P.name]</A><BR><HR>"
@@ -68,7 +66,6 @@
 	user << browse(dat, "window=clipboard")
 	onclose(user, "clipboard")
 	add_fingerprint(usr)
-
 
 /obj/item/clipboard/Topic(href, href_list)
 	..()
@@ -123,6 +120,5 @@
 				toppaper = P
 				to_chat(usr, "<span class='notice'>You move [P.name] to the top.</span>")
 
-		//Update everything
 		attack_self(usr)
 		update_icon()

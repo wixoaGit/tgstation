@@ -1,4 +1,4 @@
-#define FIREALARM_COOLDOWN 67 // Chosen fairly arbitrarily, it is the length of the audio in FireAlarm.ogg. The actual track length is 7 seconds 8ms but but the audio stops at 6s 700ms
+#define FIREALARM_COOLDOWN 67
 
 /obj/item/electronics/firealarm
 	name = "fire alarm electronics"
@@ -31,7 +31,7 @@
 	light_color = "#ff3232"
 
 	var/detecting = 1
-	var/buildstage = 2 // 2 = complete, 1 = no wires, 0 = circuit gone
+	var/buildstage = 2
 	var/last_alarm = 0
 	var/area/myarea = null
 
@@ -58,7 +58,7 @@
 
 /obj/machinery/firealarm/update_icon()
 	cut_overlays()
-	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
+	//SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 
 	if(panel_open)
 		icon_state = "fire_b[buildstage]"
@@ -75,25 +75,26 @@
 
 	add_overlay("fire_overlay")
 
-	if(is_station_level(z))
+	//if(is_station_level(z))
+	if(TRUE)//not_actual
 		add_overlay("fire_[GLOB.security_level]")
-		SSvis_overlays.add_vis_overlay(src, icon, "fire_[GLOB.security_level]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+		//SSvis_overlays.add_vis_overlay(src, icon, "fire_[GLOB.security_level]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
 	else
 		add_overlay("fire_[SEC_LEVEL_GREEN]")
-		SSvis_overlays.add_vis_overlay(src, icon, "fire_[SEC_LEVEL_GREEN]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+		//SSvis_overlays.add_vis_overlay(src, icon, "fire_[SEC_LEVEL_GREEN]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
 
 	var/area/A = src.loc
 	A = A.loc
 
 	if(!detecting || !A.fire)
 		add_overlay("fire_off")
-		SSvis_overlays.add_vis_overlay(src, icon, "fire_off", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+		//SSvis_overlays.add_vis_overlay(src, icon, "fire_off", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
 	else if(obj_flags & EMAGGED)
 		add_overlay("fire_emagged")
-		SSvis_overlays.add_vis_overlay(src, icon, "fire_emagged", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+		//SSvis_overlays.add_vis_overlay(src, icon, "fire_emagged", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
 	else
 		add_overlay("fire_on")
-		SSvis_overlays.add_vis_overlay(src, icon, "fire_on", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+		//SSvis_overlays.add_vis_overlay(src, icon, "fire_on", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
 
 /obj/machinery/firealarm/emp_act(severity)
 	. = ..()
@@ -112,11 +113,6 @@
 		user.visible_message("<span class='warning'>Sparks fly out of [src]!</span>",
 							"<span class='notice'>You emag [src], disabling its thermal sensors.</span>")
 	playsound(src, "sparks", 50, 1)
-
-/obj/machinery/firealarm/temperature_expose(datum/gas_mixture/air, temperature, volume)
-	if((temperature > T0C + 200 || temperature < BODYTEMP_COLD_DAMAGE_LIMIT) && (last_alarm+FIREALARM_COOLDOWN < world.time) && !(obj_flags & EMAGGED) && detecting && !stat)
-		alarm()
-	..()
 
 /obj/machinery/firealarm/proc/alarm(mob/user)
 	if(!is_operational() || (last_alarm+FIREALARM_COOLDOWN > world.time))
@@ -195,7 +191,7 @@
 					update_icon()
 					return
 
-				else if(W.force) //hit and turn it on
+				else if(W.force)
 					..()
 					var/area/A = get_area(src)
 					if(!A.fire)
@@ -236,15 +232,15 @@
 					update_icon()
 					return
 
-				else if(istype(W, /obj/item/electroadaptive_pseudocircuit))
-					var/obj/item/electroadaptive_pseudocircuit/P = W
-					if(!P.adapt_circuit(user, 15))
-						return
-					user.visible_message("<span class='notice'>[user] fabricates a circuit and places it into [src].</span>", \
-					"<span class='notice'>You adapt a fire alarm circuit and slot it into the assembly.</span>")
-					buildstage = 1
-					update_icon()
-					return
+				//else if(istype(W, /obj/item/electroadaptive_pseudocircuit))
+				//	var/obj/item/electroadaptive_pseudocircuit/P = W
+				//	if(!P.adapt_circuit(user, 15))
+				//		return
+				//	user.visible_message("<span class='notice'>[user] fabricates a circuit and places it into [src].</span>", \
+				//	"<span class='notice'>You adapt a fire alarm circuit and slot it into the assembly.</span>")
+				//	buildstage = 1
+				//	update_icon()
+				//	return
 
 				else if(W.tool_behaviour == TOOL_WRENCH)
 					user.visible_message("[user] removes the fire alarm assembly from the wall.", \
@@ -257,21 +253,20 @@
 
 	return ..()
 
-
 /obj/machinery/firealarm/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	. = ..()
-	if(.) //damage received
+	if(.)
 		if(obj_integrity > 0 && !(stat & BROKEN) && buildstage != 0)
 			if(prob(33))
 				alarm()
 
-/obj/machinery/firealarm/singularity_pull(S, current_size)
-	if (current_size >= STAGE_FIVE) // If the singulo is strong enough to pull anchored objects, the fire alarm experiences integrity failure
-		deconstruct()
-	..()
+///obj/machinery/firealarm/singularity_pull(S, current_size)
+//	if (current_size >= STAGE_FIVE)
+//		deconstruct()
+//	..()
 
 /obj/machinery/firealarm/obj_break(damage_flag)
-	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1) && buildstage != 0) //can't break the electronics if there isn't any inside.
+	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1) && buildstage != 0)
 		LAZYREMOVE(myarea.firealarms, src)
 		stat |= BROKEN
 		update_icon()
@@ -288,40 +283,8 @@
 
 /obj/machinery/firealarm/proc/update_fire_light(fire)
 	if(fire == !!light_power)
-		return  // do nothing if we're already active
+		return
 	if(fire)
 		set_light(l_power = 0.8)
 	else
 		set_light(l_power = 0)
-
-/*
- * Return of Party button
- */
-
-/area
-	var/party = FALSE
-
-/obj/machinery/firealarm/partyalarm
-	name = "\improper PARTY BUTTON"
-	desc = "Cuban Pete is in the house!"
-	var/static/party_overlay
-
-/obj/machinery/firealarm/partyalarm/reset()
-	if (stat & (NOPOWER|BROKEN))
-		return
-	var/area/A = get_area(src)
-	if (!A || !A.party)
-		return
-	A.party = FALSE
-	A.cut_overlay(party_overlay)
-
-/obj/machinery/firealarm/partyalarm/alarm()
-	if (stat & (NOPOWER|BROKEN))
-		return
-	var/area/A = get_area(src)
-	if (!A || A.party || A.name == "Space")
-		return
-	A.party = TRUE
-	if (!party_overlay)
-		party_overlay = iconstate2appearance('icons/turf/areas.dmi', "party")
-	A.add_overlay(party_overlay)

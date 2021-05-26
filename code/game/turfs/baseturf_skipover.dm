@@ -1,4 +1,3 @@
-// This is a typepath to just sit in baseturfs and act as a marker for other things.
 /turf/baseturf_skipover
 	name = "Baseturf skipover placeholder"
 	desc = "This shouldn't exist"

@@ -24,7 +24,6 @@ SUBSYSTEM_DEF(radio)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(frequency)
 		frequency.remove_listener(device)
-		// let's don't delete frequencies in case a non-listener keeps a reference
 	return 1
 
 /datum/controller/subsystem/radio/proc/return_frequency(new_frequency as num)

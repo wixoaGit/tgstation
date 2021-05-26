@@ -30,17 +30,17 @@
 		var/turf/other = (O.loc == src ? T : src)
 		if(!(vertical? (CANVERTICALATMOSPASS(O, other)) : (CANATMOSPASS(O, other))))
 			R = TRUE
-			if(O.BlockSuperconductivity()) 	//the direction and open/closed are already checked on CanAtmosPass() so there are no arguments
+			if(O.BlockSuperconductivity())
 				atmos_supeconductivity |= dir
 				T.atmos_supeconductivity |= opp
-				return FALSE						//no need to keep going, we got all we asked
+				return FALSE
 
 	atmos_supeconductivity &= ~dir
 	T.atmos_supeconductivity &= ~opp
 
 	return !R
 
-/atom/movable/proc/BlockSuperconductivity() // objects that block air and don't let superconductivity act. Only firelocks atm.
+/atom/movable/proc/BlockSuperconductivity()
 	return FALSE
 
 /turf/proc/CalculateAdjacentTurfs()
@@ -64,9 +64,6 @@
 	UNSETEMPTY(atmos_adjacent_turfs)
 	src.atmos_adjacent_turfs = atmos_adjacent_turfs
 
-//returns a list of adjacent turfs that can share air with this one.
-//alldir includes adjacent diagonal tiles that can share
-//	air with both of the related adjacent cardinal tiles
 /turf/proc/GetAtmosAdjacentTurfs(alldir = 0)
 	var/adjacent_turfs
 	if (atmos_adjacent_turfs)
@@ -77,25 +74,25 @@
 	if (!alldir)
 		return adjacent_turfs
 
-	var/turf/curloc = src
+	//var/turf/curloc = src
 
-	for (var/direction in GLOB.diagonals_multiz)
-		var/matchingDirections = 0
-		var/turf/S = get_step_multiz(curloc, direction)
-		if(!S)
-			continue
+	//for (var/direction in GLOB.diagonals_multiz)
+	//	var/matchingDirections = 0
+	//	var/turf/S = get_step_multiz(curloc, direction)
+	//	if(!S)
+	//		continue
 
-		for (var/checkDirection in GLOB.cardinals_multiz)
-			var/turf/checkTurf = get_step(S, checkDirection)
-			if(!S.atmos_adjacent_turfs || !S.atmos_adjacent_turfs[checkTurf])
-				continue
+	//	for (var/checkDirection in GLOB.cardinals_multiz)
+	//		var/turf/checkTurf = get_step(S, checkDirection)
+	//		if(!S.atmos_adjacent_turfs || !S.atmos_adjacent_turfs[checkTurf])
+	//			continue
 
-			if (adjacent_turfs[checkTurf])
-				matchingDirections++
+	//		if (adjacent_turfs[checkTurf])
+	//			matchingDirections++
 
-			if (matchingDirections >= 2)
-				adjacent_turfs += S
-				break
+	//		if (matchingDirections >= 2)
+	//			adjacent_turfs += S
+	//			break
 
 	return adjacent_turfs
 
@@ -114,20 +111,3 @@
     if(isturf(T))
         T.air_update_turf(1)
     air_update_turf(1)
-
-/atom/proc/atmos_spawn_air(text) //because a lot of people loves to copy paste awful code lets just make an easy proc to spawn your plasma fires
-	var/turf/open/T = get_turf(src)
-	if(!istype(T))
-		return
-	T.atmos_spawn_air(text)
-
-/turf/open/atmos_spawn_air(text)
-	if(!text || !air)
-		return
-
-	var/datum/gas_mixture/G = new
-	G.parse_gas_string(text)
-
-	air.merge(G)
-	archive()
-	SSair.add_to_active(src, 0)

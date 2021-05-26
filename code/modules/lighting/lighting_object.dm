@@ -5,11 +5,11 @@
 
 	icon             = LIGHTING_ICON
 	icon_state       = "transparent"
-	color            = LIGHTING_BASE_MATRIX
+	//color            = LIGHTING_BASE_MATRIX
 	plane            = LIGHTING_PLANE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer            = LIGHTING_LAYER
-	invisibility     = INVISIBILITY_LIGHTING
+	//invisibility     = INVISIBILITY_LIGHTING
 
 	var/needs_update = FALSE
 	var/turf/myturf
@@ -18,13 +18,14 @@
 	. = ..()
 	verbs.Cut()
 
+
 	myturf = loc
 	if (myturf.lighting_object)
 		qdel(myturf.lighting_object, force = TRUE)
 	myturf.lighting_object = src
 	myturf.luminosity = 0
 
-	for(var/turf/open/space/S in RANGE_TURFS(1, src)) //RANGE_TURFS is in code\__HELPERS\game.dm
+	for(var/turf/open/space/S in RANGE_TURFS(1, src))
 		S.update_starlight()
 
 	needs_update = TRUE
@@ -52,28 +53,20 @@
 		if (loc)
 			var/turf/oldturf = get_turf(myturf)
 			var/turf/newturf = get_turf(loc)
-			warning("A lighting object realised it's loc had changed in update() ([myturf]\[[myturf ? myturf.type : "null"]]([COORD(oldturf)]) -> [loc]\[[ loc ? loc.type : "null"]]([COORD(newturf)]))!")
+			//warning("A lighting object realised it's loc had changed in update() ([myturf]\[[myturf ? myturf.type : "null"]]([COORD(oldturf)]) -> [loc]\[[ loc ? loc.type : "null"]]([COORD(newturf)]))!")
 
 		qdel(src, TRUE)
 		return
 
-	// To the future coder who sees this and thinks
-	// "Why didn't he just use a loop?"
-	// Well my man, it's because the loop performed like shit.
-	// And there's no way to improve it because
-	// without a loop you can make the list all at once which is the fastest you're gonna get.
-	// Oh it's also shorter line wise.
-	// Including with these comments.
-
-	// See LIGHTING_CORNER_DIAGONAL in lighting_corner.dm for why these values are what they are.
-	var/static/datum/lighting_corner/dummy/dummy_lighting_corner = new
+	//var/static/datum/lighting_corner/dummy/dummy_lighting_corner = new
+	var/datum/lighting_corner/dummy/dummy_lighting_corner = new//not_actual
 
 	var/list/corners = myturf.corners
 	var/datum/lighting_corner/cr = dummy_lighting_corner
 	var/datum/lighting_corner/cg = dummy_lighting_corner
 	var/datum/lighting_corner/cb = dummy_lighting_corner
 	var/datum/lighting_corner/ca = dummy_lighting_corner
-	if (corners) //done this way for speed
+	if (corners)
 		cr = corners[3] || dummy_lighting_corner
 		cg = corners[2] || dummy_lighting_corner
 		cb = corners[4] || dummy_lighting_corner
@@ -97,16 +90,13 @@
 	var/ag = ca.cache_g
 	var/ab = ca.cache_b
 
-	#if LIGHTING_SOFT_THRESHOLD != 0
-	var/set_luminosity = max > LIGHTING_SOFT_THRESHOLD
-	#else
-	// Because of floating points™?, it won't even be a flat 0.
-	// This number is mostly arbitrary.
+	//#if LIGHTING_SOFT_THRESHOLD != 0
+	//var/set_luminosity = max > LIGHTING_SOFT_THRESHOLD
+	//#else
 	var/set_luminosity = max > 1e-6
-	#endif
+	//#endif
 
 	if((rr & gr & br & ar) && (rg + gg + bg + ag + rb + gb + bb + ab == 8))
-	//anything that passes the first case is very likely to pass the second, and addition is a little faster in this case
 		icon_state = "transparent"
 		color = null
 	else if(!set_luminosity)
@@ -114,34 +104,31 @@
 		color = null
 	else
 		icon_state = null
-		color = list(
-			rr, rg, rb, 00,
-			gr, gg, gb, 00,
-			br, bg, bb, 00,
-			ar, ag, ab, 00,
-			00, 00, 00, 01
-		)
+		//color = list(
+		//	rr, rg, rb, 00,
+		//	gr, gg, gb, 00,
+		//	br, bg, bb, 00,
+		//	ar, ag, ab, 00,
+		//	00, 00, 00, 01
+		//)
 
 	luminosity = set_luminosity
-
-// Variety of overrides so the overlays don't get affected by weird things.
 
 /atom/movable/lighting_object/ex_act(severity)
 	return 0
 
-/atom/movable/lighting_object/singularity_act()
-	return
+///atom/movable/lighting_object/singularity_act()
+//	return
 
-/atom/movable/lighting_object/singularity_pull()
-	return
+///atom/movable/lighting_object/singularity_pull()
+//	return
 
-/atom/movable/lighting_object/blob_act()
-	return
+///atom/movable/lighting_object/blob_act()
+//	return
 
-/atom/movable/lighting_object/onTransitZ()
-	return
+///atom/movable/lighting_object/onTransitZ()
+//	return
 
-// Override here to prevent things accidentally moving around overlays.
 /atom/movable/lighting_object/forceMove(atom/destination, var/no_tp=FALSE, var/harderforce = FALSE)
 	if(harderforce)
 		. = ..()

@@ -1,25 +1,17 @@
-//max channel is 1024. Only go lower from here, because byond tends to pick the first availiable channel to play sounds on
 #define CHANNEL_LOBBYMUSIC 1024
 #define CHANNEL_ADMIN 1023
 #define CHANNEL_VOX 1022
 #define CHANNEL_JUKEBOX 1021
 #define CHANNEL_JUSTICAR_ARK 1020
-#define CHANNEL_HEARTBEAT 1019 //sound channel for heartbeats
+#define CHANNEL_HEARTBEAT 1019
 #define CHANNEL_AMBIENCE 1018
 #define CHANNEL_BUZZ 1017
 #define CHANNEL_BICYCLE 1016
 
-//THIS SHOULD ALWAYS BE THE LOWEST ONE!
-//KEEP IT UPDATED
-
 #define CHANNEL_HIGHEST_AVAILABLE 1015
-
 
 #define SOUND_MINIMUM_PRESSURE 10
 #define FALLOFF_SOUNDS 1
-
-
-//Ambience types
 
 #define GENERIC list('sound/ambience/ambigen1.ogg','sound/ambience/ambigen3.ogg',\
 								'sound/ambience/ambigen4.ogg','sound/ambience/ambigen5.ogg',\
@@ -65,11 +57,3 @@
 									'sound/ambience/ambiatmos.ogg', 'sound/ambience/ambiatmos2.ogg', 'sound/ambience/ambiodd.ogg')
 
 #define REEBE list('sound/ambience/ambireebe1.ogg', 'sound/ambience/ambireebe2.ogg', 'sound/ambience/ambireebe3.ogg')
-
-
-
-#define CREEPY_SOUNDS list('sound/effects/ghost.ogg', 'sound/effects/ghost2.ogg', 'sound/effects/heart_beat.ogg', 'sound/effects/screech.ogg',\
-	'sound/hallucinations/behind_you1.ogg', 'sound/hallucinations/behind_you2.ogg', 'sound/hallucinations/far_noise.ogg', 'sound/hallucinations/growl1.ogg', 'sound/hallucinations/growl2.ogg',\
-	'sound/hallucinations/growl3.ogg', 'sound/hallucinations/im_here1.ogg', 'sound/hallucinations/im_here2.ogg', 'sound/hallucinations/i_see_you1.ogg', 'sound/hallucinations/i_see_you2.ogg',\
-	'sound/hallucinations/look_up1.ogg', 'sound/hallucinations/look_up2.ogg', 'sound/hallucinations/over_here1.ogg', 'sound/hallucinations/over_here2.ogg', 'sound/hallucinations/over_here3.ogg',\
-	'sound/hallucinations/turn_around1.ogg', 'sound/hallucinations/turn_around2.ogg', 'sound/hallucinations/veryfar_noise.ogg', 'sound/hallucinations/wail.ogg')

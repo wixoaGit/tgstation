@@ -36,18 +36,11 @@
 		return
 	update_parents()
 
-/obj/machinery/atmospherics/components/unary/portables_connector/can_unwrench(mob/user)
-	. = ..()
-	if(. && connected_device)
-		to_chat(user, "<span class='warning'>You cannot unwrench [src], detach [connected_device] first!</span>")
-		return FALSE
-
 /obj/machinery/atmospherics/components/unary/portables_connector/portableConnectorReturnAir()
 	return connected_device.portableConnectorReturnAir()
 
 /obj/proc/portableConnectorReturnAir()
 	return
-
 
 /obj/machinery/atmospherics/components/unary/portables_connector/layer1
 	piping_layer = 1

@@ -15,8 +15,8 @@ SUBSYSTEM_DEF(atoms)
 	var/list/BadInitializeCalls = list()
 
 /datum/controller/subsystem/atoms/Initialize(timeofday)
-	GLOB.fire_overlay.appearance_flags = RESET_COLOR
-	setupGenetics() //to set the mutations' sequence
+	//GLOB.fire_overlay.appearance_flags = RESET_COLOR
+	//setupGenetics()
 	initialized = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
 	return ..()
@@ -24,29 +24,29 @@ SUBSYSTEM_DEF(atoms)
 /datum/controller/subsystem/atoms/proc/InitializeAtoms(list/atoms)
 	if(initialized == INITIALIZATION_INSSATOMS)
 		return
-
+	
 	initialized = INITIALIZATION_INNEW_MAPLOAD
-
+	
 	var/count
 	var/list/mapload_arg = list(TRUE)
-	if(atoms)
+	if (atoms)
 		count = atoms.len
-		for(var/I in atoms)
+		for (var/I in atoms)
 			var/atom/A = I
 			if(!(A.flags_1 & INITIALIZED_1))
-				InitAtom(I, mapload_arg)
+				InitAtom(A, mapload_arg)
 				CHECK_TICK
 	else
 		count = 0
-		for(var/atom/A in world)
+		for (var/atom/A in world)
 			if(!(A.flags_1 & INITIALIZED_1))
 				InitAtom(A, mapload_arg)
 				++count
 				CHECK_TICK
-
+	
 	testing("Initialized [count] atoms")
 	pass(count)
-
+	
 	initialized = INITIALIZATION_INNEW_REGULAR
 
 	if(late_loaders.len)
@@ -74,7 +74,7 @@ SUBSYSTEM_DEF(atoms)
 	if(result != INITIALIZE_HINT_NORMAL)
 		switch(result)
 			if(INITIALIZE_HINT_LATELOAD)
-				if(arguments[1])	//mapload
+				if(arguments[1])
 					late_loaders += A
 				else
 					A.LateInitialize()
@@ -83,8 +83,8 @@ SUBSYSTEM_DEF(atoms)
 				qdeleted = TRUE
 			else
 				BadInitializeCalls[the_type] |= BAD_INIT_NO_HINT
-
-	if(!A)	//possible harddel
+	
+	if(!A)
 		qdeleted = TRUE
 	else if(!(A.flags_1 & INITIALIZED_1))
 		BadInitializeCalls[the_type] |= BAD_INIT_DIDNT_INIT
@@ -97,54 +97,6 @@ SUBSYSTEM_DEF(atoms)
 
 /datum/controller/subsystem/atoms/proc/map_loader_stop()
 	initialized = old_initialized
-
-/datum/controller/subsystem/atoms/Recover()
-	initialized = SSatoms.initialized
-	if(initialized == INITIALIZATION_INNEW_MAPLOAD)
-		InitializeAtoms()
-	old_initialized = SSatoms.old_initialized
-	BadInitializeCalls = SSatoms.BadInitializeCalls
-
-/datum/controller/subsystem/atoms/proc/setupGenetics()
-	var/list/mutations = subtypesof(/datum/mutation/human)
-	shuffle_inplace(mutations)
-	for(var/A in subtypesof(/datum/generecipe))
-		var/datum/generecipe/GR = A
-		GLOB.mutation_recipes[initial(GR.required)] = initial(GR.result)
-	for(var/i in 1 to LAZYLEN(mutations))
-		var/path = mutations[i] //byond gets pissy when we do it in one line
-		var/datum/mutation/human/B = new path ()
-		B.alias = "Mutation #[i]"
-		GLOB.all_mutations[B.type] = B
-		GLOB.full_sequences[B.type] = generate_gene_sequence(B.blocks)
-		if(B.locked)
-			continue
-		if(B.quality == POSITIVE)
-			GLOB.good_mutations |= B
-		else if(B.quality == NEGATIVE)
-			GLOB.bad_mutations |= B
-		else if(B.quality == MINOR_NEGATIVE)
-			GLOB.not_good_mutations |= B
-		CHECK_TICK
-
-/datum/controller/subsystem/atoms/proc/InitLog()
-	. = ""
-	for(var/path in BadInitializeCalls)
-		. += "Path : [path] \n"
-		var/fails = BadInitializeCalls[path]
-		if(fails & BAD_INIT_DIDNT_INIT)
-			. += "- Didn't call atom/Initialize()\n"
-		if(fails & BAD_INIT_NO_HINT)
-			. += "- Didn't return an Initialize hint\n"
-		if(fails & BAD_INIT_QDEL_BEFORE)
-			. += "- Qdel'd in New()\n"
-		if(fails & BAD_INIT_SLEPT)
-			. += "- Slept during Initialize()\n"
-
-/datum/controller/subsystem/atoms/Shutdown()
-	var/initlog = InitLog()
-	if(initlog)
-		text2file(initlog, "[GLOB.log_directory]/initialize.log")
 
 #undef BAD_INIT_QDEL_BEFORE
 #undef BAD_INIT_DIDNT_INIT

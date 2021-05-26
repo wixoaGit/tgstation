@@ -20,16 +20,16 @@
 	w_class = WEIGHT_CLASS_SMALL
 	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 100, "acid" = 30)
 	resistance_flags = FIRE_PROOF
-
+	
 	materials = list(MAT_METAL=70, MAT_GLASS=30)
-	var/welding = 0 	//Whether or not the welding tool is off(0), on(1) or currently welding(2)
-	var/status = TRUE 		//Whether the welder is secured or unsecured (able to attach rods to it to make a flamethrower)
-	var/max_fuel = 20 	//The max amount of fuel the welder can hold
+	var/welding = 0
+	var/status = TRUE
+	var/max_fuel = 20
 	var/change_icons = 1
 	var/can_off_process = 0
-	var/light_intensity = 2 //how powerful the emitted light is when used.
+	var/light_intensity = 2
 	var/progress_flash_divisor = 10
-	var/burned_fuel_for = 0	//when fuel was last removed
+	var/burned_fuel_for = 0
 	heat = 3800
 	tool_behaviour = TOOL_WELDER
 	toolspeed = 1
@@ -40,7 +40,6 @@
 	reagents.add_reagent("welding_fuel", max_fuel)
 	update_icon()
 
-
 /obj/item/weldingtool/proc/update_torch()
 	if(welding)
 		add_overlay("[initial(icon_state)]-on")
@@ -48,16 +47,14 @@
 	else
 		item_state = "[initial(item_state)]"
 
-
 /obj/item/weldingtool/update_icon()
 	cut_overlays()
-	if(change_icons)
+	if (change_icons)
 		var/ratio = get_fuel() / max_fuel
 		ratio = CEILING(ratio*4, 1) * 25
 		add_overlay("[initial(icon_state)][ratio]")
 	update_torch()
 	return
-
 
 /obj/item/weldingtool/process()
 	switch(welding)
@@ -68,7 +65,6 @@
 			if(!can_off_process)
 				STOP_PROCESSING(SSobj, src)
 			return
-	//Welders left on now use up fuel, but lets not have them run out quite that fast
 		if(1)
 			force = 15
 			damtype = "fire"
@@ -77,14 +73,11 @@
 				use(1)
 			update_icon()
 
-	//This is to start fires. process() is only called if the welder is on.
 	open_flame()
-
 
 /obj/item/weldingtool/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] welds [user.p_their()] every orifice closed! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (FIRELOSS)
-
 
 /obj/item/weldingtool/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_SCREWDRIVER)
@@ -98,7 +91,7 @@
 /obj/item/weldingtool/proc/explode()
 	var/turf/T = get_turf(loc)
 	var/plasmaAmount = reagents.get_reagent_amount("plasma")
-	dyn_explosion(T, plasmaAmount/5)//20 plasma in a standard welder has a 4 power explosion. no breaches, but enough to kill/dismember holder
+	//dyn_explosion(T, plasmaAmount/5)
 	qdel(src)
 
 /obj/item/weldingtool/attack(mob/living/carbon/human/H, mob/user)
@@ -114,10 +107,9 @@
 					"<span class='notice'>You start fixing some of the dents on [H]'s [affecting.name].</span>")
 				if(!do_mob(user, H, 50))
 					return
-			item_heal_robotic(H, user, 15, 0)
+			//item_heal_robotic(H, user, 15, 0)
 	else
 		return ..()
-
 
 /obj/item/weldingtool/afterattack(atom/O, mob/user, proximity)
 	. = ..()
@@ -136,14 +128,13 @@
 
 		if(isliving(O))
 			var/mob/living/L = O
-			if(L.IgniteMob())
-				message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(L)] on fire with [src] at [AREACOORD(user)]")
-				log_game("[key_name(user)] set [key_name(L)] on fire with [src] at [AREACOORD(user)]")
-
+			//if(L.IgniteMob())
+			//	message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(L)] on fire with [src] at [AREACOORD(user)]")
+			//	log_game("[key_name(user)] set [key_name(L)] on fire with [src] at [AREACOORD(user)]")
 
 /obj/item/weldingtool/attack_self(mob/user)
 	if(src.reagents.has_reagent("plasma"))
-		message_admins("[ADMIN_LOOKUPFLW(user)] activated a rigged welder at [AREACOORD(user)].")
+		//message_admins("[ADMIN_LOOKUPFLW(user)] activated a rigged welder at [AREACOORD(user)].")
 		explode()
 	switched_on(user)
 	if(welding)
@@ -151,13 +142,9 @@
 
 	update_icon()
 
-
-// Returns the amount of fuel in the welder
 /obj/item/weldingtool/proc/get_fuel()
 	return reagents.get_reagent_amount("welding_fuel")
 
-
-// Uses fuel from the welding tool.
 /obj/item/weldingtool/use(used = 0)
 	if(!isOn() || !check_fuel())
 		return FALSE
@@ -171,13 +158,10 @@
 	else
 		return FALSE
 
-
-//Turns off the welder if there is no more fuel (does this really need to be its own proc?)
 /obj/item/weldingtool/proc/check_fuel(mob/user)
 	if(get_fuel() <= 0 && welding)
 		switched_on(user)
 		update_icon()
-		//mob icon update
 		if(ismob(loc))
 			var/mob/M = loc
 			M.update_inv_hands(0)
@@ -185,7 +169,6 @@
 		return 0
 	return 1
 
-//Switches the welder on
 /obj/item/weldingtool/proc/switched_on(mob/user)
 	if(!status)
 		to_chat(user, "<span class='warning'>[src] can't be turned on while unsecured!</span>")
@@ -208,7 +191,6 @@
 		playsound(loc, deac_sound, 50, 1)
 		switched_off(user)
 
-//Switches the welder off
 /obj/item/weldingtool/proc/switched_off(mob/user)
 	welding = 0
 	set_light(0)
@@ -218,35 +200,27 @@
 	hitsound = "swing_hit"
 	update_icon()
 
-
 /obj/item/weldingtool/examine(mob/user)
 	..()
 	to_chat(user, "It contains [get_fuel()] unit\s of fuel out of [max_fuel].")
 
-/obj/item/weldingtool/is_hot()
-	return welding * heat
-
-//Returns whether or not the welding tool is currently on.
 /obj/item/weldingtool/proc/isOn()
 	return welding
 
-// When welding is about to start, run a normal tool_use_check, then flash a mob if it succeeds.
 /obj/item/weldingtool/tool_start_check(mob/living/user, amount=0)
 	. = tool_use_check(user, amount)
-	if(. && user)
-		user.flash_act(light_intensity)
+	//if(. && user)
+	//	user.flash_act(light_intensity)
 
-// Flash the user during welding progress
 /obj/item/weldingtool/tool_check_callback(mob/living/user, amount, datum/callback/extra_checks)
 	. = ..()
-	if(. && user)
-		if (progress_flash_divisor == 0)
-			user.flash_act(min(light_intensity,1))
-			progress_flash_divisor = initial(progress_flash_divisor)
-		else
-			progress_flash_divisor--
+	//if(. && user)
+	//	if (progress_flash_divisor == 0)
+	//		user.flash_act(min(light_intensity,1))
+	//		progress_flash_divisor = initial(progress_flash_divisor)
+	//	else
+	//		progress_flash_divisor--
 
-// If welding tool ran out of fuel during a construction task, construction fails.
 /obj/item/weldingtool/tool_use_check(mob/living/user, amount)
 	if(!isOn() || !check_fuel())
 		to_chat(user, "<span class='warning'>[src] has to be on to complete this task!</span>")
@@ -257,7 +231,6 @@
 	else
 		to_chat(user, "<span class='warning'>You need more welding fuel to complete this task!</span>")
 		return FALSE
-
 
 /obj/item/weldingtool/proc/flamethrower_screwdriver(obj/item/I, mob/user)
 	if(welding)
@@ -276,21 +249,15 @@
 	if(!status)
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
-			var/obj/item/flamethrower/F = new /obj/item/flamethrower(user.loc)
-			if(!remove_item_from_storage(F))
-				user.transferItemToLoc(src, F, TRUE)
-			F.weldtool = src
+			//var/obj/item/flamethrower/F = new /obj/item/flamethrower(user.loc)
+			//if(!remove_item_from_storage(F))
+			//	user.transferItemToLoc(src, F, TRUE)
+			//F.weldtool = src
 			add_fingerprint(user)
 			to_chat(user, "<span class='notice'>You add a rod to a welder, starting to build a flamethrower.</span>")
-			user.put_in_hands(F)
+			//user.put_in_hands(F)
 		else
 			to_chat(user, "<span class='warning'>You need one rod to start building a flamethrower!</span>")
-
-/obj/item/weldingtool/ignition_effect(atom/A, mob/user)
-	if(use_tool(A, user, 0, amount=1))
-		return "<span class='notice'>[user] casually lights [A] with [src], what a badass.</span>"
-	else
-		return ""
 
 /obj/item/weldingtool/largetank
 	name = "industrial welding tool"
@@ -299,19 +266,8 @@
 	max_fuel = 40
 	materials = list(MAT_GLASS=60)
 
-/obj/item/weldingtool/largetank/cyborg
-	name = "integrated welding tool"
-	desc = "An advanced welder designed to be used in robotic systems."
-	toolspeed = 0.5
-
-/obj/item/weldingtool/largetank/cyborg/cyborg_unequip(mob/user)
-	if(!isOn())
-		return
-	switched_on(user)
-
 /obj/item/weldingtool/largetank/flamethrower_screwdriver()
 	return
-
 
 /obj/item/weldingtool/mini
 	name = "emergency welding tool"
@@ -324,20 +280,6 @@
 
 /obj/item/weldingtool/mini/flamethrower_screwdriver()
 	return
-
-/obj/item/weldingtool/abductor
-	name = "alien welding tool"
-	desc = "An alien welding tool. Whatever fuel it uses, it never runs out."
-	icon = 'icons/obj/abductor.dmi'
-	icon_state = "welder"
-	toolspeed = 0.1
-	light_intensity = 0
-	change_icons = 0
-
-/obj/item/weldingtool/abductor/process()
-	if(get_fuel() <= max_fuel)
-		reagents.add_reagent("welding_fuel", 1)
-	..()
 
 /obj/item/weldingtool/hugetank
 	name = "upgraded industrial welding tool"

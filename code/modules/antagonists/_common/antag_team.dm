@@ -1,11 +1,10 @@
 GLOBAL_LIST_EMPTY(antagonist_teams)
 
-//A barebones antagonist team.
 /datum/team
 	var/list/datum/mind/members = list()
 	var/name = "team"
 	var/member_name = "member"
-	var/list/objectives = list() //common objectives, these won't be added or removed automatically, subtypes handle this, this is here for bookkeeping purposes.
+	var/list/objectives = list()
 
 /datum/team/New(starting_members)
 	. = ..()
@@ -17,20 +16,14 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 		else
 			add_member(starting_members)
 
-/datum/team/Destroy(force, ...)
+///datum/team/Destroy(force, ...)
+/datum/team/Destroy(force)//not_actual
 	GLOB.antagonist_teams -= src
 	. = ..()
-
-/datum/team/proc/is_solo()
-	return members.len == 1
 
 /datum/team/proc/add_member(datum/mind/new_member)
 	members |= new_member
 
-/datum/team/proc/remove_member(datum/mind/member)
-	members -= member
-
-//Display members/victory/failure/objectives for the team
 /datum/team/proc/roundend_report()
 	var/list/report = list()
 

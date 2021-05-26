@@ -15,11 +15,11 @@
 	layer = GAS_SCRUBBER_LAYER
 
 	var/id_tag = null
-	var/scrubbing = SCRUBBING //0 = siphoning, 1 = scrubbing
+	var/scrubbing = SCRUBBING
 
 	var/filter_types = list(/datum/gas/carbon_dioxide)
 	var/volume_rate = 200
-	var/widenet = 0 //is this scrubber acting on the 3x3 area around it.
+	var/widenet = 0
 	var/list/turf/adjacent_turfs = list()
 
 	var/frequency = FREQ_ATMOS_CONTROL
@@ -58,7 +58,7 @@
 
 	if(scrubbing & SCRUBBING)
 		amount += idle_power_usage * length(filter_types)
-	else //scrubbing == SIPHONING
+	else
 		amount = active_power_usage
 
 	if(widenet)
@@ -85,7 +85,7 @@
 			icon_state = "scrub_wide"
 		else
 			icon_state = "scrub_on"
-	else //scrubbing == SIPHONING
+	else
 		icon_state = "scrub_purge"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/set_frequency(new_frequency)
@@ -160,16 +160,13 @@
 		if(length(env_gases & filter_types))
 			var/transfer_moles = min(1, volume_rate/environment.volume)*environment.total_moles()
 
-			//Take a gas sample
 			var/datum/gas_mixture/removed = tile.remove_air(transfer_moles)
 
-			//Nothing left to remove from the tile
 			if(isnull(removed))
 				return FALSE
 
 			var/list/removed_gases = removed.gases
 
-			//Filter it
 			var/datum/gas_mixture/filtered_out = new
 			var/list/filtered_gases = filtered_out.gases
 			filtered_out.temperature = removed.temperature
@@ -181,12 +178,11 @@
 
 			removed.garbage_collect()
 
-			//Remix the resulting gases
 			air_contents.merge(filtered_out)
 			tile.assume_air(removed)
 			tile.air_update_turf()
 
-	else //Just siphoning all air
+	else
 
 		var/transfer_moles = environment.total_moles()*(volume_rate/environment.volume)
 
@@ -199,14 +195,9 @@
 
 	return TRUE
 
-//There is no easy way for an object to be notified of changes to atmos can pass flags
-//	So we check every machinery process (2 seconds)
 /obj/machinery/atmospherics/components/unary/vent_scrubber/process()
 	if(widenet)
 		check_turfs()
-
-//we populate a list of turfs with nonatmos-blocked cardinal turfs AND
-//	diagonal turfs that can share atmos with *both* of the cardinal turfs
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/check_turfs()
 	adjacent_turfs.Cut()
@@ -235,8 +226,8 @@
 		scrubbing = text2num(signal.data["scrubbing"])
 	if("toggle_scrubbing" in signal.data)
 		scrubbing = !scrubbing
-	if(scrubbing != old_scrubbing)
-		investigate_log(" was toggled to [scrubbing ? "scrubbing" : "siphon"] mode by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
+	//if(scrubbing != old_scrubbing)
+	//	investigate_log(" was toggled to [scrubbing ? "scrubbing" : "siphon"] mode by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
 
 	if("toggle_filter" in signal.data)
 		filter_types ^= gas_id2path(signal.data["toggle_filter"])
@@ -252,7 +243,7 @@
 
 	if("status" in signal.data)
 		broadcast_status()
-		return //do not update_icon
+		return
 
 	broadcast_status()
 	update_icon()
@@ -275,7 +266,7 @@
 			welded = FALSE
 		update_icon()
 		pipe_vision_img = image(src, loc, layer = ABOVE_HUD_LAYER, dir = dir)
-		pipe_vision_img.plane = ABOVE_HUD_PLANE
+		//pipe_vision_img.plane = ABOVE_HUD_PLANE
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/can_unwrench(mob/user)
@@ -289,19 +280,18 @@
 	if(welded)
 		to_chat(user, "It seems welded shut.")
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/can_crawl_through()
-	return !welded
+///obj/machinery/atmospherics/components/unary/vent_scrubber/can_crawl_through()
+//	return !welded
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user)
-	if(!welded || !(do_after(user, 20, target = src)))
-		return
-	user.visible_message("[user] furiously claws at [src]!", "You manage to clear away the stuff blocking the scrubber.", "You hear loud scraping noises.")
-	welded = FALSE
-	update_icon()
-	pipe_vision_img = image(src, loc, layer = ABOVE_HUD_LAYER, dir = dir)
-	pipe_vision_img.plane = ABOVE_HUD_PLANE
-	playsound(loc, 'sound/weapons/bladeslice.ogg', 100, 1)
-
+///obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user)
+//	if(!welded || !(do_after(user, 20, target = src)))
+//		return
+//	user.visible_message("[user] furiously claws at [src]!", "You manage to clear away the stuff blocking the scrubber.", "You hear loud scraping noises.")
+//	welded = FALSE
+//	update_icon()
+//	pipe_vision_img = image(src, loc, layer = ABOVE_HUD_LAYER, dir = dir)
+//	pipe_vision_img.plane = ABOVE_HUD_PLANE
+//	playsound(loc, 'sound/weapons/bladeslice.ogg', 100, 1)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/layer1
 	piping_layer = 1

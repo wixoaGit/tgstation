@@ -1,5 +1,3 @@
-GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
-
 #define KEYCARD_RED_ALERT "Red Alert"
 #define KEYCARD_EMERGENCY_MAINTENANCE_ACCESS "Emergency Maintenance Access"
 #define KEYCARD_BSA_UNLOCK "Bluespace Artillery Unlock"
@@ -23,10 +21,10 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 
 /obj/machinery/keycard_auth/Initialize()
 	. = ..()
-	ev = GLOB.keycard_events.addEvent("triggerEvent", CALLBACK(src, .proc/triggerEvent))
+	//ev = GLOB.keycard_events.addEvent("triggerEvent", CALLBACK(src, .proc/triggerEvent))
 
 /obj/machinery/keycard_auth/Destroy()
-	GLOB.keycard_events.clearEvent("triggerEvent", ev)
+	//GLOB.keycard_events.clearEvent("triggerEvent", ev)
 	QDEL_NULL(ev)
 	return ..()
 
@@ -80,7 +78,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	triggerer = usr
 	event = event_type
 	waiting = 1
-	GLOB.keycard_events.fireEvent("triggerEvent", src)
+	//GLOB.keycard_events.fireEvent("triggerEvent", src)
 	addtimer(CALLBACK(src, .proc/eventSent), 20)
 
 /obj/machinery/keycard_auth/proc/eventSent()
@@ -99,7 +97,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 
 /obj/machinery/keycard_auth/proc/trigger_event(confirmer)
 	log_game("[key_name(triggerer)] triggered and [key_name(confirmer)] confirmed event [event]")
-	message_admins("[ADMIN_LOOKUPFLW(triggerer)] triggered and [ADMIN_LOOKUPFLW(confirmer)] confirmed event [event]")
+	//message_admins("[ADMIN_LOOKUPFLW(triggerer)] triggered and [ADMIN_LOOKUPFLW(confirmer)] confirmed event [event]")
 
 	var/area/A1 = get_area(triggerer)
 	deadchat_broadcast("<span class='deadsay'><span class='name'>[triggerer]</span> triggered [event] at <span class='name'>[A1.name]</span>.</span>", triggerer)
@@ -122,21 +120,12 @@ GLOBAL_VAR_INIT(emergency_access, FALSE)
 			D.update_icon(0)
 	minor_announce("Access restrictions on maintenance and external airlocks have been lifted.", "Attention! Station-wide emergency declared!",1)
 	GLOB.emergency_access = TRUE
-	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "enabled"))
-
-/proc/revoke_maint_all_access()
-	for(var/area/maintenance/A in world)
-		for(var/obj/machinery/door/airlock/D in A)
-			D.emergency = FALSE
-			D.update_icon(0)
-	minor_announce("Access restrictions in maintenance areas have been restored.", "Attention! Station-wide emergency rescinded:")
-	GLOB.emergency_access = FALSE
-	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "disabled"))
+	//SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "enabled"))
 
 /proc/toggle_bluespace_artillery()
 	GLOB.bsa_unlock = !GLOB.bsa_unlock
 	minor_announce("Bluespace Artillery firing protocols have been [GLOB.bsa_unlock? "unlocked" : "locked"]", "Weapons Systems Update:")
-	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("bluespace artillery", GLOB.bsa_unlock? "unlocked" : "locked"))
+	//SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("bluespace artillery", GLOB.bsa_unlock? "unlocked" : "locked"))
 
 #undef KEYCARD_RED_ALERT
 #undef KEYCARD_EMERGENCY_MAINTENANCE_ACCESS

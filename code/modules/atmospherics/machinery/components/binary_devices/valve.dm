@@ -1,7 +1,3 @@
-/*
-It's like a regular ol' straight pipe, but you can turn it on and off.
-*/
-
 /obj/machinery/atmospherics/components/binary/valve
 	icon_state = "mvalve_map-2"
 
@@ -11,37 +7,37 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	can_unwrench = TRUE
 	shift_underlay_only = FALSE
 
-	interaction_flags_machine = INTERACT_MACHINE_OFFLINE | INTERACT_MACHINE_OPEN //Intentionally no allow_silicon flag
+	interaction_flags_machine = INTERACT_MACHINE_OFFLINE | INTERACT_MACHINE_OPEN
 	pipe_flags = PIPING_CARDINAL_AUTONORMALIZE
 
 	var/frequency = 0
 	var/id = null
 
-	var/valve_type = "m" //lets us have a nice, clean, OOP update_icon_nopipes()
+	var/valve_type = "m"
 
-	construction_type = /obj/item/pipe/binary
+	//construction_type = /obj/item/pipe/binary
 	pipe_state = "mvalve"
 
 	var/switching = FALSE
 
 /obj/machinery/atmospherics/components/binary/valve/update_icon_nopipes(animation = FALSE)
 	normalize_cardinal_directions()
-	if(animation)
-		flick("[valve_type]valve_[on][!on]", src)
+	//if(animation)
+	//	flick("[valve_type]valve_[on][!on]", src)
 	icon_state = "[valve_type]valve_[on ? "on" : "off"]"
 
 /obj/machinery/atmospherics/components/binary/valve/proc/toggle()
 	if(on)
 		on = FALSE
 		update_icon_nopipes()
-		investigate_log("was closed by [usr ? key_name(usr) : "a remote signal"]", INVESTIGATE_ATMOS)
+		//investigate_log("was closed by [usr ? key_name(usr) : "a remote signal"]", INVESTIGATE_ATMOS)
 	else
 		on = TRUE
 		update_icon_nopipes()
 		update_parents()
 		var/datum/pipeline/parent1 = parents[1]
 		parent1.reconcile_air()
-		investigate_log("was opened by [usr ? key_name(usr) : "a remote signal"]", INVESTIGATE_ATMOS)
+		//investigate_log("was opened by [usr ? key_name(usr) : "a remote signal"]", INVESTIGATE_ATMOS)
 
 /obj/machinery/atmospherics/components/binary/valve/interact(mob/user)
 	add_fingerprint(usr)
@@ -55,8 +51,7 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	toggle()
 	switching = FALSE
 
-
-/obj/machinery/atmospherics/components/binary/valve/digital // can be controlled by AI
+/obj/machinery/atmospherics/components/binary/valve/digital
 	icon_state = "dvalve_map-2"
 
 	name = "digital valve"
@@ -72,7 +67,6 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 		icon_state = "dvalve_nopower"
 		return
 	..()
-
 
 /obj/machinery/atmospherics/components/binary/valve/layer1
 	piping_layer = 1

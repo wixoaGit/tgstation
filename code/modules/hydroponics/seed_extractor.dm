@@ -14,7 +14,7 @@
 	if(istype(O, /obj/item/reagent_containers/food/snacks/grown/))
 		var/obj/item/reagent_containers/food/snacks/grown/F = O
 		if(F.seed)
-			if(user && !user.temporarilyRemoveItemFromInventory(O)) //couldn't drop the item
+			if(user && !user.temporarilyRemoveItemFromInventory(O))
 				return
 			while(t_amount < t_max)
 				var/obj/item/seeds/t_prod = F.seed.Copy()
@@ -37,7 +37,6 @@
 		return 1
 
 	return 0
-
 
 /obj/machinery/seed_extractor
 	name = "seed extractor"
@@ -75,19 +74,19 @@
 	if(default_deconstruction_crowbar(O))
 		return
 
-	if(istype(O, /obj/item/storage/bag/plants))
-		var/obj/item/storage/P = O
-		var/loaded = 0
-		for(var/obj/item/seeds/G in P.contents)
-			if(contents.len >= max_seeds)
-				break
-			++loaded
-			add_seed(G)
-		if (loaded)
-			to_chat(user, "<span class='notice'>You put as many seeds from \the [O.name] into [src] as you can.</span>")
-		else
-			to_chat(user, "<span class='notice'>There are no seeds in \the [O.name].</span>")
-		return
+	//if(istype(O, /obj/item/storage/bag/plants))
+	//	var/obj/item/storage/P = O
+	//	var/loaded = 0
+	//	for(var/obj/item/seeds/G in P.contents)
+	//		if(contents.len >= max_seeds)
+	//			break
+	//		++loaded
+	//		add_seed(G)
+	//	if (loaded)
+	//		to_chat(user, "<span class='notice'>You put as many seeds from \the [O.name] into [src] as you can.</span>")
+	//	else
+	//		to_chat(user, "<span class='notice'>There are no seeds in \the [O.name].</span>")
+	//	return
 
 	else if(seedify(O,-1, src, user))
 		to_chat(user, "<span class='notice'>You extract some seeds.</span>")
@@ -104,7 +103,7 @@
 
 /datum/seed_pile
 	var/name = ""
-	var/lifespan = 0	//Saved stats
+	var/lifespan = 0
 	var/endurance = 0
 	var/maturation = 0
 	var/production = 0
@@ -155,7 +154,7 @@
 	href_list["yi"] = text2num(href_list["yi"])
 	href_list["pot"] = text2num(href_list["pot"])
 
-	for (var/datum/seed_pile/N in piles)//Find the pile we need to reduce...
+	for (var/datum/seed_pile/N in piles)
 		if (href_list["name"] == N.name && href_list["li"] == N.lifespan && href_list["en"] == N.endurance && href_list["ma"] == N.maturation && href_list["pr"] == N.production && href_list["yi"] == N.yield && href_list["pot"] == N.potency)
 			if(N.amount <= 0)
 				return
@@ -165,7 +164,7 @@
 				qdel(N)
 			break
 
-	for (var/obj/T in contents)//Now we find the seed we need to vend
+	for (var/obj/T in contents)
 		var/obj/item/seeds/O = T
 		if (O.plantname == href_list["name"] && O.lifespan == href_list["li"] && O.endurance == href_list["en"] && O.maturation == href_list["ma"] && O.production == href_list["pr"] && O.yield == href_list["yi"] && O.potency == href_list["pot"])
 			O.forceMove(drop_location())

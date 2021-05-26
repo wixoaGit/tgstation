@@ -11,8 +11,8 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "smashed")
 	novariants = FALSE
 	var/perunit = MINERAL_MATERIAL_AMOUNT
-	var/sheettype = null //this is used for girders in the creation of walls/false walls
-	var/point_value = 0 //turn-in value for the gulag stacker - loosely relative to its rarity.
-	var/is_fabric = FALSE //is this  a valid material for the loom?
-	var/loom_result //result from pulling on the loom
-	var/pull_effort = 0 //amount of delay when pulling on the loom
+	var/sheettype = null
+	var/point_value = 0
+	var/is_fabric = FALSE
+	var/loom_result
+	var/pull_effort = 0

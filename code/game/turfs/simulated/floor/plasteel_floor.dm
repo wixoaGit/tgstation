@@ -36,7 +36,6 @@
 /turf/open/floor/plasteel/checker
 	icon_state = "checker"
 
-
 /turf/open/floor/plasteel/white
 	icon_state = "white"
 /turf/open/floor/plasteel/white/side
@@ -117,11 +116,10 @@
 	desc = "\"This is a plaque in honour of our comrades on the G4407 Stations. Hopefully TG4407 model can live up to your fame and fortune.\" Scratched in beneath that is a crude image of a meteor and a spaceman. The spaceman is laughing. The meteor is exploding."
 	tiled_dirt = FALSE
 
-/turf/open/floor/plasteel/cult/narsie_act()
-	return
+///turf/open/floor/plasteel/cult/narsie_act()
+//	return
 /turf/open/floor/plasteel/cult/airless
 	initial_gas_mix = AIRLESS_ATMOS
-
 
 /turf/open/floor/plasteel/stairs
 	icon_state = "stairs"

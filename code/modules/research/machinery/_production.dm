@@ -2,16 +2,16 @@
 	name = "technology fabricator"
 	desc = "Makes researched and prototype items with materials and energy."
 	layer = BELOW_OBJ_LAYER
-	var/consoleless_interface = FALSE			//Whether it can be used without a console.
-	var/efficiency_coeff = 1				//Materials needed / coeff = actual.
+	var/consoleless_interface = FALSE
+	var/efficiency_coeff = 1
 	var/list/categories = list()
 	var/datum/component/remote_materials/materials
 	var/allowed_department_flags = ALL
-	var/production_animation				//What's flick()'d on print.
+	var/production_animation
 	var/allowed_buildtypes = NONE
 	var/list/datum/design/cached_designs
 	var/list/datum/design/matching_designs
-	var/department_tag = "Unidentified"			//used for material distribution among other things.
+	var/department_tag = "Unidentified"
 	var/datum/techweb/stored_research
 	var/datum/techweb/host_research
 
@@ -23,7 +23,8 @@
 	create_reagents(0, OPENCONTAINER)
 	matching_designs = list()
 	cached_designs = list()
-	stored_research = new
+	//stored_research = new
+	stored_research = new /datum/techweb//not_actual
 	host_research = SSresearch.science_tech
 	update_research()
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload)
@@ -57,7 +58,7 @@
 
 /obj/machinery/rnd/production/proc/calculate_efficiency()
 	efficiency_coeff = 1
-	if(reagents)		//If reagents/materials aren't initialized, don't bother, we'll be doing this again after reagents init anyways.
+	if(reagents)
 		reagents.maximum_volume = 0
 		for(var/obj/item/reagent_containers/glass/G in component_parts)
 			reagents.maximum_volume += G.volume
@@ -75,24 +76,23 @@
 	else
 		efficiency_coeff = 1/total_rating
 
-//we eject the materials upon deconstruction.
 /obj/machinery/rnd/production/on_deconstruction()
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.trans_to(G, G.reagents.maximum_volume)
 	return ..()
 
 /obj/machinery/rnd/production/proc/do_print(path, amount, list/matlist, notify_admins)
-	if(notify_admins)
-		investigate_log("[key_name(usr)] built [amount] of [path] at [src]([type]).", INVESTIGATE_RESEARCH)
-		message_admins("[ADMIN_LOOKUPFLW(usr)] has built [amount] of [path] at a [src]([type]).")
+	//if(notify_admins)
+	//	investigate_log("[key_name(usr)] built [amount] of [path] at [src]([type]).", INVESTIGATE_RESEARCH)
+	//	message_admins("[ADMIN_LOOKUPFLW(usr)] has built [amount] of [path] at a [src]([type]).")
 	for(var/i in 1 to amount)
 		var/obj/item/I = new path(get_turf(src))
 		if(efficient_with(I.type))
 			I.materials = matlist.Copy()
-	SSblackbox.record_feedback("nested tally", "item_printed", amount, list("[type]", "[path]"))
+	//SSblackbox.record_feedback("nested tally", "item_printed", amount, list("[type]", "[path]"))
 
-/obj/machinery/rnd/production/proc/check_mat(datum/design/being_built, M)	// now returns how many times the item can be built with the material
-	if (!materials.mat_container)  // no connected silo
+/obj/machinery/rnd/production/proc/check_mat(datum/design/being_built, M)
+	if (!materials.mat_container)
 		return 0
 	var/list/all_materials = being_built.reagents_list + being_built.materials
 
@@ -100,13 +100,12 @@
 	if(!A)
 		A = reagents.get_reagent_amount(M)
 
-	// these types don't have their .materials set in do_print, so don't allow
-	// them to be constructed efficiently
 	var/ef = efficient_with(being_built.build_path) ? efficiency_coeff : 1
 	return round(A / max(1, all_materials[M] / ef))
 
 /obj/machinery/rnd/production/proc/efficient_with(path)
-	return !ispath(path, /obj/item/stack/sheet) && !ispath(path, /obj/item/stack/ore/bluespace_crystal)
+	//return !ispath(path, /obj/item/stack/sheet) && !ispath(path, /obj/item/stack/ore/bluespace_crystal)
+	return !ispath(path, /obj/item/stack/sheet)//not_actual
 
 /obj/machinery/rnd/production/proc/user_try_print_id(id, amount)
 	if((!istype(linked_console) && requires_console) || !id)
@@ -152,8 +151,8 @@
 	for(var/R in D.reagents_list)
 		reagents.remove_reagent(R, D.reagents_list[R]*amount/coeff)
 	busy = TRUE
-	if(production_animation)
-		flick(production_animation, src)
+	//if(production_animation)
+	//	flick(production_animation, src)
 	var/timecoeff = D.lathe_time_factor / efficiency_coeff
 	addtimer(CALLBACK(src, .proc/reset_busy), (30 * timecoeff * amount) ** 0.5)
 	addtimer(CALLBACK(src, .proc/do_print, D.build_path, amount, efficient_mats, D.dangerous_construction), (32 * timecoeff * amount) ** 0.8)
@@ -282,12 +281,12 @@
 	usr.set_machine(src)
 	if(ls["switch_screen"])
 		screen = text2num(ls["switch_screen"])
-	if(ls["build"]) //Causes the Protolathe to build something.
+	if(ls["build"])
 		if(busy)
 			say("Warning: Fabricators busy!")
 		else
 			user_try_print_id(ls["build"], ls["amount"])
-	if(ls["search"]) //Search for designs with name matching pattern
+	if(ls["search"])
 		search(ls["to_search"])
 		screen = RESEARCH_FABRICATOR_SCREEN_SEARCH
 	if(ls["sync_research"])
@@ -295,11 +294,11 @@
 		say("Synchronizing research with host technology database.")
 	if(ls["category"])
 		selected_category = ls["category"]
-	if(ls["dispose"])  //Causes the protolathe to dispose of a single reagent (all of it)
+	if(ls["dispose"])
 		reagents.del_reagent(ls["dispose"])
-	if(ls["disposeall"]) //Causes the protolathe to dispose of all it's reagents.
+	if(ls["disposeall"])
 		reagents.clear_reagents()
-	if(ls["ejectsheet"]) //Causes the protolathe to eject a sheet of material
+	if(ls["ejectsheet"])
 		eject_sheets(ls["ejectsheet"], ls["eject_amt"])
 	updateUsrDialog()
 

@@ -3,55 +3,55 @@
 	var/dupe_type
 	var/datum/parent
 
-/datum/component/New(datum/P, ...)
+///datum/component/New(datum/P, ...)
+/datum/component/New(datum/P)//not_actual
 	parent = P
 	var/list/arguments = args.Copy(2)
 	if(Initialize(arglist(arguments)) == COMPONENT_INCOMPATIBLE)
 		qdel(src, TRUE, TRUE)
 		CRASH("Incompatible [type] assigned to a [P.type]! args: [json_encode(arguments)]")
-
+		return
+	
 	_JoinParent(P)
 
 /datum/component/proc/_JoinParent()
 	var/datum/P = parent
-	//lazy init the parent's dc list
 	var/list/dc = P.datum_components
-	if(!dc)
+	if (!dc)
 		P.datum_components = dc = list()
-
-	//set up the typecache
+	
 	var/our_type = type
-	for(var/I in _GetInverseTypeList(our_type))
+	for (var/I in _GetInverseTypeList(our_type))
 		var/test = dc[I]
-		if(test)	//already another component of this type here
+		if (test)
 			var/list/components_of_type
-			if(!length(test))
+			if (!length(test))
 				components_of_type = list(test)
 				dc[I] = components_of_type
 			else
 				components_of_type = test
-			if(I == our_type)	//exact match, take priority
+			if (I == our_type)
 				var/inserted = FALSE
 				for(var/J in 1 to components_of_type.len)
 					var/datum/component/C = components_of_type[J]
-					if(C.type != our_type) //but not over other exact matches
+					if(C.type != our_type)
 						components_of_type.Insert(J, I)
 						inserted = TRUE
 						break
-				if(!inserted)
+				if (!inserted)
 					components_of_type += src
-			else	//indirect match, back of the line with ya
+			else
 				components_of_type += src
-		else	//only component of this type, no list
+		else
 			dc[I] = src
-
+	
 	RegisterWithParent()
 
-// If you want/expect to be moving the component around between parents, use this to register on the parent for signals
 /datum/component/proc/RegisterWithParent()
 	return
 
-/datum/component/proc/Initialize(...)
+///datum/component/proc/Initialize(...)
+/datum/component/proc/Initialize()//not_actual
 	return
 
 /datum/component/Destroy(force=FALSE, silent=FALSE)
@@ -67,13 +67,13 @@
 	var/list/dc = P.datum_components
 	for(var/I in _GetInverseTypeList())
 		var/list/components_of_type = dc[I]
-		if(length(components_of_type))	//
+		if(length(components_of_type))
 			var/list/subtracted = components_of_type - src
-			if(subtracted.len == 1)	//only 1 guy left
-				dc[I] = subtracted[1]	//make him special
+			if(subtracted.len == 1)
+				dc[I] = subtracted[1]
 			else
 				dc[I] = subtracted
-		else	//just us
+		else
 			dc -= I
 	if(!dc.len)
 		P.datum_components = null
@@ -96,7 +96,7 @@
 	if(!lookup)
 		target.comp_lookup = lookup = list()
 
-	if(!istype(proc_or_callback, /datum/callback)) //if it wasnt a callback before, it is now
+	if(!istype(proc_or_callback, /datum/callback))
 		proc_or_callback = CALLBACK(src, proc_or_callback)
 
 	var/list/sig_types = islist(sig_type_or_types) ? sig_type_or_types : list(sig_type_or_types)
@@ -106,14 +106,16 @@
 
 		procs[target][sig_type] = proc_or_callback
 
-		if(!lookup[sig_type]) // Nothing has registered here yet
+		if(!lookup[sig_type])
 			lookup[sig_type] = src
-		else if(lookup[sig_type] == src) // We already registered here
+		else if(lookup[sig_type] == src)
 			continue
-		else if(!length(lookup[sig_type])) // One other thing registered here
-			lookup[sig_type] = list(lookup[sig_type]=TRUE)
+		else if(!length(lookup[sig_type]))
+			//lookup[sig_type] = list(lookup[sig_type]=TRUE)
+			lookup[sig_type] = list()//not_actual
+			lookup[sig_type][lookup[sig_type]]=TRUE//not_actual
 			lookup[sig_type][src] = TRUE
-		else // Many other things have registered here
+		else
 			lookup[sig_type][src] = TRUE
 
 	signal_enabled = TRUE
@@ -144,7 +146,10 @@
 				lookup[sig] -= src
 
 	signal_procs[target] -= sig_type_or_types
-	if(!signal_procs[target].len)
+	//if(!signal_procs[target].len)
+	//not_actual
+	var/list/signal_proc = signal_procs[target]
+	if(!signal_proc.len)//not_actual
 		signal_procs -= target
 
 /datum/component/proc/InheritComponent(datum/component/C, i_am_original)
@@ -153,14 +158,9 @@
 /datum/component/proc/PreTransfer()
 	return
 
-/datum/component/proc/PostTransfer()
-	return
-
 /datum/component/proc/_GetInverseTypeList(our_type = type)
-	//we can do this one simple trick
 	var/current_type = parent_type
 	. = list(our_type, current_type)
-	//and since most components are root level + 1, this won't even have to run
 	while (current_type != /datum/component)
 		current_type = type2parent(current_type)
 		. += current_type
@@ -201,15 +201,8 @@
 			return C
 	return null
 
-/datum/proc/GetComponents(c_type)
-	var/list/dc = datum_components
-	if(!dc)
-		return null
-	. = dc[c_type]
-	if(!length(.))
-		return list(.)
-
-/datum/proc/AddComponent(new_type, ...)
+///datum/proc/AddComponent(new_type, ...)
+/datum/proc/AddComponent(new_type)//not_actual
 	var/datum/component/nt = new_type
 	var/dm = initial(nt.dupe_mode)
 	var/dt = initial(nt.dupe_type)
@@ -252,16 +245,17 @@
 					else
 						old_comp.InheritComponent(new_comp, TRUE)
 		else if(!new_comp)
-			new_comp = new nt(arglist(args)) // There's a valid dupe mode but there's no old component, act like normal
+			new_comp = new nt(arglist(args))
 	else if(!new_comp)
-		new_comp = new nt(arglist(args)) // Dupes are allowed, act like normal
+		new_comp = new nt(arglist(args))
 
-	if(!old_comp && !QDELETED(new_comp)) // Nothing related to duplicate components happened and the new component is healthy
+	if(!old_comp && !QDELETED(new_comp))
 		SEND_SIGNAL(src, COMSIG_COMPONENT_ADDED, new_comp)
 		return new_comp
 	return old_comp
 
-/datum/proc/LoadComponent(component_type, ...)
+///datum/proc/LoadComponent(component_type, ...)
+/datum/proc/LoadComponent(component_type)//not_actual
 	. = GetComponent(component_type)
 	if(!.)
 		return AddComponent(arglist(args))
@@ -275,29 +269,16 @@
 	parent = null
 	SEND_SIGNAL(old_parent, COMSIG_COMPONENT_REMOVING, src)
 
-/datum/proc/TakeComponent(datum/component/target)
-	if(!target || target.parent == src)
-		return
-	if(target.parent)
-		target.RemoveComponent()
-	target.parent = src
-	if(target.PostTransfer() == COMPONENT_INCOMPATIBLE)
-		var/c_type = target.type
-		qdel(target)
-		CRASH("Incompatible [c_type] transfer attempt to a [type]!")
-	if(target == AddComponent(target))
-		target._JoinParent()
-
 /datum/proc/TransferComponents(datum/target)
-	var/list/dc = datum_components
-	if(!dc)
-		return
-	var/comps = dc[/datum/component]
-	if(islist(comps))
-		for(var/I in comps)
-			target.TakeComponent(I)
-	else
-		target.TakeComponent(comps)
+	//var/list/dc = datum_components
+	//if(!dc)
+	//	return
+	//var/comps = dc[/datum/component]
+	//if(islist(comps))
+	//	for(var/I in comps)
+	//		target.TakeComponent(I)
+	//else
+	//	target.TakeComponent(comps)
 
 /datum/component/ui_host()
 	return parent

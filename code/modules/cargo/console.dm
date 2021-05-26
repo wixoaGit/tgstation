@@ -10,7 +10,7 @@
 		or homing beacons."
 	var/blockade_warning = "Bluespace instability detected. Shuttle movement impossible."
 
-	light_color = "#E2853D"//orange
+	light_color = "#E2853D"
 
 /obj/machinery/computer/cargo/request
 	name = "supply request console"
@@ -44,7 +44,6 @@
 	obj_flags |= EMAGGED
 	contraband = TRUE
 
-	// This also permamently sets this on the circuit board
 	var/obj/item/circuitboard/computer/cargo/board = circuit
 	board.contraband = TRUE
 	board.obj_flags |= EMAGGED
@@ -87,7 +86,7 @@
 			"name" = P.name,
 			"cost" = P.cost,
 			"id" = pack,
-			"desc" = P.desc || P.name // If there is a description, use it. Otherwise use the pack's name.
+			"desc" = P.desc || P.name
 		))
 
 	data["cart"] = list()
@@ -97,7 +96,7 @@
 			"cost" = SO.pack.cost,
 			"id" = SO.id,
 			"orderer" = SO.orderer,
-			"paid" = !isnull(SO.paying_account) //paid by requester
+			"paid" = !isnull(SO.paying_account)
 		))
 
 	data["requests"] = list()
@@ -129,9 +128,9 @@
 				SSshuttle.supply.export_categories = get_export_categories()
 				SSshuttle.moveShuttle("supply", "supply_away", TRUE)
 				say("The supply shuttle is departing.")
-				investigate_log("[key_name(usr)] sent the supply shuttle away.", INVESTIGATE_CARGO)
+				//investigate_log("[key_name(usr)] sent the supply shuttle away.", INVESTIGATE_CARGO)
 			else
-				investigate_log("[key_name(usr)] called the supply shuttle.", INVESTIGATE_CARGO)
+				//investigate_log("[key_name(usr)] called the supply shuttle.", INVESTIGATE_CARGO)
 				say("The supply shuttle has been called and will arrive in [SSshuttle.supply.timeLeft(600)] minutes.")
 				SSshuttle.moveShuttle("supply", "supply_home", TRUE)
 			. = TRUE
@@ -226,14 +225,3 @@
 			SSshuttle.requestlist.Cut()
 			. = TRUE
 	if(.)
-		post_signal("supply")
-
-/obj/machinery/computer/cargo/proc/post_signal(command)
-
-	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
-
-	if(!frequency)
-		return
-
-	var/datum/signal/status_signal = new(list("command" = command))
-	frequency.post_signal(src, status_signal)

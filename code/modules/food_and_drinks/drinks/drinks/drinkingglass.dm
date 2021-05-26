@@ -1,5 +1,3 @@
-
-
 /obj/item/reagent_containers/food/drinks/drinkingglass
 	name = "drinking glass"
 	desc = "Your standard drinking glass."
@@ -28,14 +26,7 @@
 			add_overlay(reagent_overlay)
 	else
 		icon_state = "glass_empty"
-		renamedByPlayer = FALSE //so new drinks can rename the glass
-
-//Shot glasses!//
-//  This lets us add shots in here instead of lumping them in with drinks because >logic  //
-//  The format for shots is the exact same as iconstates for the drinking glass, except you use a shot glass instead.  //
-//  If it's a new drink, remember to add it to Chemistry-Reagents.dm  and Chemistry-Recipes.dm as well.  //
-//  You can only mix the ported-over drinks in shot glasses for now (they'll mix in a shaker, but the sprite won't change for glasses). //
-//  This is on a case-by-case basis, and you can even make a separate sprite for shot glasses if you want. //
+		renamedByPlayer = FALSE
 
 /obj/item/reagent_containers/food/drinks/drinkingglass/shotglass
 	name = "shot glass"
@@ -82,27 +73,28 @@
 
 /obj/item/reagent_containers/food/drinks/drinkingglass/filled/soda
 	name = "Soda Water"
-	list_reagents = list("sodawater" = 50)
+	//list_reagents = list("sodawater" = 50)
 
 /obj/item/reagent_containers/food/drinks/drinkingglass/filled/cola
 	name = "Space Cola"
-	list_reagents = list("cola" = 50)
+	//list_reagents = list("cola" = 50)
 
 /obj/item/reagent_containers/food/drinks/drinkingglass/filled/nuka_cola
 	name = "Nuka Cola"
-	list_reagents = list("nuka_cola" = 50)
+	//list_reagents = list("nuka_cola" = 50)
 	
 /obj/item/reagent_containers/food/drinks/drinkingglass/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/reagent_containers/food/snacks/egg)) //breaking eggs
-		var/obj/item/reagent_containers/food/snacks/egg/E = I
-		if(reagents)
-			if(reagents.total_volume >= reagents.maximum_volume)
-				to_chat(user, "<span class='notice'>[src] is full.</span>")
-			else
-				to_chat(user, "<span class='notice'>You break [E] in [src].</span>")
-				reagents.add_reagent("eggyolk", 5)
-				qdel(E)
-			return
+	//if(istype(I, /obj/item/reagent_containers/food/snacks/egg))
+	if(FALSE)//not_actual
+		//var/obj/item/reagent_containers/food/snacks/egg/E = I
+		//if(reagents)
+		//	if(reagents.total_volume >= reagents.maximum_volume)
+		//		to_chat(user, "<span class='notice'>[src] is full.</span>")
+		//	else
+		//		to_chat(user, "<span class='notice'>You break [E] in [src].</span>")
+		//		reagents.add_reagent("eggyolk", 5)
+		//		qdel(E)
+		//	return
 	else
 		..()
 
@@ -127,4 +119,3 @@
 		reagents.reaction(target, TOUCH)
 		reagents.clear_reagents()
 		return
-

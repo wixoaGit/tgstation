@@ -1,6 +1,3 @@
-/*
-Chief Engineer
-*/
 /datum/job/chief_engineer
 	title = "Chief Engineer"
 	flag = CHIEF
@@ -43,31 +40,15 @@ Chief Engineer
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	head = /obj/item/clothing/head/hardhat/white
 	gloves = /obj/item/clothing/gloves/color/black/ce
-	backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced=1, /obj/item/card/id/departmental_budget/eng=1)
+	//backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced=1, /obj/item/card/id/departmental_budget/eng=1)
 
-	backpack = /obj/item/storage/backpack/industrial
-	satchel = /obj/item/storage/backpack/satchel/eng
-	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
-	box = /obj/item/storage/box/engineer
+	//backpack = /obj/item/storage/backpack/industrial
+	//satchel = /obj/item/storage/backpack/satchel/eng
+	//duffelbag = /obj/item/storage/backpack/duffelbag/engineering
+	//box = /obj/item/storage/box/engineer
 	pda_slot = SLOT_L_STORE
-	chameleon_extras = /obj/item/stamp/ce
+	//chameleon_extras = /obj/item/stamp/ce
 
-/datum/outfit/job/ce/rig
-	name = "Chief Engineer (Hardsuit)"
-
-	mask = /obj/item/clothing/mask/breath
-	suit = /obj/item/clothing/suit/space/hardsuit/engine/elite
-	shoes = /obj/item/clothing/shoes/magboots/advance
-	suit_store = /obj/item/tank/internals/oxygen
-	glasses = /obj/item/clothing/glasses/meson/engine
-	gloves = /obj/item/clothing/gloves/color/yellow
-	head = null
-	internals_slot = SLOT_S_STORE
-
-
-/*
-Station Engineer
-*/
 /datum/job/engineer
 	title = "Station Engineer"
 	flag = ENGINEER
@@ -100,32 +81,15 @@ Station Engineer
 	uniform = /obj/item/clothing/under/rank/engineer
 	shoes = /obj/item/clothing/shoes/workboots
 	head = /obj/item/clothing/head/hardhat
-	r_pocket = /obj/item/t_scanner
+	//r_pocket = /obj/item/t_scanner
 
-	backpack = /obj/item/storage/backpack/industrial
-	satchel = /obj/item/storage/backpack/satchel/eng
-	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
-	box = /obj/item/storage/box/engineer
+	//backpack = /obj/item/storage/backpack/industrial
+	//satchel = /obj/item/storage/backpack/satchel/eng
+	//duffelbag = /obj/item/storage/backpack/duffelbag/engineering
+	//box = /obj/item/storage/box/engineer
 	pda_slot = SLOT_L_STORE
-	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1)
+	//backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1)
 
-/datum/outfit/job/engineer/gloved
-	name = "Station Engineer (Gloves)"
-	gloves = /obj/item/clothing/gloves/color/yellow
-
-/datum/outfit/job/engineer/gloved/rig
-	name = "Station Engineer (Hardsuit)"
-
-	mask = /obj/item/clothing/mask/breath
-	suit = /obj/item/clothing/suit/space/hardsuit/engine
-	suit_store = /obj/item/tank/internals/oxygen
-	head = null
-	internals_slot = SLOT_S_STORE
-
-
-/*
-Atmospheric Technician
-*/
 /datum/job/atmos
 	title = "Atmospheric Technician"
 	flag = ATMOSTECH
@@ -157,17 +121,9 @@ Atmospheric Technician
 	uniform = /obj/item/clothing/under/rank/atmospheric_technician
 	r_pocket = /obj/item/analyzer
 
-	backpack = /obj/item/storage/backpack/industrial
-	satchel = /obj/item/storage/backpack/satchel/eng
-	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
-	box = /obj/item/storage/box/engineer
+	//backpack = /obj/item/storage/backpack/industrial
+	//satchel = /obj/item/storage/backpack/satchel/eng
+	//duffelbag = /obj/item/storage/backpack/duffelbag/engineering
+	//box = /obj/item/storage/box/engineer
 	pda_slot = SLOT_L_STORE
-	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1)
-
-/datum/outfit/job/atmos/rig
-	name = "Atmospheric Technician (Hardsuit)"
-
-	mask = /obj/item/clothing/mask/gas
-	suit = /obj/item/clothing/suit/space/hardsuit/engine/atmos
-	suit_store = /obj/item/tank/internals/oxygen
-	internals_slot = SLOT_S_STORE
+	//backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1)

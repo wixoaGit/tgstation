@@ -1,4 +1,3 @@
-// Grass
 /obj/item/seeds/grass
 	name = "pack of grass seeds"
 	desc = "These seeds grow into grass. Yummy!"
@@ -26,13 +25,13 @@
 	filling_color = "#32CD32"
 	bitesize_mod = 2
 	var/stacktype = /obj/item/stack/tile/grass
-	var/tile_coefficient = 0.02 // 1/50
+	var/tile_coefficient = 0.02
 	wine_power = 15
 
 /obj/item/reagent_containers/food/snacks/grown/grass/attack_self(mob/user)
 	to_chat(user, "<span class='notice'>You prepare the astroturf.</span>")
-	var/grassAmt = 1 + round(seed.potency * tile_coefficient) // The grass we're holding
-	for(var/obj/item/reagent_containers/food/snacks/grown/grass/G in user.loc) // The grass on the floor
+	var/grassAmt = 1 + round(seed.potency * tile_coefficient)
+	for(var/obj/item/reagent_containers/food/snacks/grown/grass/G in user.loc)
 		if(G.type != type)
 			continue
 		grassAmt += 1 + round(G.seed.potency * tile_coefficient)
@@ -40,7 +39,6 @@
 	new stacktype(user.drop_location(), grassAmt)
 	qdel(src)
 
-// Carpet
 /obj/item/seeds/grass/carpet
 	name = "pack of carpet seeds"
 	desc = "These seeds grow into stylish carpet samples."

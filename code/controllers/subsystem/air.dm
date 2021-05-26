@@ -11,7 +11,8 @@ SUBSYSTEM_DEF(air)
 	init_order = INIT_ORDER_AIR
 	priority = FIRE_PRIORITY_AIR
 	wait = 5
-	flags = SS_BACKGROUND
+	//flags = SS_BACKGROUND
+	flags = SS_BACKGROUND | SS_NO_FIRE //not_actual (disabled)
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
 	var/cost_turfs = 0
@@ -29,10 +30,8 @@ SUBSYSTEM_DEF(air)
 	var/list/obj/machinery/atmos_machinery = list()
 	var/list/pipe_init_dirs_cache = list()
 
-	//atmos singletons
 	var/list/gas_reactions = list()
 
-	//Special functions lists
 	var/list/turf/active_super_conductivity = list()
 	var/list/turf/open/high_pressure_delta = list()
 
@@ -62,15 +61,13 @@ SUBSYSTEM_DEF(air)
 	msg += "AT/MS:[round((cost ? active_turfs.len/cost : 0),0.1)]"
 	..(msg)
 
-
 /datum/controller/subsystem/air/Initialize(timeofday)
 	map_loading = FALSE
 	setup_allturfs()
 	setup_atmos_machinery()
 	setup_pipenets()
-	gas_reactions = init_gas_reactions()
+	//gas_reactions = init_gas_reactions()
 	return ..()
-
 
 /datum/controller/subsystem/air/fire(resumed = 0)
 	var/timer = TICK_USAGE_REAL
@@ -130,19 +127,16 @@ SUBSYSTEM_DEF(air)
 
 	if(currentpart == SSAIR_SUPERCONDUCTIVITY)
 		timer = TICK_USAGE_REAL
-		process_super_conductivity(resumed)
+		//process_super_conductivity(resumed)
 		cost_superconductivity = MC_AVERAGE(cost_superconductivity, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 		if(state != SS_RUNNING)
 			return
 		resumed = 0
 	currentpart = SSAIR_PIPENETS
 
-
-
 /datum/controller/subsystem/air/proc/process_pipenets(resumed = 0)
 	if (!resumed)
 		src.currentrun = networks.Copy()
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 	while(currentrun.len)
 		var/datum/thing = currentrun[currentrun.len]
@@ -154,12 +148,10 @@ SUBSYSTEM_DEF(air)
 		if(MC_TICK_CHECK)
 			return
 
-
 /datum/controller/subsystem/air/proc/process_atmos_machinery(resumed = 0)
 	var/seconds = wait * 0.1
 	if (!resumed)
 		src.currentrun = atmos_machinery.Copy()
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 	while(currentrun.len)
 		var/obj/machinery/M = currentrun[currentrun.len]
@@ -169,23 +161,9 @@ SUBSYSTEM_DEF(air)
 		if(MC_TICK_CHECK)
 			return
 
-
-/datum/controller/subsystem/air/proc/process_super_conductivity(resumed = 0)
-	if (!resumed)
-		src.currentrun = active_super_conductivity.Copy()
-	//cache for sanic speed (lists are references anyways)
-	var/list/currentrun = src.currentrun
-	while(currentrun.len)
-		var/turf/T = currentrun[currentrun.len]
-		currentrun.len--
-		T.super_conduct()
-		if(MC_TICK_CHECK)
-			return
-
 /datum/controller/subsystem/air/proc/process_hotspots(resumed = 0)
 	if (!resumed)
 		src.currentrun = hotspots.Copy()
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 	while(currentrun.len)
 		var/obj/effect/hotspot/H = currentrun[currentrun.len]
@@ -197,7 +175,6 @@ SUBSYSTEM_DEF(air)
 		if(MC_TICK_CHECK)
 			return
 
-
 /datum/controller/subsystem/air/proc/process_high_pressure_delta(resumed = 0)
 	while (high_pressure_delta.len)
 		var/turf/open/T = high_pressure_delta[high_pressure_delta.len]
@@ -208,11 +185,9 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_active_turfs(resumed = 0)
-	//cache for sanic speed
 	var/fire_count = times_fired
 	if (!resumed)
 		src.currentrun = active_turfs.Copy()
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 	while(currentrun.len)
 		var/turf/open/T = currentrun[currentrun.len]
@@ -225,7 +200,6 @@ SUBSYSTEM_DEF(air)
 /datum/controller/subsystem/air/proc/process_excited_groups(resumed = 0)
 	if (!resumed)
 		src.currentrun = excited_groups.Copy()
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 	while(currentrun.len)
 		var/datum/excited_group/EG = currentrun[currentrun.len]
@@ -238,7 +212,6 @@ SUBSYSTEM_DEF(air)
 			EG.dismantle()
 		if (MC_TICK_CHECK)
 			return
-
 
 /datum/controller/subsystem/air/proc/remove_from_active(turf/open/T)
 	active_turfs -= T
@@ -288,8 +261,6 @@ SUBSYSTEM_DEF(air)
 	var/list/active_turfs = src.active_turfs
 	var/times_fired = ++src.times_fired
 
-	// Clear active turfs - faster than removing every single turf in the world
-	// one-by-one, and Initalize_Atmos only ever adds `src` back in.
 	active_turfs.Cut()
 
 	for(var/thing in turfs_to_init)
@@ -307,7 +278,6 @@ SUBSYSTEM_DEF(air)
 		for(var/turf/T in active_turfs)
 			GLOB.active_turfs_startlist += T
 
-		//now lets clear out these active turfs
 		var/list/turfs_to_check = active_turfs.Copy()
 		do
 			var/list/new_turfs_to_check = list()
@@ -347,7 +317,7 @@ SUBSYSTEM_DEF(air)
 		if (ET_EG)
 			if (ET_EG != EG)
 				EG.merge_groups(ET_EG)
-				EG = excited_group //merge_groups() may decide to replace our current EG
+				EG = excited_group
 		else
 			EG.add_turf(ET)
 		if (!ET.excited)
@@ -361,9 +331,6 @@ SUBSYSTEM_DEF(air)
 		AM.atmosinit()
 		CHECK_TICK
 
-//this can't be done with setup_atmos_machinery() because
-//	all atmos machinery has to initalize before the first
-//	pipenet can be built.
 /datum/controller/subsystem/air/proc/setup_pipenets()
 	for (var/obj/machinery/atmospherics/AM in atmos_machinery)
 		AM.build_network()
@@ -379,17 +346,6 @@ SUBSYSTEM_DEF(air)
 		var/obj/machinery/atmospherics/AM = A
 		AM.build_network()
 		CHECK_TICK
-
-/datum/controller/subsystem/air/proc/get_init_dirs(type, dir)
-	if(!pipe_init_dirs_cache[type])
-		pipe_init_dirs_cache[type] = list()
-
-	if(!pipe_init_dirs_cache[type]["[dir]"])
-		var/obj/machinery/atmospherics/temp = new type(null, FALSE, dir)
-		pipe_init_dirs_cache[type]["[dir]"] = temp.GetInitDirections()
-		qdel(temp)
-
-	return pipe_init_dirs_cache[type]["[dir]"]
 
 #undef SSAIR_PIPENETS
 #undef SSAIR_ATMOSMACHINERY

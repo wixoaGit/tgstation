@@ -28,11 +28,6 @@
 /obj/item/inducer/get_cell()
 	return cell
 
-/obj/item/inducer/emp_act(severity)
-	. = ..()
-	if(cell && !(. & EMP_PROTECT_CONTENTS))
-		cell.emp_act(severity)
-
 /obj/item/inducer/attack_obj(obj/O, mob/living/carbon/user)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
@@ -58,7 +53,6 @@
 		to_chat(user, "<span class='warning'>[src]'s battery is dead!</span>")
 		return TRUE
 	return FALSE
-
 
 /obj/item/inducer/attackby(obj/item/W, mob/user)
 	if(W.tool_behaviour == TOOL_SCREWDRIVER)
@@ -104,9 +98,9 @@
 	var/obj/item/stock_parts/cell/C = A.get_cell()
 	var/obj/O
 	var/coefficient = 1
-	if(istype(A, /obj/item/gun/energy))
-		to_chat(user,"Error unable to interface with device")
-		return FALSE
+	//if(istype(A, /obj/item/gun/energy))
+	//	to_chat(user,"Error unable to interface with device")
+	//	return FALSE
 	if(istype(A, /obj))
 		O = A
 	if(C)
@@ -125,12 +119,11 @@
 					O.update_icon()
 			else
 				break
-		if(done_any) // Only show a message if we succeeded at least once
+		if(done_any)
 			user.visible_message("[user] recharged [A]!","<span class='notice'>You recharged [A]!</span>")
 		recharging = FALSE
 		return TRUE
 	recharging = FALSE
-
 
 /obj/item/inducer/attack(mob/M, mob/user)
 	if(user.a_intent == INTENT_HARM)
@@ -143,7 +136,6 @@
 		return
 	return ..()
 
-
 /obj/item/inducer/attack_self(mob/user)
 	if(opened && cell)
 		user.visible_message("[user] removes [cell] from [src]!","<span class='notice'>You remove [cell].</span>")
@@ -151,7 +143,6 @@
 		user.put_in_hands(cell)
 		cell = null
 		update_icon()
-
 
 /obj/item/inducer/examine(mob/living/M)
 	..()

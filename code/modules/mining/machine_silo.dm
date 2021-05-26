@@ -41,7 +41,6 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 
 /obj/machinery/ore_silo/proc/remote_attackby(obj/machinery/M, mob/user, obj/item/stack/I)
 	GET_COMPONENT(materials, /datum/component/material_container)
-	// stolen from /datum/component/material_container/proc/OnAttackBy
 	if(user.a_intent != INTENT_HELP)
 		return
 	if(I.item_flags & ABSTRACT)
@@ -53,7 +52,6 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 	if(!length(item_mats))
 		to_chat(user, "<span class='warning'>[I] does not contain sufficient materials to be accepted by [M].</span>")
 		return
-	// assumes unlimited space...
 	var/amount = I.amount
 	materials.user_insert(I, user)
 	silo_log(M, "deposited", amount, "sheets", item_mats)
@@ -160,12 +158,6 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 		updateUsrDialog()
 		return TRUE
 
-/obj/machinery/ore_silo/multitool_act(mob/living/user, obj/item/multitool/I)
-	if (istype(I))
-		to_chat(user, "<span class='notice'>You log [src] in the multitool's buffer.</span>")
-		I.buffer = src
-		return TRUE
-
 /obj/machinery/ore_silo/proc/silo_log(obj/machinery/M, action, amount, noun, list/mats)
 	if (!length(mats))
 		return
@@ -174,19 +166,24 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 	var/list/logs = GLOB.silo_access_logs[REF(src)]
 	if(!LAZYLEN(logs))
 		GLOB.silo_access_logs[REF(src)] = logs = list(entry)
-	else if(!logs[1].merge(entry))
-		logs.Insert(1, entry)
+	//else if(!logs[1].merge(entry))
+	else//not_actual
+		//logs.Insert(1, entry)
+		//not_actual
+		var/datum/ore_silo_log/log = logs[1]
+		if (!log.merge(entry))
+			logs.Insert(1, entry)
 
 	updateUsrDialog()
-	flick("silo_active", src)
+	//flick("silo_active", src)
 
 /obj/machinery/ore_silo/examine(mob/user)
 	..()
 	to_chat(user, "<span class='notice'>[src] can be linked to techfabs, circuit printers and protolathes with a multitool.</span>")
 
 /datum/ore_silo_log
-	var/name  // for VV
-	var/formatted  // for display
+	var/name
+	var/formatted
 
 	var/timestamp
 	var/machine_name

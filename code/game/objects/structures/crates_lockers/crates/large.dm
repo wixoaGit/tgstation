@@ -5,8 +5,8 @@
 	density = TRUE
 	material_drop = /obj/item/stack/sheet/mineral/wood
 	material_drop_amount = 4
-	delivery_icon = "deliverybox"
-	integrity_failure = 0 //Makes the crate break when integrity reaches 0, instead of opening and becoming an invisible sprite.
+	//delivery_icon = "deliverybox"
+	integrity_failure = 0
 
 /obj/structure/closet/crate/large/attack_hand(mob/user)
 	add_fingerprint(user)
@@ -34,10 +34,9 @@
 		qdel(src)
 
 	else
-		if(user.a_intent == INTENT_HARM)	//Only return  ..() if intent is harm, otherwise return 0 or just end it.
-			return ..()						//Stops it from opening and turning invisible when items are used on it.
+		if(user.a_intent == INTENT_HARM)
+			return ..()
 
 		else
 			to_chat(user, "<span class='warning'>You need a crowbar to pry this open!</span>")
-			return FALSE //Just stop. Do nothing. Don't turn into an invisible sprite. Don't open like a locker.
-					//The large crate has no non-attack interactions other than the crowbar, anyway.
+			return FALSE

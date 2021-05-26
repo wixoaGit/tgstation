@@ -31,37 +31,20 @@
 		return 0
 	return 1
 
-/obj/machinery/computer/ratvar_act()
-	if(!clockwork)
-		clockwork = TRUE
-		icon_screen = "ratvar[rand(1, 4)]"
-		icon_keyboard = "ratvar_key[rand(1, 6)]"
-		icon_state = "ratvarcomputer[rand(1, 4)]"
-		update_icon()
-
-/obj/machinery/computer/narsie_act()
-	if(clockwork && clockwork != initial(clockwork)) //if it's clockwork but isn't normally clockwork
-		clockwork = FALSE
-		icon_screen = initial(icon_screen)
-		icon_keyboard = initial(icon_keyboard)
-		icon_state = initial(icon_state)
-		update_icon()
-
 /obj/machinery/computer/update_icon()
 	cut_overlays()
-	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
+	//SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 	if(stat & NOPOWER)
 		add_overlay("[icon_keyboard]_off")
 		return
 	add_overlay(icon_keyboard)
 
-	// This whole block lets screens ignore lighting and be visible even in the darkest room
-	// We can't do this for many things that emit light unfortunately because it layers over things that would be on top of it
 	var/overlay_state = icon_screen
 	if(stat & BROKEN)
 		overlay_state = "[icon_state]_broken"
-	SSvis_overlays.add_vis_overlay(src, icon, overlay_state, layer, plane, dir)
-	SSvis_overlays.add_vis_overlay(src, icon, overlay_state, ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir, alpha=128)
+	//SSvis_overlays.add_vis_overlay(src, icon, overlay_state, layer, plane, dir)
+	//SSvis_overlays.add_vis_overlay(src, icon, overlay_state, ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir, alpha=128)
+	add_overlay(overlay_state)//not_actual
 
 /obj/machinery/computer/power_change()
 	..()
@@ -81,7 +64,6 @@
 			deconstruct(TRUE, user)
 	return TRUE
 
-
 /obj/machinery/computer/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
 		if(BRUTE)
@@ -93,28 +75,17 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/machinery/computer/obj_break(damage_flag)
-	if(circuit && !(flags_1 & NODECONSTRUCT_1)) //no circuit, no breaking
+	if(circuit && !(flags_1 & NODECONSTRUCT_1))
 		if(!(stat & BROKEN))
 			playsound(loc, 'sound/effects/glassbr3.ogg', 100, 1)
 			stat |= BROKEN
 			update_icon()
 			set_light(0)
 
-/obj/machinery/computer/emp_act(severity)
-	. = ..()
-	if (!(. & EMP_PROTECT_SELF))
-		switch(severity)
-			if(1)
-				if(prob(50))
-					obj_break("energy")
-			if(2)
-				if(prob(10))
-					obj_break("energy")
-
 /obj/machinery/computer/deconstruct(disassembled = TRUE, mob/user)
 	on_deconstruction()
 	if(!(flags_1 & NODECONSTRUCT_1))
-		if(circuit) //no circuit, no computer frame
+		if(circuit)
 			var/obj/structure/frame/computer/A = new /obj/structure/frame/computer(src.loc)
 			A.setDir(dir)
 			A.circuit = circuit

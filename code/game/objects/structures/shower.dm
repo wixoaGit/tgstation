@@ -59,7 +59,7 @@
 			if(SHOWER_BOILING)
 				current_temperature = SHOWER_NORMAL
 		user.visible_message("<span class='notice'>[user] adjusts the shower with \the [I].</span>", "<span class='notice'>You adjust the shower with \the [I] to [current_temperature] temperature.</span>")
-		user.log_message("has wrenched a shower at [AREACOORD(src)] to [current_temperature].", LOG_ATTACK)
+		//user.log_message("has wrenched a shower at [AREACOORD(src)] to [current_temperature].", LOG_ATTACK)
 		add_hiddenprint(user)
 	handle_mist()
 	return TRUE
@@ -72,8 +72,6 @@
 		add_overlay(mutable_appearance('icons/obj/watercloset.dmi', "water", ABOVE_MOB_LAYER))
 
 /obj/machinery/shower/proc/handle_mist()
-	// If there is no mist, and the shower was turned on (on a non-freezing temp): make mist in 5 seconds
-	// If there was already mist, and the shower was turned off (or made cold): remove the existing mist in 25 sec
 	var/obj/effect/mist/mist = locate() in loc
 	if(!mist && on && current_temperature != SHOWER_FREEZING)
 		addtimer(CALLBACK(src, .proc/make_mist), 5 SECONDS)
@@ -126,80 +124,80 @@
 
 /obj/machinery/shower/proc/wash_mob(mob/living/L)
 	SEND_SIGNAL(L, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_WEAK)
-	L.wash_cream()
-	L.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	if(iscarbon(L))
-		var/mob/living/carbon/M = L
-		. = TRUE
-		for(var/I in M.held_items)
-			wash_obj(I)
+	//L.wash_cream()
+	//L.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+	//if(iscarbon(L))
+	//	var/mob/living/carbon/M = L
+	//	. = TRUE
+	//	for(var/I in M.held_items)
+	//		wash_obj(I)
 
-		if(M.back && wash_obj(M.back))
-			M.update_inv_back(0)
+	//	if(M.back && wash_obj(M.back))
+	//		M.update_inv_back(0)
 
-		var/list/obscured = M.check_obscured_slots()
+	//	var/list/obscured = M.check_obscured_slots()
 
-		if(M.head && wash_obj(M.head))
-			M.update_inv_head()
+	//	if(M.head && wash_obj(M.head))
+	//		M.update_inv_head()
 
-		if(M.glasses && !(SLOT_GLASSES in obscured) && wash_obj(M.glasses))
-			M.update_inv_glasses()
+	//	if(M.glasses && !(SLOT_GLASSES in obscured) && wash_obj(M.glasses))
+	//		M.update_inv_glasses()
 
-		if(M.wear_mask && !(SLOT_WEAR_MASK in obscured) && wash_obj(M.wear_mask))
-			M.update_inv_wear_mask()
+	//	if(M.wear_mask && !(SLOT_WEAR_MASK in obscured) && wash_obj(M.wear_mask))
+	//		M.update_inv_wear_mask()
 
-		if(M.ears && !(HIDEEARS in obscured) && wash_obj(M.ears))
-			M.update_inv_ears()
+	//	if(M.ears && !(HIDEEARS in obscured) && wash_obj(M.ears))
+	//		M.update_inv_ears()
 
-		if(M.wear_neck && !(SLOT_NECK in obscured) && wash_obj(M.wear_neck))
-			M.update_inv_neck()
+	//	if(M.wear_neck && !(SLOT_NECK in obscured) && wash_obj(M.wear_neck))
+	//		M.update_inv_neck()
 
-		if(M.shoes && !(HIDESHOES in obscured) && wash_obj(M.shoes))
-			M.update_inv_shoes()
+	//	if(M.shoes && !(HIDESHOES in obscured) && wash_obj(M.shoes))
+	//		M.update_inv_shoes()
 
-		var/washgloves = FALSE
-		if(M.gloves && !(HIDEGLOVES in obscured))
-			washgloves = TRUE
+	//	var/washgloves = FALSE
+	//	if(M.gloves && !(HIDEGLOVES in obscured))
+	//		washgloves = TRUE
 
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			if(check_clothes(L))
-				to_chat(L, "<span class='warning'>You shower with your clothes on, and feel like an idiot.</span>")
-				SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "badshower", /datum/mood_event/idiot_shower)
-			else
-				H.set_hygiene(HYGIENE_LEVEL_CLEAN)
-				SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "shower", /datum/mood_event/nice_shower)
+	//	if(ishuman(M))
+	//		var/mob/living/carbon/human/H = M
+	//		if(check_clothes(L))
+	//			to_chat(L, "<span class='warning'>You shower with your clothes on, and feel like an idiot.</span>")
+	//			SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "badshower", /datum/mood_event/idiot_shower)
+	//		else
+	//			H.set_hygiene(HYGIENE_LEVEL_CLEAN)
+	//			SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "shower", /datum/mood_event/nice_shower)
 
-			if(H.wear_suit && wash_obj(H.wear_suit))
-				H.update_inv_wear_suit()
-			else if(H.w_uniform && wash_obj(H.w_uniform))
-				H.update_inv_w_uniform()
+	//		if(H.wear_suit && wash_obj(H.wear_suit))
+	//			H.update_inv_wear_suit()
+	//		else if(H.w_uniform && wash_obj(H.w_uniform))
+	//			H.update_inv_w_uniform()
 
-			if(washgloves)
-				SEND_SIGNAL(H, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_STRENGTH_BLOOD)
+	//		if(washgloves)
+	//			SEND_SIGNAL(H, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_STRENGTH_BLOOD)
 
-			if(!H.is_mouth_covered())
-				H.lip_style = null
-				H.update_body()
+	//		if(!H.is_mouth_covered())
+	//			H.lip_style = null
+	//			H.update_body()
 
-			if(H.belt && wash_obj(H.belt))
-				H.update_inv_belt()
-		else
-			SEND_SIGNAL(M, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_STRENGTH_BLOOD)
-			SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "shower", /datum/mood_event/nice_shower)
-	else
-		SEND_SIGNAL(L, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_STRENGTH_BLOOD)
-		SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "shower", /datum/mood_event/nice_shower)
+	//		if(H.belt && wash_obj(H.belt))
+	//			H.update_inv_belt()
+	//	else
+	//		SEND_SIGNAL(M, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_STRENGTH_BLOOD)
+	//		SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "shower", /datum/mood_event/nice_shower)
+	//else
+	//	SEND_SIGNAL(L, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_STRENGTH_BLOOD)
+	//	SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "shower", /datum/mood_event/nice_shower)
 
 /obj/machinery/shower/proc/contamination_cleanse(atom/thing)
-	var/datum/component/radioactive/healthy_green_glow = thing.GetComponent(/datum/component/radioactive)
-	if(!healthy_green_glow || QDELETED(healthy_green_glow))
-		return
-	var/strength = healthy_green_glow.strength
-	if(strength <= RAD_BACKGROUND_RADIATION)
-		qdel(healthy_green_glow)
-		return
-	healthy_green_glow.strength -= max(0, (healthy_green_glow.strength - (RAD_BACKGROUND_RADIATION * 2)) * 0.2)
+	//var/datum/component/radioactive/healthy_green_glow = thing.GetComponent(/datum/component/radioactive)
+	//if(!healthy_green_glow || QDELETED(healthy_green_glow))
+	//	return
+	//var/strength = healthy_green_glow.strength
+	//if(strength <= RAD_BACKGROUND_RADIATION)
+	//	qdel(healthy_green_glow)
+	//	return
+	//healthy_green_glow.strength -= max(0, (healthy_green_glow.strength - (RAD_BACKGROUND_RADIATION * 2)) * 0.2)
 
 /obj/machinery/shower/process()
 	if(on)
@@ -228,9 +226,6 @@
 
 /obj/machinery/shower/proc/check_clothes(mob/living/carbon/human/H)
 	if(H.wear_suit && (H.wear_suit.clothing_flags & SHOWEROKAY))
-		// Do not check underclothing if the over-suit is suitable.
-		// This stops people feeling dumb if they're showering
-		// with a radiation suit on.
 		return FALSE
 
 	. = FALSE
@@ -250,4 +245,4 @@
 	icon_state = "mist"
 	layer = FLY_LAYER
 	anchored = TRUE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT

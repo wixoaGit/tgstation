@@ -10,26 +10,9 @@
 	if(turf_loc_check && (!isturf(loc) || NeverShouldHaveComeHere(loc)))
 		return INITIALIZE_HINT_QDEL
 
-/obj/effect/decal/blob_act(obj/structure/blob/B)
-	if(B && B.loc == loc)
-		qdel(src)
-
 /obj/effect/decal/proc/NeverShouldHaveComeHere(turf/T)
-	return isclosedturf(T) || isgroundlessturf(T)
-
-/obj/effect/decal/ex_act(severity, target)
-	qdel(src)
-
-/obj/effect/decal/fire_act(exposed_temperature, exposed_volume)
-	if(!(resistance_flags & FIRE_PROOF)) //non fire proof decal or being burned by lava
-		qdel(src)
-
-/obj/effect/decal/HandleTurfChange(turf/T)
-	..()
-	if(T == loc && NeverShouldHaveComeHere(T))
-		qdel(src)
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//return isclosedturf(T) || isgroundlessturf(T)
+	return isclosedturf(T)//not_actual
 
 /obj/effect/turf_decal
 	icon = 'icons/turf/decals.dmi'
@@ -38,11 +21,10 @@
 
 /obj/effect/turf_decal/Initialize()
 	..()
+	//not_actual
+	var/turf/T = get_turf(src)
+	var/image/_image = image(icon, null, icon_state, layer, dir)
+	_image.color = color
+	_image.alpha = alpha
+	T.add_overlay(_image)
 	return INITIALIZE_HINT_QDEL
-
-/obj/effect/turf_decal/ComponentInitialize()
-	. = ..()
-	var/turf/T = loc
-	if(!istype(T)) //you know this will happen somehow
-		CRASH("Turf decal initialized in an object/nullspace")
-	T.AddComponent(/datum/component/decal, icon, icon_state, dir, CLEAN_GOD, color, null, null, alpha)

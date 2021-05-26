@@ -18,10 +18,10 @@
 	if(isnum(vol) && vol > 0)
 		volume = vol
 	create_reagents(volume, reagent_flags)
-	if(spawned_disease)
-		var/datum/disease/F = new spawned_disease()
-		var/list/data = list("viruses"= list(F))
-		reagents.add_reagent("blood", disease_amount, data)
+	//if(spawned_disease)
+	//	var/datum/disease/F = new spawned_disease()
+	//	var/list/data = list("viruses"= list(F))
+	//	reagents.add_reagent("blood", disease_amount, data)
 
 	add_initial_reagents()
 
@@ -68,10 +68,6 @@
 	if(!QDELETED(src))
 		..()
 
-/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume)
-	reagents.expose_temperature(exposed_temperature)
-	..()
-
 /obj/item/reagent_containers/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	. = ..()
 	SplashReagents(hit_atom, TRUE)
@@ -87,7 +83,7 @@
 
 	if(ismob(target) && target.reagents)
 		if(thrown)
-			reagents.total_volume *= rand(5,10) * 0.1 //Not all of it makes contact with the target
+			reagents.total_volume *= rand(5,10) * 0.1
 		var/mob/M = target
 		var/R
 		target.visible_message("<span class='danger'>[M] has been splashed with something!</span>", \
@@ -105,20 +101,13 @@
 		return
 
 	else
-		if(isturf(target) && reagents.reagent_list.len && thrownby)
-			log_combat(thrownby, target, "splashed (thrown) [english_list(reagents.reagent_list)]", "in [AREACOORD(target)]")
-			log_game("[key_name(thrownby)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [AREACOORD(target)].")
-			message_admins("[ADMIN_LOOKUPFLW(thrownby)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
+		//if(isturf(target) && reagents.reagent_list.len && thrownby)
+		//	log_combat(thrownby, target, "splashed (thrown) [english_list(reagents.reagent_list)]", "in [AREACOORD(target)]")
+		//	log_game("[key_name(thrownby)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [AREACOORD(target)].")
+		//	message_admins("[ADMIN_LOOKUPFLW(thrownby)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
 		visible_message("<span class='notice'>[src] spills its contents all over [target].</span>")
 		reagents.reaction(target, TOUCH)
 		if(QDELETED(src))
 			return
 
 	reagents.clear_reagents()
-
-/obj/item/reagent_containers/microwave_act(obj/machinery/microwave/M)
-	reagents.expose_temperature(1000)
-	..()
-
-/obj/item/reagent_containers/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	reagents.expose_temperature(exposed_temperature)

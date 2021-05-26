@@ -11,12 +11,10 @@ SUBSYSTEM_DEF(spacedrift)
 /datum/controller/subsystem/spacedrift/stat_entry()
 	..("P:[processing.len]")
 
-
 /datum/controller/subsystem/spacedrift/fire(resumed = 0)
 	if (!resumed)
 		src.currentrun = processing.Copy()
 
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 
 	while (currentrun.len)
@@ -56,4 +54,3 @@ SUBSYSTEM_DEF(spacedrift)
 		AM.inertia_last_loc = AM.loc
 		if (MC_TICK_CHECK)
 			return
-

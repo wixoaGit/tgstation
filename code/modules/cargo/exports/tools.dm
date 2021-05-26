@@ -3,12 +3,6 @@
 	unit_name = "toolbox"
 	export_types = list(/obj/item/storage/toolbox)
 
-// mechanical toolbox:	22cr
-// emergency toolbox:	17-20cr
-// electrical toolbox:	36cr
-// robust: priceless
-
-// Basic tools
 /datum/export/screwdriver
 	cost = 2
 	unit_name = "screwdriver"
@@ -67,10 +61,10 @@
 	export_types = list(/obj/item/flashlight)
 	include_subtypes = FALSE
 
-/datum/export/flashlight/flare
-	cost = 2
-	unit_name = "flare"
-	export_types = list(/obj/item/flashlight/flare)
+///datum/export/flashlight/flare
+//	cost = 2
+//	unit_name = "flare"
+//	export_types = list(/obj/item/flashlight/flare)
 
 /datum/export/flashlight/seclite
 	cost = 10
@@ -83,17 +77,16 @@
 	unit_name = "analyzer"
 	export_types = list(/obj/item/analyzer)
 
-/datum/export/analyzer/t_scanner
-	cost = 10
-	unit_name = "t-ray scanner"
-	export_types = list(/obj/item/t_scanner)
-
+///datum/export/analyzer/t_scanner
+//	cost = 10
+//	unit_name = "t-ray scanner"
+//	export_types = list(/obj/item/t_scanner)
 
 /datum/export/radio
 	cost = 5
 	unit_name = "radio"
 	export_types = list(/obj/item/radio)
-	exclude_types = list(/obj/item/radio/mech)
+	//exclude_types = list(/obj/item/radio/mech)
 
 
 /datum/export/rcd
@@ -106,27 +99,27 @@
 	unit_name = "compressed matter cardridge"
 	export_types = list(/obj/item/rcd_ammo)
 
-/datum/export/rpd
-	cost = 100
-	unit_name = "rapid piping device"
-	export_types = list(/obj/item/pipe_dispenser)
+///datum/export/rpd
+//	cost = 100
+//	unit_name = "rapid piping device"
+//	export_types = list(/obj/item/pipe_dispenser)
 
-/datum/export/singulo //failsafe in case someone decides to ship a live singularity to CentCom without the corresponding bounty
-	cost = 1
-	unit_name = "singularity"
-	export_types = list(/obj/singularity)
-	include_subtypes = FALSE
+///datum/export/singulo
+//	cost = 1
+//	unit_name = "singularity"
+//	export_types = list(/obj/singularity)
+//	include_subtypes = FALSE
 
-/datum/export/singulo/total_printout(datum/export_report/ex, notes = TRUE)
-	. = ..()
-	if(. && notes)
-		. += " ERROR: Invalid object detected."
+///datum/export/singulo/total_printout(datum/export_report/ex, notes = TRUE)
+//	. = ..()
+//	if(. && notes)
+//		. += " ERROR: Invalid object detected."
 
-/datum/export/singulo/tesla //see above
-	unit_name = "energy ball"
-	export_types = list(/obj/singularity/energy_ball)
+///datum/export/singulo/tesla //see above
+//	unit_name = "energy ball"
+//	export_types = list(/obj/singularity/energy_ball)
 
-/datum/export/singulo/tesla/total_printout(datum/export_report/ex, notes = TRUE)
-	. = ..()
-	if(. && notes)
-		. += " ERROR: Unscheduled energy ball delivery detected."
+///datum/export/singulo/tesla/total_printout(datum/export_report/ex, notes = TRUE)
+//	. = ..()
+//	if(. && notes)
+//		. += " ERROR: Unscheduled energy ball delivery detected."

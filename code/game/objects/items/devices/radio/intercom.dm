@@ -7,9 +7,9 @@
 	canhear_range = 2
 	var/number = 0
 	var/anyai = 1
-	var/mob/living/silicon/ai/ai = list()
-	var/last_tick //used to delay the powercheck
-	dog_fashion = null
+	//var/mob/living/silicon/ai/ai = list()
+	var/last_tick
+	//dog_fashion = null
 	var/unfastened = FALSE
 
 /obj/item/radio/intercom/unscrewed
@@ -24,18 +24,18 @@
 /obj/item/radio/intercom/ratvar/attackby(obj/item/I, mob/living/user, params)
 	if(I.tool_behaviour == TOOL_SCREWDRIVER)
 		to_chat(user, "<span class='danger'>[src] is fastened to the wall with [is_servant_of_ratvar(user) ? "replicant alloy" : "some material you've never seen"], and can't be removed.</span>")
-		return //no unfastening!
+		return
 	. = ..()
 
 /obj/item/radio/intercom/ratvar/process()
-	if(!istype(SSticker.mode, /datum/game_mode/clockwork_cult))
-		invisibility = INVISIBILITY_OBSERVER
-		alpha = 125
-		emped = TRUE
-	else
-		invisibility = initial(invisibility)
-		alpha = initial(alpha)
-		emped = FALSE
+	//if(!istype(SSticker.mode, /datum/game_mode/clockwork_cult))
+	//	invisibility = INVISIBILITY_OBSERVER
+	//	alpha = 125
+	//	emped = TRUE
+	//else
+	//	invisibility = initial(invisibility)
+	//	alpha = initial(alpha)
+	//	emped = FALSE
 	..()
 
 /obj/item/radio/intercom/Initialize(mapload, ndir, building)
@@ -98,8 +98,8 @@
 /obj/item/radio/intercom/can_receive(freq, level)
 	if(!on)
 		return FALSE
-	if(wires.is_cut(WIRE_RX))
-		return FALSE
+	//if(wires.is_cut(WIRE_RX))
+	//	return FALSE
 	if(!(0 in level))
 		var/turf/position = get_turf(src)
 		if(isnull(position) || !(position.z in level))
@@ -108,7 +108,7 @@
 		return FALSE
 	if(freq == FREQ_SYNDICATE)
 		if(!(src.syndie))
-			return FALSE//Prevents broadcast of messages over devices lacking the encryption
+			return FALSE
 
 	return TRUE
 
@@ -116,9 +116,9 @@
 /obj/item/radio/intercom/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, message_mode)
 	. = ..()
 	if (message_mode == MODE_INTERCOM)
-		return  // Avoid hearing the same thing twice
-	if(!anyai && !(speaker in ai))
 		return
+	//if(!anyai && !(speaker in ai))
+	//	return
 	..()
 
 /obj/item/radio/intercom/process()
@@ -129,7 +129,7 @@
 		if(!A || emped)
 			on = FALSE
 		else
-			on = A.powered(EQUIP) // set "on" to the power status
+			on = A.powered(EQUIP)
 
 		if(!on)
 			icon_state = "intercom-p"
@@ -139,7 +139,6 @@
 /obj/item/radio/intercom/add_blood_DNA(list/blood_dna)
 	return FALSE
 
-//Created through the autolathe or through deconstructing intercoms. Can be applied to wall to make a new intercom on it!
 /obj/item/wallframe/intercom
 	name = "intercom frame"
 	desc = "A ready-to-go intercom. Just slap it on a wall and screw it in!"

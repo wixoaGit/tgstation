@@ -23,16 +23,15 @@
 	return WIRE_INTERACTION_BLOCK
 
 /datum/wires
-	var/atom/holder = null // The holder (atom that contains these wires).
-	var/holder_type = null // The holder's typepath (used to make wire colors common to all holders).
-	var/proper_name = "Unknown" // The display name for the wire set shown in station blueprints. Not used if randomize is true or it's an item NT wouldn't know about (Explosives/Nuke)
+	var/atom/holder = null
+	var/holder_type = null
+	var/proper_name = "Unknown"
 
-	var/list/wires = list() // List of wires.
-	var/list/cut_wires = list() // List of wires that have been cut.
-	var/list/colors = list() // Dictionary of colors to wire.
-	var/list/assemblies = list() // List of attached assemblies.
-	var/randomize = 0 // If every instance of these wires should be random.
-					  // Prevents wires from showing up in station blueprints
+	var/list/wires = list()
+	var/list/cut_wires = list()
+	var/list/colors = list()
+	var/list/assemblies = list()
+	var/randomize = 0
 
 /datum/wires/New(atom/holder)
 	..()
@@ -64,7 +63,8 @@
 		wires += dud
 
 /datum/wires/proc/randomize()
-	var/static/list/possible_colors = list(
+	//var/static/list/possible_colors = list(
+	var/list/possible_colors = list(//not_actual
 	"blue",
 	"brown",
 	"crimson",
@@ -162,19 +162,19 @@
 			return TRUE
 
 /datum/wires/proc/attach_assembly(color, obj/item/assembly/S)
-	if(S && istype(S) && S.attachable && !is_attached(color))
-		assemblies[color] = S
-		S.forceMove(holder)
-		S.connected = src
-		return S
+	//if(S && istype(S) && S.attachable && !is_attached(color))
+	//	assemblies[color] = S
+	//	S.forceMove(holder)
+	//	S.connected = src
+	//	return S
 
 /datum/wires/proc/detach_assembly(color)
-	var/obj/item/assembly/S = get_attached(color)
-	if(S && istype(S))
-		assemblies -= color
-		S.connected = null
-		S.forceMove(holder.drop_location())
-		return S
+	//var/obj/item/assembly/S = get_attached(color)
+	//if(S && istype(S))
+	//	assemblies -= color
+	//	S.connected = null
+	//	S.forceMove(holder.drop_location())
+	//	return S
 
 /datum/wires/proc/emp_pulse()
 	var/list/possible_wires = shuffle(wires)
@@ -187,7 +187,6 @@
 			if(!remaining_pulses)
 				break
 
-// Overridable Procs
 /datum/wires/proc/interactable(mob/user)
 	return TRUE
 
@@ -199,16 +198,15 @@
 
 /datum/wires/proc/on_pulse(wire, user)
 	return
-// End Overridable Procs
 
 /datum/wires/proc/interact(mob/user)
 	if(!interactable(user))
 		return
 	ui_interact(user)
-	for(var/A in assemblies)
-		var/obj/item/I = assemblies[A]
-		if(istype(I) && I.on_found(user))
-			return
+	//for(var/A in assemblies)
+	//	var/obj/item/I = assemblies[A]
+	//	if(istype(I) && I.on_found(user))
+	//		return
 
 /datum/wires/ui_host()
 	return holder
@@ -230,17 +228,14 @@
 	var/list/payload = list()
 	var/reveal_wires = FALSE
 
-	// Admin ghost can see a purpose of each wire.
 	if(IsAdminGhost(user))
 		reveal_wires = TRUE
 
-	// Same for anyone with an abductor multitool.
-	else if(user.is_holding_item_of_type(/obj/item/multitool/abductor))
-		reveal_wires = TRUE
+	//else if(user.is_holding_item_of_type(/obj/item/multitool/abductor))
+	//	reveal_wires = TRUE
 
-	// Station blueprints do that too, but only if the wires are not randomized.
-	else if(user.is_holding_item_of_type(/obj/item/areaeditor/blueprints) && !randomize)
-		reveal_wires = TRUE
+	//else if(user.is_holding_item_of_type(/obj/item/areaeditor/blueprints) && !randomize)
+	//	reveal_wires = TRUE
 
 	for(var/color in colors)
 		payload.Add(list(list(

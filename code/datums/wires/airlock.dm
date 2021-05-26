@@ -39,32 +39,34 @@
 	set waitfor = FALSE
 	var/obj/machinery/door/airlock/A = holder
 	switch(wire)
-		if(WIRE_POWER1, WIRE_POWER2) // Pulse to loose power.
+		if(WIRE_POWER1, WIRE_POWER2)
 			A.loseMainPower()
-		if(WIRE_BACKUP1, WIRE_BACKUP2) // Pulse to loose backup power.
+		if(WIRE_BACKUP1, WIRE_BACKUP2)
 			A.loseBackupPower()
-		if(WIRE_OPEN) // Pulse to open door (only works not emagged and ID wire is cut or no access is required).
+		if(WIRE_OPEN)
 			if(A.obj_flags & EMAGGED)
 				return
 			if(!A.requiresID() || A.check_access(null))
 				if(A.density)
-					INVOKE_ASYNC(A, /obj/machinery/door/airlock.proc/open)
+					//INVOKE_ASYNC(A, /obj/machinery/door/airlock.proc/open)
+					A.open()//not_actual
 				else
-					INVOKE_ASYNC(A, /obj/machinery/door/airlock.proc/close)
-		if(WIRE_BOLTS) // Pulse to toggle bolts (but only raise if power is on).
+					//INVOKE_ASYNC(A, /obj/machinery/door/airlock.proc/close)
+					A.close()//not_actual
+		if(WIRE_BOLTS)
 			if(!A.locked)
 				A.bolt()
 			else
 				if(A.hasPower())
 					A.unbolt()
 			A.update_icon()
-		if(WIRE_IDSCAN) // Pulse to disable emergency access and flash red lights.
+		if(WIRE_IDSCAN)
 			if(A.hasPower() && A.density)
 				A.do_animate("deny")
 				if(A.emergency)
 					A.emergency = FALSE
 					A.update_icon()
-		if(WIRE_AI) // Pulse to disable WIRE_AI control for 10 ticks (follows same rules as cutting).
+		if(WIRE_AI)
 			if(A.aiControlDisabled == 0)
 				A.aiControlDisabled = 1
 			else if(A.aiControlDisabled == -1)
@@ -75,7 +77,7 @@
 					A.aiControlDisabled = 0
 				else if(A.aiControlDisabled == 2)
 					A.aiControlDisabled = -1
-		if(WIRE_SHOCK) // Pulse to shock the door for 10 ticks.
+		if(WIRE_SHOCK)
 			if(!A.secondsElectrified)
 				A.set_electrified(MACHINE_DEFAULT_ELECTRIFY_TIME, usr)
 		if(WIRE_SAFETY)
@@ -91,7 +93,7 @@
 /datum/wires/airlock/on_cut(wire, mend)
 	var/obj/machinery/door/airlock/A = holder
 	switch(wire)
-		if(WIRE_POWER1, WIRE_POWER2) // Cut to loose power, repair all to gain power.
+		if(WIRE_POWER1, WIRE_POWER2)
 			if(mend && !is_cut(WIRE_POWER1) && !is_cut(WIRE_POWER2))
 				A.regainMainPower()
 				if(usr)
@@ -100,7 +102,7 @@
 				A.loseMainPower()
 				if(usr)
 					A.shock(usr, 50)
-		if(WIRE_BACKUP1, WIRE_BACKUP2) // Cut to loose backup power, repair all to gain backup power.
+		if(WIRE_BACKUP1, WIRE_BACKUP2)
 			if(mend && !is_cut(WIRE_BACKUP1) && !is_cut(WIRE_BACKUP2))
 				A.regainBackupPower()
 				if(usr)
@@ -109,12 +111,12 @@
 				A.loseBackupPower()
 				if(usr)
 					A.shock(usr, 50)
-		if(WIRE_BOLTS) // Cut to drop bolts, mend does nothing.
+		if(WIRE_BOLTS)
 			if(!mend)
 				A.bolt()
-		if(WIRE_AI) // Cut to disable WIRE_AI control, mend to re-enable.
+		if(WIRE_AI)
 			if(mend)
-				if(A.aiControlDisabled == 1) // 0 = normal, 1 = locked out, 2 = overridden by WIRE_AI, -1 = previously overridden by WIRE_AI
+				if(A.aiControlDisabled == 1)
 					A.aiControlDisabled = 0
 				else if(A.aiControlDisabled == 2)
 					A.aiControlDisabled = -1
@@ -123,22 +125,22 @@
 					A.aiControlDisabled = 1
 				else if(A.aiControlDisabled == -1)
 					A.aiControlDisabled = 2
-		if(WIRE_SHOCK) // Cut to shock the door, mend to unshock.
+		if(WIRE_SHOCK)
 			if(mend)
 				if(A.secondsElectrified)
 					A.set_electrified(MACHINE_NOT_ELECTRIFIED, usr)
 			else
 				if(A.secondsElectrified != MACHINE_ELECTRIFIED_PERMANENT)
 					A.set_electrified(MACHINE_ELECTRIFIED_PERMANENT, usr)
-		if(WIRE_SAFETY) // Cut to disable safeties, mend to re-enable.
+		if(WIRE_SAFETY)
 			A.safe = mend
-		if(WIRE_TIMING) // Cut to disable auto-close, mend to re-enable.
+		if(WIRE_TIMING)
 			A.autoclose = mend
 			if(A.autoclose && !A.density)
 				A.close()
-		if(WIRE_LIGHT) // Cut to disable lights, mend to re-enable.
+		if(WIRE_LIGHT)
 			A.lights = mend
 			A.update_icon()
-		if(WIRE_ZAP1, WIRE_ZAP2) // Ouch.
+		if(WIRE_ZAP1, WIRE_ZAP2)
 			if(usr)
 				A.shock(usr, 50)

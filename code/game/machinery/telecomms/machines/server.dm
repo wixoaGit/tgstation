@@ -1,10 +1,3 @@
-/*
-	The server logs all traffic and signal data. Once it records the signal, it sends
-	it to the subspace broadcaster.
-
-	Store a maximum of 100 logs and then deletes them.
-*/
-
 /obj/machinery/telecomms/server
 	name = "telecommunication server"
 	icon_state = "comm_server"
@@ -14,20 +7,18 @@
 	idle_power_usage = 15
 	circuit = /obj/item/circuitboard/machine/telecomms/server
 	var/list/log_entries = list()
-	var/totaltraffic = 0 // gigabytes (if > 1024, divide by 1024 -> terrabytes)
+	var/totaltraffic = 0
 
 /obj/machinery/telecomms/server/Initialize()
 	. = ..()
 
 /obj/machinery/telecomms/server/receive_information(datum/signal/subspace/vocal/signal, obj/machinery/telecomms/machine_from)
-	// can't log non-vocal signals
 	if(!istype(signal) || !signal.data["message"] || !is_freq_listening(signal))
 		return
 
 	if(traffic > 0)
-		totaltraffic += traffic // add current traffic to total traffic
+		totaltraffic += traffic
 
-	// Delete particularly old logs
 	if (log_entries.len >= 400)
 		log_entries.Cut(1, 2)
 
@@ -38,7 +29,6 @@
 	log.parameters["message"] = signal.data["message"]
 	log.parameters["language"] = signal.language
 
-	// If the signal is still compressed, make the log entry gibberish
 	var/compression = signal.data["compression"]
 	if(compression > 0)
 		log.input_type = "Corrupt File"
@@ -46,9 +36,9 @@
 		log.parameters["job"] = Gibberish(signal.data["job"], compression + 50)
 		log.parameters["message"] = Gibberish(signal.data["message"], compression + 50)
 
-	// Give the log a name and store it
 	var/identifier = num2text( rand(-1000,1000) + world.time )
-	log.name = "data packet ([md5(identifier)])"
+	//log.name = "data packet ([md5(identifier)])"
+	log.name = "data packet ([identifier])"//not_actual
 	log_entries.Add(log)
 
 	var/can_send = relay_information(signal, /obj/machinery/telecomms/hub)
@@ -56,14 +46,12 @@
 		relay_information(signal, /obj/machinery/telecomms/broadcaster)
 
 
-// Simple log entry datum
 /datum/comm_log_entry
 	var/input_type = "Speech File"
 	var/name = "data packet (#)"
-	var/parameters = list()  // copied from signal.data above
+	var/parameters = list()
 
 
-// Preset Servers
 /obj/machinery/telecomms/server/presets
 	network = "tcommsat"
 
@@ -97,7 +85,6 @@
 	freq_listening = list()
 	autolinkers = list("common")
 
-//Common and other radio frequencies for people to freely use
 /obj/machinery/telecomms/server/presets/common/Initialize()
 	. = ..()
 	for(var/i = MIN_FREQ, i <= MAX_FREQ, i += 2)

@@ -1,9 +1,3 @@
-/*
-Unused icons for new areas are "awaycontent1" ~ "awaycontent30"
-*/
-
-
-// Away Missions
 /area/awaymission
 	name = "Strange Location"
 	icon_state = "away"

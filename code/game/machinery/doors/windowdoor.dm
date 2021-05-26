@@ -7,7 +7,7 @@
 	closingLayer = ABOVE_WINDOW_LAYER
 	resistance_flags = ACID_PROOF
 	var/base_state = "left"
-	max_integrity = 150 //If you change this, consider changing ../door/window/brigdoor/ max_integrity at the bottom of this .dm file
+	max_integrity = 150
 	integrity_failure = 0
 	armor = list("melee" = 20, "bullet" = 50, "laser" = 50, "energy" = 50, "bomb" = 10, "bio" = 100, "rad" = 100, "fire" = 70, "acid" = 100)
 	visible = FALSE
@@ -38,7 +38,7 @@
 
 /obj/machinery/door/window/ComponentInitialize()
 	. = ..()
-	AddComponent(/datum/component/ntnet_interface)
+	//AddComponent(/datum/component/ntnet_interface)
 
 /obj/machinery/door/window/Destroy()
 	density = FALSE
@@ -58,7 +58,7 @@
 	open()
 	if(check_access(null))
 		sleep(50)
-	else //secure doors close faster
+	else
 		sleep(20)
 	close()
 
@@ -66,12 +66,12 @@
 	if( operating || !density )
 		return
 	if (!( ismob(AM) ))
-		if(ismecha(AM))
-			var/obj/mecha/mecha = AM
-			if(mecha.occupant && allowed(mecha.occupant))
-				open_and_close()
-			else
-				do_animate("deny")
+		//if(ismecha(AM))
+		//	var/obj/mecha/mecha = AM
+		//	if(mecha.occupant && allowed(mecha.occupant))
+		//		open_and_close()
+		//	else
+		//		do_animate("deny")
 		return
 	if (!( SSticker ))
 		return
@@ -96,16 +96,16 @@
 /obj/machinery/door/window/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
-	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
+	if(get_dir(loc, target) == dir)
 		return !density
 	if(istype(mover, /obj/structure/window))
 		var/obj/structure/window/W = mover
 		if(!valid_window_location(loc, W.ini_dir))
 			return FALSE
-	else if(istype(mover, /obj/structure/windoor_assembly))
-		var/obj/structure/windoor_assembly/W = mover
-		if(!valid_window_location(loc, W.ini_dir))
-			return FALSE
+	//else if(istype(mover, /obj/structure/windoor_assembly))
+	//	var/obj/structure/windoor_assembly/W = mover
+	//	if(!valid_window_location(loc, W.ini_dir))
+	//		return FALSE
 	else if(istype(mover, /obj/machinery/door/window) && !valid_window_location(loc, mover.dir))
 		return FALSE
 	else
@@ -117,9 +117,8 @@
 	else
 		return 1
 
-//used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir)
-	return !density || (dir != to_dir) || (check_access(ID) && hasPower())
+///obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir)
+//	return !density || (dir != to_dir) || (check_access(ID) && hasPower())
 
 /obj/machinery/door/window/CheckExit(atom/movable/mover as mob|obj, turf/target)
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
@@ -130,7 +129,7 @@
 		return 1
 
 /obj/machinery/door/window/open(forced=FALSE)
-	if (operating) //doors can still open when emag-disabled
+	if (operating)
 		return 0
 	if(!forced)
 		if(!hasPower())
@@ -138,7 +137,7 @@
 	if(forced < 2)
 		if(obj_flags & EMAGGED)
 			return 0
-	if(!operating) //in case of emag
+	if(!operating)
 		operating = TRUE
 	do_animate("opening")
 	playsound(src, 'sound/machines/windowdoor.ogg', 100, 1)
@@ -149,7 +148,7 @@
 	air_update_turf(1)
 	update_freelook_sight()
 
-	if(operating == 1) //emag again
+	if(operating == 1)
 		operating = FALSE
 	return 1
 
@@ -191,29 +190,32 @@
 			debris -= fragment
 	qdel(src)
 
-/obj/machinery/door/window/narsie_act()
-	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
+///obj/machinery/door/window/narsie_act()
+//	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
 
-/obj/machinery/door/window/ratvar_act()
-	var/obj/machinery/door/window/clockwork/C = new(loc, dir)
-	C.name = name
-	qdel(src)
+///obj/machinery/door/window/ratvar_act()
+//	var/obj/machinery/door/window/clockwork/C = new(loc, dir)
+//	C.name = name
+//	qdel(src)
 
-/obj/machinery/door/window/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(exposed_temperature > T0C + (reinf ? 1600 : 800))
-		take_damage(round(exposed_volume / 200), BURN, 0, 0)
-	..()
+///obj/machinery/door/window/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+//	if(exposed_temperature > T0C + (reinf ? 1600 : 800))
+//		take_damage(round(exposed_volume / 200), BURN, 0, 0)
+//	..()
 
 /obj/machinery/door/window/emag_act(mob/user)
 	if(!operating && density && !(obj_flags & EMAGGED))
 		obj_flags |= EMAGGED
 		operating = TRUE
-		flick("[base_state]spark", src)
+		//flick("[base_state]spark", src)
 		playsound(src, "sparks", 75, 1)
 		sleep(6)
 		operating = FALSE
 		desc += "<BR><span class='warning'>Its access panel is smoking slightly.</span>"
 		open(2)
+
+/obj/structure/window/attack_paw(mob/user)
+	return attack_hand(user)
 
 /obj/machinery/door/window/attackby(obj/item/I, mob/living/user, params)
 
@@ -237,24 +239,24 @@
 									 "<span class='notice'>You start to remove electronics from the [name]...</span>")
 				if(I.use_tool(src, user, 40, volume=50))
 					if(panel_open && !density && !operating && loc)
-						var/obj/structure/windoor_assembly/WA = new /obj/structure/windoor_assembly(loc)
-						switch(base_state)
-							if("left")
-								WA.facing = "l"
-							if("right")
-								WA.facing = "r"
-							if("leftsecure")
-								WA.facing = "l"
-								WA.secure = TRUE
-							if("rightsecure")
-								WA.facing = "r"
-								WA.secure = TRUE
-						WA.setAnchored(TRUE)
-						WA.state= "02"
-						WA.setDir(dir)
-						WA.ini_dir = dir
-						WA.update_icon()
-						WA.created_name = name
+						//var/obj/structure/windoor_assembly/WA = new /obj/structure/windoor_assembly(loc)
+						//switch(base_state)
+						//	if("left")
+						//		WA.facing = "l"
+						//	if("right")
+						//		WA.facing = "r"
+						//	if("leftsecure")
+						//		WA.facing = "l"
+						//		WA.secure = TRUE
+						//	if("rightsecure")
+						//		WA.facing = "r"
+						//		WA.secure = TRUE
+						//WA.setAnchored(TRUE)
+						//WA.state= "02"
+						//WA.setDir(dir)
+						//WA.ini_dir = dir
+						//WA.update_icon()
+						//WA.created_name = name
 
 						if(obj_flags & EMAGGED)
 							to_chat(user, "<span class='warning'>You discard the damaged electronics.</span>")
@@ -280,7 +282,7 @@
 				return
 	return ..()
 
-/obj/machinery/door/window/interact(mob/user)		//for sillycones
+/obj/machinery/door/window/interact(mob/user)
 	try_to_activate_door(user)
 
 /obj/machinery/door/window/try_to_crowbar(obj/item/I, mob/user)
@@ -293,50 +295,20 @@
 		to_chat(user, "<span class='warning'>The door's motors resist your efforts to force it!</span>")
 
 /obj/machinery/door/window/do_animate(animation)
-	switch(animation)
-		if("opening")
-			flick("[base_state]opening", src)
-		if("closing")
-			flick("[base_state]closing", src)
-		if("deny")
-			flick("[base_state]deny", src)
-
-/obj/machinery/door/window/check_access_ntnet(datum/netdata/data)
-	return !requiresID() || ..()
-
-/obj/machinery/door/window/ntnet_receive(datum/netdata/data)
-	// Check if the airlock is powered.
-	if(!hasPower())
-		return
-
-	// Check packet access level.
-	if(!check_access_ntnet(data))
-		return
-
-	// Handle received packet.
-	var/command = lowertext(data.data["data"])
-	var/command_value = lowertext(data.data["data_secondary"])
-	switch(command)
-		if("open")
-			if(command_value == "on" && !density)
-				return
-
-			if(command_value == "off" && density)
-				return
-
-			if(density)
-				INVOKE_ASYNC(src, .proc/open)
-			else
-				INVOKE_ASYNC(src, .proc/close)
-		if("touch")
-			INVOKE_ASYNC(src, .proc/open_and_close)
+	//switch(animation)
+	//	if("opening")
+	//		flick("[base_state]opening", src)
+	//	if("closing")
+	//		flick("[base_state]closing", src)
+	//	if("deny")
+	//		flick("[base_state]deny", src)
 
 /obj/machinery/door/window/brigdoor
 	name = "secure door"
 	icon_state = "leftsecure"
 	base_state = "leftsecure"
 	var/id = null
-	max_integrity = 300 //Stronger doors for prison (regular window door health is 200)
+	max_integrity = 300
 	reinf = 1
 	explosion_block = 1
 
@@ -347,58 +319,7 @@
 
 /obj/machinery/door/window/brigdoor/security/holding
 	name = "holding cell door"
-	req_one_access = list(ACCESS_SEC_DOORS, ACCESS_LAWYER) //love for the lawyer
-
-/obj/machinery/door/window/clockwork
-	name = "brass windoor"
-	desc = "A thin door with translucent brass paneling."
-	icon_state = "clockwork"
-	base_state = "clockwork"
-	shards = 0
-	rods = 0
-	resistance_flags = FIRE_PROOF | ACID_PROOF
-	var/made_glow = FALSE
-
-/obj/machinery/door/window/clockwork/Initialize(mapload, set_dir)
-	. = ..()
-	for(var/i in 1 to 2)
-		debris += new/obj/item/clockwork/alloy_shards/medium/gear_bit/large(src)
-	change_construction_value(2)
-
-/obj/machinery/door/window/clockwork/setDir(direct)
-	if(!made_glow)
-		var/obj/effect/E = new /obj/effect/temp_visual/ratvar/door/window(get_turf(src))
-		E.setDir(direct)
-		made_glow = TRUE
-	..()
-
-/obj/machinery/door/window/clockwork/Destroy()
-	change_construction_value(-2)
-	return ..()
-
-/obj/machinery/door/window/clockwork/emp_act(severity)
-	if(prob(80/severity))
-		open()
-
-/obj/machinery/door/window/clockwork/ratvar_act()
-	if(GLOB.ratvar_awakens)
-		obj_integrity = max_integrity
-
-/obj/machinery/door/window/clockwork/hasPower()
-	return TRUE //yup that's power all right
-
-/obj/machinery/door/window/clockwork/narsie_act()
-	take_damage(rand(30, 60), BRUTE)
-	if(src)
-		var/previouscolor = color
-		color = "#960000"
-		animate(src, color = previouscolor, time = 8)
-		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 8)
-
-/obj/machinery/door/window/clockwork/allowed(mob/M)
-	if(is_servant_of_ratvar(M))
-		return 1
-	return 0
+	req_one_access = list(ACCESS_SEC_DOORS, ACCESS_LAWYER)
 
 /obj/machinery/door/window/northleft
 	dir = NORTH

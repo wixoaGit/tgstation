@@ -1,6 +1,3 @@
-/*
-Quartermaster
-*/
 /datum/job/qm
 	title = "Quartermaster"
 	flag = QUARTERMASTER
@@ -28,13 +25,10 @@ Quartermaster
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	glasses = /obj/item/clothing/glasses/sunglasses
 	l_hand = /obj/item/clipboard
-	backpack_contents = list(/obj/item/card/id/departmental_budget/car=1)
+	//backpack_contents = list(/obj/item/card/id/departmental_budget/car=1)
 
-	chameleon_extras = /obj/item/stamp/qm
+	//chameleon_extras = /obj/item/stamp/qm
 
-/*
-Cargo Technician
-*/
 /datum/job/cargo_tech
 	title = "Cargo Technician"
 	flag = CARGOTECH
@@ -59,11 +53,8 @@ Cargo Technician
 	belt = /obj/item/pda/cargo
 	ears = /obj/item/radio/headset/headset_cargo
 	uniform = /obj/item/clothing/under/rank/cargotech
-	l_hand = /obj/item/export_scanner
+	//l_hand = /obj/item/export_scanner
 
-/*
-Shaft Miner
-*/
 /datum/job/mining
 	title = "Shaft Miner"
 	flag = MINER
@@ -91,52 +82,22 @@ Shaft Miner
 	shoes = /obj/item/clothing/shoes/workboots/mining
 	gloves = /obj/item/clothing/gloves/color/black
 	uniform = /obj/item/clothing/under/rank/miner/lavaland
-	l_pocket = /obj/item/reagent_containers/hypospray/medipen/survival
+	//l_pocket = /obj/item/reagent_containers/hypospray/medipen/survival
 	r_pocket = /obj/item/flashlight/seclite
-	backpack_contents = list(
-		/obj/item/storage/bag/ore=1,\
-		/obj/item/kitchen/knife/combat/survival=1,\
-		/obj/item/mining_voucher=1,\
-		/obj/item/stack/marker_beacon/ten=1)
+	//backpack_contents = list(
+	//	/obj/item/storage/bag/ore=1,\
+	//	/obj/item/kitchen/knife/combat/survival=1,\
+	//	/obj/item/mining_voucher=1,\
+	//	/obj/item/stack/marker_beacon/ten=1)
+	backpack_contents = list(/obj/item/kitchen/knife/combat/survival=1)//not_actual
 
-	backpack = /obj/item/storage/backpack/explorer
-	satchel = /obj/item/storage/backpack/satchel/explorer
-	duffelbag = /obj/item/storage/backpack/duffelbag
-	box = /obj/item/storage/box/survival_mining
+	//backpack = /obj/item/storage/backpack/explorer
+	//satchel = /obj/item/storage/backpack/satchel/explorer
+	//duffelbag = /obj/item/storage/backpack/duffelbag
+	//box = /obj/item/storage/box/survival_mining
 
-	chameleon_extras = /obj/item/gun/energy/kinetic_accelerator
+	//chameleon_extras = /obj/item/gun/energy/kinetic_accelerator
 
-/datum/outfit/job/miner/equipped
-	name = "Shaft Miner (Equipment)"
-	suit = /obj/item/clothing/suit/hooded/explorer
-	mask = /obj/item/clothing/mask/gas/explorer
-	glasses = /obj/item/clothing/glasses/meson
-	suit_store = /obj/item/tank/internals/oxygen
-	internals_slot = SLOT_S_STORE
-	backpack_contents = list(
-		/obj/item/storage/bag/ore=1,
-		/obj/item/kitchen/knife/combat/survival=1,
-		/obj/item/mining_voucher=1,
-		/obj/item/t_scanner/adv_mining_scanner/lesser=1,
-		/obj/item/gun/energy/kinetic_accelerator=1,\
-		/obj/item/stack/marker_beacon/ten=1)
-
-/datum/outfit/job/miner/equipped/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	..()
-	if(visualsOnly)
-		return
-	if(istype(H.wear_suit, /obj/item/clothing/suit/hooded))
-		var/obj/item/clothing/suit/hooded/S = H.wear_suit
-		S.ToggleHood()
-
-/datum/outfit/job/miner/equipped/hardsuit
-	name = "Shaft Miner (Equipment + Hardsuit)"
-	suit = /obj/item/clothing/suit/space/hardsuit/mining
-	mask = /obj/item/clothing/mask/breath
-
-/*
-Bartender
-*/
 /datum/job/bartender
 	title = "Bartender"
 	flag = BARTENDER
@@ -164,12 +125,9 @@ Bartender
 	ears = /obj/item/radio/headset/headset_srv
 	uniform = /obj/item/clothing/under/rank/bartender
 	suit = /obj/item/clothing/suit/armor/vest
-	backpack_contents = list(/obj/item/storage/box/beanbag=1)
+	//backpack_contents = list(/obj/item/storage/box/beanbag=1)
 	shoes = /obj/item/clothing/shoes/laceup
 
-/*
-Cook
-*/
 /datum/job/cook
 	title = "Cook"
 	flag = COOK
@@ -180,7 +138,7 @@ Cook
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
-	var/cooks = 0 //Counts cooks amount
+	var/cooks = 0
 
 	outfit = /datum/outfit/job/cook
 
@@ -198,14 +156,14 @@ Cook
 	uniform = /obj/item/clothing/under/rank/chef
 	suit = /obj/item/clothing/suit/toggle/chef
 	head = /obj/item/clothing/head/chefhat
-	mask = /obj/item/clothing/mask/fakemoustache/italian
-	backpack_contents = list(/obj/item/sharpener = 1)
+	//mask = /obj/item/clothing/mask/fakemoustache/italian
+	//backpack_contents = list(/obj/item/sharpener = 1)
 
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
 	var/datum/job/cook/J = SSjob.GetJobType(jobtype)
-	if(J) // Fix for runtime caused by invalid job being passed
-		if(J.cooks>0)//Cooks
+	if(J)
+		if(J.cooks>0)
 			suit = /obj/item/clothing/suit/apron/chef
 			head = /obj/item/clothing/head/soft/mime
 		if(!visualsOnly)
@@ -215,16 +173,13 @@ Cook
 	..()
 	if(visualsOnly)
 		return
-	var/list/possible_boxes = subtypesof(/obj/item/storage/box/ingredients)
-	var/chosen_box = pick(possible_boxes)
-	var/obj/item/storage/box/I = new chosen_box(src)
-	H.equip_to_slot_or_del(I,SLOT_IN_BACKPACK)
-	var/datum/martial_art/cqc/under_siege/justacook = new
-	justacook.teach(H)
+	//var/list/possible_boxes = subtypesof(/obj/item/storage/box/ingredients)
+	//var/chosen_box = pick(possible_boxes)
+	//var/obj/item/storage/box/I = new chosen_box(src)
+	//H.equip_to_slot_or_del(I,SLOT_IN_BACKPACK)
+	//var/datum/martial_art/cqc/under_siege/justacook = new
+	//justacook.teach(H)
 
-/*
-Botanist
-*/
 /datum/job/hydro
 	title = "Botanist"
 	flag = BOTANIST
@@ -240,9 +195,6 @@ Botanist
 
 	access = list(ACCESS_HYDROPONICS, ACCESS_BAR, ACCESS_KITCHEN, ACCESS_MORGUE, ACCESS_MINERAL_STOREROOM)
 	minimal_access = list(ACCESS_HYDROPONICS, ACCESS_MORGUE, ACCESS_MINERAL_STOREROOM)
-	// Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS
-	// Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT
-	// Given Morgue access because they have a viable means of cloning.
 	paycheck = PAYCHECK_EASY
 	paycheck_department = ACCOUNT_SRV
 
@@ -257,13 +209,9 @@ Botanist
 	gloves  =/obj/item/clothing/gloves/botanic_leather
 	suit_store = /obj/item/plant_analyzer
 
-	backpack = /obj/item/storage/backpack/botany
-	satchel = /obj/item/storage/backpack/satchel/hyd
+	//backpack = /obj/item/storage/backpack/botany
+	//satchel = /obj/item/storage/backpack/satchel/hyd
 
-
-/*
-Janitor
-*/
 /datum/job/janitor
 	title = "Janitor"
 	flag = JANITOR
@@ -290,4 +238,4 @@ Janitor
 	belt = /obj/item/pda/janitor
 	ears = /obj/item/radio/headset/headset_srv
 	uniform = /obj/item/clothing/under/rank/janitor
-	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1)
+	//backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1)

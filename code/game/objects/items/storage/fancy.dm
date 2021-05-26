@@ -1,19 +1,3 @@
-/*
- * The 'fancy' path is for objects like donut boxes that show how many items are in the storage item on the sprite itself
- * .. Sorry for the shitty path name, I couldnt think of a better one.
- *
- * WARNING: var/icon_type is used for both examine text and sprite name. Please look at the procs below and adjust your sprite names accordingly
- *		TODO: Cigarette boxes should be ported to this standard
- *
- * Contains:
- *		Donut Box
- *		Egg Box
- *		Candle Box
- *		Cigarette Box
- *		Cigar Case
- *		Heart Shaped Box w/ Chocolates
- */
-
 /obj/item/storage/fancy
 	icon = 'icons/obj/food/containers.dmi'
 	icon_state = "donutbox6"
@@ -26,7 +10,8 @@
 
 /obj/item/storage/fancy/PopulateContents()
 	GET_COMPONENT(STR, /datum/component/storage)
-	for(var/i = 1 to STR.max_items)
+	//for(var/i = 1 to STR.max_items)
+	for(var/i = 1, i<=STR.max_items, i++)//not_actual
 		new spawn_type(src)
 
 /obj/item/storage/fancy/update_icon()
@@ -58,72 +43,6 @@
 	fancy_open = TRUE
 	update_icon()
 
-/*
- * Donut Box
- */
-
-/obj/item/storage/fancy/donut_box
-	icon = 'icons/obj/food/containers.dmi'
-	icon_state = "donutbox6"
-	icon_type = "donut"
-	name = "donut box"
-	spawn_type = /obj/item/reagent_containers/food/snacks/donut
-	fancy_open = TRUE
-
-/obj/item/storage/fancy/donut_box/ComponentInitialize()
-	. = ..()
-	GET_COMPONENT(STR, /datum/component/storage)
-	STR.max_items = 6
-	STR.can_hold = typecacheof(list(/obj/item/reagent_containers/food/snacks/donut))
-
-/*
- * Egg Box
- */
-
-/obj/item/storage/fancy/egg_box
-	icon = 'icons/obj/food/containers.dmi'
-	item_state = "eggbox"
-	icon_state = "eggbox"
-	icon_type = "egg"
-	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
-	name = "egg box"
-	desc = "A carton for containing eggs."
-	spawn_type = /obj/item/reagent_containers/food/snacks/egg
-
-/obj/item/storage/fancy/egg_box/ComponentInitialize()
-	. = ..()
-	GET_COMPONENT(STR, /datum/component/storage)
-	STR.max_items = 12
-	STR.can_hold = typecacheof(list(/obj/item/reagent_containers/food/snacks/egg))
-
-/*
- * Candle Box
- */
-
-/obj/item/storage/fancy/candle_box
-	name = "candle pack"
-	desc = "A pack of red candles."
-	icon = 'icons/obj/candle.dmi'
-	icon_state = "candlebox5"
-	icon_type = "candle"
-	item_state = "candlebox5"
-	throwforce = 2
-	slot_flags = ITEM_SLOT_BELT
-	spawn_type = /obj/item/candle
-	fancy_open = TRUE
-
-/obj/item/storage/fancy/candle_box/ComponentInitialize()
-	. = ..()
-	GET_COMPONENT(STR, /datum/component/storage)
-	STR.max_items = 5
-
-/obj/item/storage/fancy/candle_box/attack_self(mob_user)
-	return
-
-////////////
-//CIG PACK//
-////////////
 /obj/item/storage/fancy/cigarettes
 	name = "\improper Space Cigarettes packet"
 	desc = "The most popular brand of cigarettes, sponsors of the Space Olympics."
@@ -239,7 +158,7 @@
 	name = "\improper Midori Tabako packet"
 	desc = "You can't understand the runes, but the packet smells funny."
 	icon_state = "midori"
-	spawn_type = /obj/item/clothing/mask/cigarette/rollie/nicotine
+	//spawn_type = /obj/item/clothing/mask/cigarette/rollie/nicotine
 
 /obj/item/storage/fancy/cigarettes/cigpack_shadyjims
 	name = "\improper Shady Jim's Super Slims packet"
@@ -253,41 +172,37 @@
 	icon_state = "slime"
 	spawn_type = /obj/item/clothing/mask/cigarette/xeno
 
-/obj/item/storage/fancy/cigarettes/cigpack_cannabis
-	name = "\improper Freak Brothers' Special packet"
-	desc = "A label on the packaging reads, \"Endorsed by Phineas, Freddy and Franklin.\""
-	icon_state = "midori"
-	spawn_type = /obj/item/clothing/mask/cigarette/rollie/cannabis
+///obj/item/storage/fancy/cigarettes/cigpack_cannabis
+//	name = "\improper Freak Brothers' Special packet"
+//	desc = "A label on the packaging reads, \"Endorsed by Phineas, Freddy and Franklin.\""
+//	icon_state = "midori"
+//	spawn_type = /obj/item/clothing/mask/cigarette/rollie/cannabis
 
-/obj/item/storage/fancy/cigarettes/cigpack_mindbreaker
-	name = "\improper Leary's Delight packet"
-	desc = "Banned in over 36 galaxies."
-	icon_state = "shadyjim"
-	spawn_type = /obj/item/clothing/mask/cigarette/rollie/mindbreaker
+///obj/item/storage/fancy/cigarettes/cigpack_mindbreaker
+//	name = "\improper Leary's Delight packet"
+//	desc = "Banned in over 36 galaxies."
+//	icon_state = "shadyjim"
+//	spawn_type = /obj/item/clothing/mask/cigarette/rollie/mindbreaker
 
-/obj/item/storage/fancy/rollingpapers
-	name = "rolling paper pack"
-	desc = "A pack of Nanotrasen brand rolling papers."
-	w_class = WEIGHT_CLASS_TINY
-	icon = 'icons/obj/cigarettes.dmi'
-	icon_state = "cig_paper_pack"
-	icon_type = "rolling paper"
-	spawn_type = /obj/item/rollingpaper
+///obj/item/storage/fancy/rollingpapers
+//	name = "rolling paper pack"
+//	desc = "A pack of Nanotrasen brand rolling papers."
+//	w_class = WEIGHT_CLASS_TINY
+//	icon = 'icons/obj/cigarettes.dmi'
+//	icon_state = "cig_paper_pack"
+//	icon_type = "rolling paper"
+//	spawn_type = /obj/item/rollingpaper
 
-/obj/item/storage/fancy/rollingpapers/ComponentInitialize()
-	. = ..()
-	GET_COMPONENT(STR, /datum/component/storage)
-	STR.max_items = 10
-	STR.can_hold = typecacheof(list(/obj/item/rollingpaper))
+///obj/item/storage/fancy/rollingpapers/ComponentInitialize()
+//	. = ..()
+//	GET_COMPONENT(STR, /datum/component/storage)
+//	STR.max_items = 10
+//	STR.can_hold = typecacheof(list(/obj/item/rollingpaper))
 
-/obj/item/storage/fancy/rollingpapers/update_icon()
-	cut_overlays()
-	if(!contents.len)
-		add_overlay("[icon_state]_empty")
-
-/////////////
-//CIGAR BOX//
-/////////////
+///obj/item/storage/fancy/rollingpapers/update_icon()
+//	cut_overlays()
+//	if(!contents.len)
+//		add_overlay("[icon_state]_empty")
 
 /obj/item/storage/fancy/cigarettes/cigars
 	name = "\improper premium cigar case"
@@ -309,7 +224,7 @@
 	if(fancy_open)
 		icon_state = "[initial(icon_state)]_open"
 
-		var/cigar_position = 1 //generate sprites for cigars in the box
+		var/cigar_position = 1
 		for(var/obj/item/clothing/mask/cigarette/cigar/smokes in contents)
 			var/mutable_appearance/cigar_overlay = mutable_appearance(icon, "[smokes.icon_off]_[cigar_position]")
 			add_overlay(cigar_overlay)
@@ -329,24 +244,3 @@
 	desc = "A case of classy Havanian cigars."
 	icon_state = "cohibacase"
 	spawn_type = /obj/item/clothing/mask/cigarette/cigar/havana
-
-/*
- * Heart Shaped Box w/ Chocolates
- */
-
-/obj/item/storage/fancy/heart_box
-	name = "heart-shaped box"
-	desc = "A heart-shaped box for holding tiny chocolates."
-	icon = 'icons/obj/food/containers.dmi'
-	item_state = "chocolatebox"
-	icon_state = "chocolatebox"
-	icon_type = "chocolate"
-	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
-	spawn_type = /obj/item/reagent_containers/food/snacks/tinychocolate
-
-/obj/item/storage/fancy/heart_box/ComponentInitialize()
-	. = ..()
-	GET_COMPONENT(STR, /datum/component/storage)
-	STR.max_items = 8
-	STR.can_hold = typecacheof(list(/obj/item/reagent_containers/food/snacks/tinychocolate))

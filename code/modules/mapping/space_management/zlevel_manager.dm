@@ -1,6 +1,5 @@
-// Populate the space level list and prepare space transitions
 /datum/controller/subsystem/mapping/proc/InitializeDefaultZLevels()
-	if (z_list)  // subsystem/Recover or badminnery, no need
+	if (z_list)
 		return
 
 	z_list = list()
@@ -17,12 +16,11 @@
 		z_list += S
 
 /datum/controller/subsystem/mapping/proc/add_new_zlevel(name, traits = list(), z_type = /datum/space_level)
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_Z, args)
+	//SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_Z, args)
 	var/new_z = z_list.len + 1
 	if (world.maxz < new_z)
 		world.incrementMaxZ()
 		CHECK_TICK
-	// TODO: sleep here if the Z level needs to be cleared
 	var/datum/space_level/S = new z_type(new_z, name, traits)
 	z_list += S
 	return S

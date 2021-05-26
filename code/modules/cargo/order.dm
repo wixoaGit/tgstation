@@ -15,12 +15,6 @@
 	if(prob(MANIFEST_ERROR_CHANCE))
 		errors |= MANIFEST_ERROR_ITEM
 
-/obj/item/paper/fluff/jobs/cargo/manifest/proc/is_approved()
-	return stamped && stamped.len && !is_denied()
-
-/obj/item/paper/fluff/jobs/cargo/manifest/proc/is_denied()
-	return stamped && ("stamp-deny" in stamped)
-
 /datum/supply_order
 	var/id
 	var/orderer
@@ -94,11 +88,11 @@
 	var/obj/structure/closet/crate/C = pack.generate(A, paying_account)
 	var/obj/item/paper/fluff/jobs/cargo/manifest/M = generateManifest(C)
 
-	if(M.errors & MANIFEST_ERROR_ITEM)
-		if(istype(C, /obj/structure/closet/crate/secure) || istype(C, /obj/structure/closet/crate/large))
-			M.errors &= ~MANIFEST_ERROR_ITEM
-		else
-			var/lost = max(round(C.contents.len / 10), 1)
-			while(--lost >= 0)
-				qdel(pick(C.contents))
+	//if(M.errors & MANIFEST_ERROR_ITEM)
+	//	if(istype(C, /obj/structure/closet/crate/secure) || istype(C, /obj/structure/closet/crate/large))
+	//		M.errors &= ~MANIFEST_ERROR_ITEM
+	//	else
+	//		var/lost = max(round(C.contents.len / 10), 1)
+	//		while(--lost >= 0)
+	//			qdel(pick(C.contents))
 	return C

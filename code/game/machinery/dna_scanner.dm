@@ -7,7 +7,7 @@
 	use_power = IDLE_POWER_USE
 	idle_power_usage = 50
 	active_power_usage = 300
-	occupant_typecache = list(/mob/living, /obj/item/bodypart/head, /obj/item/organ/brain)
+	//occupant_typecache = list(/mob/living, /obj/item/bodypart/head, /obj/item/organ/brain)
 	circuit = /obj/item/circuitboard/machine/clonescanner
 	var/locked = FALSE
 	var/damage_coeff
@@ -33,8 +33,6 @@
 		to_chat(user, "<span class='notice'>The status display reads: Radiation pulse accuracy increased by factor <b>[precision_coeff**2]</b>.<br>Radiation pulse damage decreased by factor <b>[damage_coeff**2]</b>.<span>")
 
 /obj/machinery/dna_scannernew/update_icon()
-
-	//no power or maintenance
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = initial(icon_state)+ (state_open ? "_open" : "") + "_unpowered"
 		return
@@ -42,13 +40,11 @@
 	if((stat & MAINT) || panel_open)
 		icon_state = initial(icon_state)+ (state_open ? "_open" : "") + "_maintenance"
 		return
-
-	//running and someone in there
+	
 	if(occupant)
 		icon_state = initial(icon_state)+ "_occupied"
 		return
 
-	//running
 	icon_state = initial(icon_state)+ (state_open ? "_open" : "")
 
 /obj/machinery/dna_scannernew/power_change()
@@ -87,24 +83,16 @@
 			"<span class='notice'>You successfully break out of [src]!</span>")
 		open_machine()
 
-/obj/machinery/dna_scannernew/proc/locate_computer(type_)
-	for(var/direction in GLOB.cardinals)
-		var/C = locate(type_, get_step(src, direction))
-		if(C)
-			return C
-	return null
-
 /obj/machinery/dna_scannernew/close_machine(mob/living/carbon/user)
 	if(!state_open)
 		return FALSE
 
 	..(user)
 
-	// DNA manipulators cannot operate on severed heads or brains
-	if(iscarbon(occupant))
-		var/obj/machinery/computer/scan_consolenew/console = locate_computer(/obj/machinery/computer/scan_consolenew)
-		if(console)
-			console.on_scanner_close()
+	//if(iscarbon(occupant))
+	//	var/obj/machinery/computer/scan_consolenew/console = locate_computer(/obj/machinery/computer/scan_consolenew)
+	//	if(console)
+	//		console.on_scanner_close()
 
 	return TRUE
 
@@ -126,8 +114,8 @@
 
 /obj/machinery/dna_scannernew/attackby(obj/item/I, mob/user, params)
 
-	if(!occupant && default_deconstruction_screwdriver(user, icon_state, icon_state, I))//sent icon_state is irrelevant...
-		update_icon()//..since we're updating the icon here, since the scanner can be unpowered when opened/closed
+	if(!occupant && default_deconstruction_screwdriver(user, icon_state, icon_state, I))
+		update_icon()
 		return
 
 	if(default_pry_open(I))
@@ -140,9 +128,3 @@
 
 /obj/machinery/dna_scannernew/interact(mob/user)
 	toggle_open(user)
-
-/obj/machinery/dna_scannernew/MouseDrop_T(mob/target, mob/user)
-	var/mob/living/L = user
-	if(user.stat || (isliving(user) && (!(L.mobility_flags & MOBILITY_STAND) || !(L.mobility_flags & MOBILITY_UI))) || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !user.IsAdvancedToolUser())
-		return
-	close_machine(target)

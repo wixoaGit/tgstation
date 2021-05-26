@@ -1,4 +1,3 @@
-//mob traits
 #define TRAIT_BLIND 			"blind"
 #define TRAIT_MUTE				"mute"
 #define TRAIT_EMOTEMUTE			"emotemute"
@@ -9,20 +8,20 @@
 #define TRAIT_BADDNA			"baddna"
 #define TRAIT_CLUMSY			"clumsy"
 #define TRAIT_DUMB				"dumb"
-#define TRAIT_MONKEYLIKE		"monkeylike" //sets IsAdvancedToolUser to FALSE
+#define TRAIT_MONKEYLIKE		"monkeylike"
 #define TRAIT_PACIFISM			"pacifism"
 #define TRAIT_IGNORESLOWDOWN	"ignoreslow"
-#define TRAIT_DEATHCOMA			"deathcoma" //Causes death-like unconsciousness
-#define TRAIT_FAKEDEATH			"fakedeath" //Makes the owner appear as dead to most forms of medical examination
+#define TRAIT_DEATHCOMA			"deathcoma"
+#define TRAIT_FAKEDEATH			"fakedeath"
 #define TRAIT_DISFIGURED		"disfigured"
-#define TRAIT_XENO_HOST			"xeno_host"	//Tracks whether we're gonna be a baby alien's mummy.
+#define TRAIT_XENO_HOST			"xeno_host"
 #define TRAIT_STUNIMMUNE		"stun_immunity"
 #define TRAIT_SLEEPIMMUNE		"sleep_immunity"
 #define TRAIT_PUSHIMMUNE		"push_immunity"
 #define TRAIT_SHOCKIMMUNE		"shock_immunity"
 #define TRAIT_STABLEHEART		"stable_heart"
 #define TRAIT_RESISTHEAT		"resist_heat"
-#define TRAIT_RESISTHEATHANDS	"resist_heat_handsonly" //For when you want to be able to touch hot things, but still want fire to be an issue.
+#define TRAIT_RESISTHEATHANDS	"resist_heat_handsonly"
 #define TRAIT_RESISTCOLD		"resist_cold"
 #define TRAIT_RESISTHIGHPRESSURE	"resist_high_pressure"
 #define TRAIT_RESISTLOWPRESSURE	"resist_low_pressure"
@@ -51,9 +50,9 @@
 #define TRAIT_NOSOFTCRIT		"nosoftcrit"
 #define TRAIT_MINDSHIELD		"mindshield"
 #define TRAIT_DISSECTED			"dissected"
-#define TRAIT_SIXTHSENSE		"sixth_sense" //I can hear dead people
+#define TRAIT_SIXTHSENSE		"sixth_sense"
 #define TRAIT_FEARLESS			"fearless"
-#define TRAIT_PARALYSIS_L_ARM	"para-l-arm" //These are used for brain-based paralysis, where replacing the limb won't fix it
+#define TRAIT_PARALYSIS_L_ARM	"para-l-arm"
 #define TRAIT_PARALYSIS_R_ARM	"para-r-arm"
 #define TRAIT_PARALYSIS_L_LEG	"para-l-leg"
 #define TRAIT_PARALYSIS_R_LEG	"para-r-leg"
@@ -69,10 +68,10 @@
 #define TRAIT_LAW_ENFORCEMENT_METABOLISM "law-enforcement-metabolism"
 #define TRAIT_ALWAYS_CLEAN      "always-clean"
 #define TRAIT_BOOZE_SLIDER      "booze-slider"
+#define TRAIT_UNINTELLIGIBLE_SPEECH "unintelligible-speech"
 
-//non-mob traits
-#define TRAIT_PARALYSIS			"paralysis" //Used for limb-based paralysis, where replacing the limb will fix it
-
+#define TRAIT_PARALYSIS			"paralysis"
+#define TRAIT_T_RAY_VISIBLE     "t-ray-visible"
 
 #define TRAIT_ALCOHOL_TOLERANCE	"alcohol_tolerance"
 #define TRAIT_AGEUSIA			"ageusia"
@@ -94,7 +93,6 @@
 #define TRAIT_MUSICIAN			"musician"
 #define TRAIT_LIGHT_DRINKER		"light_drinker"
 
-// common trait sources
 #define TRAIT_GENERIC "generic"
 #define EYE_DAMAGE "eye_damage"
 #define GENETIC_MUTATION "genetic"
@@ -103,12 +101,11 @@
 #define TRAUMA_TRAIT "trauma"
 #define SPECIES_TRAIT "species"
 #define ORGAN_TRAIT "organ"
-#define ROUNDSTART_TRAIT "roundstart" //cannot be removed without admin intervention
+#define ROUNDSTART_TRAIT "roundstart"
 #define JOB_TRAIT "job"
 #define STATUS_EFFECT_TRAIT "status-effect"
 #define CLOTHING_TRAIT "clothing"
 
-// unique trait sources, still defines
 #define CLONING_POD_TRAIT "cloning-pod"
 #define STATUE_MUTE "statue"
 #define CHANGELING_DRAIN "drain"

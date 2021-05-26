@@ -22,7 +22,7 @@
 				neigbours[TEXT_WEST] = P.spl
 				P.spl.neigbours[TEXT_EAST] = src
 
-/datum/space_transition_point          //this is explicitly utilitarian datum type made specially for the space map generation and are absolutely unusable for anything else
+/datum/space_transition_point
 	var/list/neigbours = list()
 	var/x
 	var/y
@@ -56,7 +56,7 @@
 	if(y-1 >= 1)
 		neigbours |= grid[x][y-1]
 
-/datum/controller/subsystem/mapping/proc/setup_map_transitions() //listamania
+/datum/controller/subsystem/mapping/proc/setup_map_transitions()
 	var/list/SLS = list()
 	var/list/cached_z_list = z_list
 	var/conf_set_len = 0
@@ -65,7 +65,11 @@
 		if (D.linkage == CROSSLINKED)
 			SLS.Add(D)
 		conf_set_len++
-	var/list/point_grid[conf_set_len*2+1][conf_set_len*2+1]
+	//var/list/point_grid[conf_set_len*2+1][conf_set_len*2+1]
+	//not_actual
+	var/list/point_grid = new(conf_set_len*2+1)
+	for (var/i in 1 to point_grid.len)
+		point_grid[i] = new /list(conf_set_len*2+1)
 	var/list/grid = list()
 	var/datum/space_transition_point/P
 	for(var/i = 1, i<=conf_set_len*2+1, i++)
@@ -91,15 +95,12 @@
 		P = pick(possible_points)
 		CHECK_TICK
 
-	//Lists below are pre-calculated values arranged in the list in such a way to be easily accessable in the loop by the counter
-	//Its either this or madness with lotsa math
-
-	var/list/x_pos_beginning = list(1, 1, world.maxx - TRANSITIONEDGE, 1)  //x values of the lowest-leftest turfs of the respective 4 blocks on each side of zlevel
-	var/list/y_pos_beginning = list(world.maxy - TRANSITIONEDGE, 1, 1 + TRANSITIONEDGE, 1 + TRANSITIONEDGE)  //y values respectively
-	var/list/x_pos_ending = list(world.maxx, world.maxx, world.maxx, 1 + TRANSITIONEDGE)	//x values of the highest-rightest turfs of the respective 4 blocks on each side of zlevel
-	var/list/y_pos_ending = list(world.maxy, 1 + TRANSITIONEDGE, world.maxy - TRANSITIONEDGE, world.maxy - TRANSITIONEDGE)	//y values respectively
-	var/list/x_pos_transition = list(1, 1, TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 1)		//values of x for the transition from respective blocks on the side of zlevel, 1 is being translated into turfs respective x value later in the code
-	var/list/y_pos_transition = list(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 1, 1, 1)		//values of y for the transition from respective blocks on the side of zlevel, 1 is being translated into turfs respective y value later in the code
+	var/list/x_pos_beginning = list(1, 1, world.maxx - TRANSITIONEDGE, 1)
+	var/list/y_pos_beginning = list(world.maxy - TRANSITIONEDGE, 1, 1 + TRANSITIONEDGE, 1 + TRANSITIONEDGE)
+	var/list/x_pos_ending = list(world.maxx, world.maxx, world.maxx, 1 + TRANSITIONEDGE)
+	var/list/y_pos_ending = list(world.maxy, 1 + TRANSITIONEDGE, world.maxy - TRANSITIONEDGE, world.maxy - TRANSITIONEDGE)
+	var/list/x_pos_transition = list(1, 1, TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 1)
+	var/list/y_pos_transition = list(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 1, 1, 1)
 
 	for(var/I in cached_z_list)
 		var/datum/space_level/D = I
@@ -126,18 +127,17 @@
 				S.destination_y = y_pos_transition[side] == 1 ? S.y : y_pos_transition[side]
 				S.destination_z = zdestination
 				
-				// Mirage border code
-				var/mirage_dir
-				if(S.x == 1 + TRANSITIONEDGE)
-					mirage_dir |= WEST
-				else if(S.x == world.maxx - TRANSITIONEDGE)
-					mirage_dir |= EAST
-				if(S.y == 1 + TRANSITIONEDGE)
-					mirage_dir |= SOUTH
-				else if(S.y == world.maxy - TRANSITIONEDGE)
-					mirage_dir |= NORTH
-				if(!mirage_dir)
-					continue
+				//var/mirage_dir
+				//if(S.x == 1 + TRANSITIONEDGE)
+				//	mirage_dir |= WEST
+				//else if(S.x == world.maxx - TRANSITIONEDGE)
+				//	mirage_dir |= EAST
+				//if(S.y == 1 + TRANSITIONEDGE)
+				//	mirage_dir |= SOUTH
+				//else if(S.y == world.maxy - TRANSITIONEDGE)
+				//	mirage_dir |= NORTH
+				//if(!mirage_dir)
+				//	continue
 
-				var/turf/place = locate(S.destination_x, S.destination_y, S.destination_z)
-				S.AddComponent(/datum/component/mirage_border, place, mirage_dir)
+				//var/turf/place = locate(S.destination_x, S.destination_y, S.destination_z)
+				//S.AddComponent(/datum/component/mirage_border, place, mirage_dir)

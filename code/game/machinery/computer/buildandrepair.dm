@@ -121,7 +121,6 @@
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
-
 /obj/structure/frame/computer/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(state == 4)

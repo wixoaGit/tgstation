@@ -23,9 +23,6 @@
 	var/pressure_checks = EXT_BOUND
 	var/external_pressure_bound = ONE_ATMOSPHERE
 	var/internal_pressure_bound = 0
-	// EXT_BOUND: Do not pass external_pressure_bound
-	// INT_BOUND: Do not pass internal_pressure_bound
-	// NO_BOUND: Do not pass either
 
 	var/frequency = FREQ_ATMOS_CONTROL
 	var/datum/radio_frequency/radio_connection
@@ -51,9 +48,9 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_icon_nopipes()
 	cut_overlays()
-	if(showpipe)
-		var/image/cap = getpipeimage(icon, "vent_cap", initialize_directions, piping_layer = piping_layer)
-		add_overlay(cap)
+	//if(showpipe)
+	//	var/image/cap = getpipeimage(icon, "vent_cap", initialize_directions, piping_layer = piping_layer)
+	//	add_overlay(cap)
 
 	if(welded)
 		icon_state = "vent_welded"
@@ -66,22 +63,22 @@
 
 		if(pump_direction & RELEASING)
 			icon_state = "vent_out-off"
-		else // pump_direction == SIPHONING
+		else
 			icon_state = "vent_in-off"
 		return
 
 	if(icon_state == ("vent_out-off" || "vent_in-off" || "vent_off"))
 		if(pump_direction & RELEASING)
 			icon_state = "vent_out"
-			flick("vent_out-starting", src)
-		else // pump_direction == SIPHONING
+			//flick("vent_out-starting", src)
+		else
 			icon_state = "vent_in"
-			flick("vent_in-starting", src)
+			//flick("vent_in-starting", src)
 		return
 
 	if(pump_direction & RELEASING)
 		icon_state = "vent_out"
-	else // pump_direction == SIPHONING
+	else
 		icon_state = "vent_in"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/process_atmos()
@@ -97,7 +94,7 @@
 	var/datum/gas_mixture/environment = loc.return_air()
 	var/environment_pressure = environment.return_pressure()
 
-	if(pump_direction & RELEASING) // internal -> external
+	if(pump_direction & RELEASING)
 		var/pressure_delta = 10000
 
 		if(pressure_checks&EXT_BOUND)
@@ -114,7 +111,7 @@
 				loc.assume_air(removed)
 				air_update_turf()
 
-	else // external -> internal
+	else
 		var/pressure_delta = 10000
 		if(pressure_checks&EXT_BOUND)
 			pressure_delta = min(pressure_delta, (environment_pressure - external_pressure_bound))
@@ -125,14 +122,12 @@
 			var/transfer_moles = pressure_delta * air_contents.volume / (environment.temperature * R_IDEAL_GAS_EQUATION)
 
 			var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
-			if (isnull(removed)) // in space
+			if (isnull(removed))
 				return
 
 			air_contents.merge(removed)
 			air_update_turf()
 	update_parents()
-
-//Radio remote control
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/set_frequency(new_frequency)
 	SSradio.remove_object(src, frequency)
@@ -167,7 +162,6 @@
 
 
 /obj/machinery/atmospherics/components/unary/vent_pump/atmosinit()
-	//some vents work his own spesial way
 	radio_filter_in = frequency==FREQ_ATMOS_CONTROL?(RADIO_FROM_AIRALARM):null
 	radio_filter_out = frequency==FREQ_ATMOS_CONTROL?(RADIO_TO_AIRALARM):null
 	if(frequency)
@@ -178,7 +172,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/receive_signal(datum/signal/signal)
 	if(!is_operational())
 		return
-	// log_admin("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/components/unary/vent_pump/receive_signal([signal.debug_print()])")
 	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return
 
@@ -201,8 +194,8 @@
 	if("checks" in signal.data)
 		var/old_checks = pressure_checks
 		pressure_checks = text2num(signal.data["checks"])
-		if(pressure_checks != old_checks)
-			investigate_log(" pressure checks were set to [pressure_checks] by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
+		//if(pressure_checks != old_checks)
+		//	investigate_log(" pressure checks were set to [pressure_checks] by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
 
 	if("checks_toggle" in signal.data)
 		pressure_checks = (pressure_checks?0:NO_BOUND)
@@ -213,14 +206,14 @@
 	if("set_internal_pressure" in signal.data)
 		var/old_pressure = internal_pressure_bound
 		internal_pressure_bound = CLAMP(text2num(signal.data["set_internal_pressure"]),0,ONE_ATMOSPHERE*50)
-		if(old_pressure != internal_pressure_bound)
-			investigate_log(" internal pressure was set to [internal_pressure_bound] by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
+		//if(old_pressure != internal_pressure_bound)
+		//	investigate_log(" internal pressure was set to [internal_pressure_bound] by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
 
 	if("set_external_pressure" in signal.data)
 		var/old_pressure = external_pressure_bound
 		external_pressure_bound = CLAMP(text2num(signal.data["set_external_pressure"]),0,ONE_ATMOSPHERE*50)
-		if(old_pressure != external_pressure_bound)
-			investigate_log(" external pressure was set to [external_pressure_bound] by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
+		//if(old_pressure != external_pressure_bound)
+		//	investigate_log(" external pressure was set to [external_pressure_bound] by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
 
 	if("reset_external_pressure" in signal.data)
 		external_pressure_bound = ONE_ATMOSPHERE
@@ -240,9 +233,8 @@
 
 	if("status" in signal.data)
 		broadcast_status()
-		return // do not update_icon
+		return
 
-		// log_admin("DEBUG \[[world.timeofday]\]: vent_pump/receive_signal: unknown command \"[signal.data["command"]]\"\n[signal.debug_print()]")
 	broadcast_status()
 	update_icon()
 
@@ -259,14 +251,8 @@
 			welded = FALSE
 		update_icon()
 		pipe_vision_img = image(src, loc, layer = ABOVE_HUD_LAYER, dir = dir)
-		pipe_vision_img.plane = ABOVE_HUD_PLANE
+		//pipe_vision_img.plane = ABOVE_HUD_PLANE
 	return TRUE
-
-/obj/machinery/atmospherics/components/unary/vent_pump/can_unwrench(mob/user)
-	. = ..()
-	if(. && on && is_operational())
-		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")
-		return FALSE
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
 	..()
@@ -276,30 +262,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/power_change()
 	..()
 	update_icon_nopipes()
-
-/obj/machinery/atmospherics/components/unary/vent_pump/can_crawl_through()
-	return !welded
-
-/obj/machinery/atmospherics/components/unary/vent_pump/attack_alien(mob/user)
-	if(!welded || !(do_after(user, 20, target = src)))
-		return
-	user.visible_message("[user] furiously claws at [src]!", "You manage to clear away the stuff blocking the vent", "You hear loud scraping noises.")
-	welded = FALSE
-	update_icon()
-	pipe_vision_img = image(src, loc, layer = ABOVE_HUD_LAYER, dir = dir)
-	pipe_vision_img.plane = ABOVE_HUD_PLANE
-	playsound(loc, 'sound/weapons/bladeslice.ogg', 100, 1)
-
-/obj/machinery/atmospherics/components/unary/vent_pump/high_volume
-	name = "large air vent"
-	power_channel = EQUIP
-
-/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/New()
-	..()
-	var/datum/gas_mixture/air_contents = airs[1]
-	air_contents.volume = 1000
-
-// mapping
 
 /obj/machinery/atmospherics/components/unary/vent_pump/layer1
 	piping_layer = 1
@@ -348,36 +310,42 @@
 	icon_state = "vent_map_siphon_on-3"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos
-	frequency = FREQ_ATMOS_STORAGE
+	//frequency = FREQ_ATMOS_STORAGE
 	on = TRUE
 	icon_state = "vent_map_siphon_on-2"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/toxin_output
 	name = "plasma tank output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_TOX
+	on = TRUE//not_actual
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_TOX
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/oxygen_output
 	name = "oxygen tank output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_O2
+	on = TRUE//not_actual
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_O2
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/nitrogen_output
 	name = "nitrogen tank output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_N2
+	on = TRUE//not_actual
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_N2
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/mix_output
 	name = "mix tank output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_MIX
+	on = TRUE//not_actual
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_MIX
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/nitrous_output
 	name = "nitrous oxide tank output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_N2O
+	on = TRUE//not_actual
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_N2O
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/carbon_output
 	name = "carbon dioxide tank output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_CO2
+	on = TRUE//not_actual
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_CO2
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/incinerator_output
 	name = "incinerator chamber output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_INCINERATOR
-	frequency = FREQ_ATMOS_CONTROL
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_INCINERATOR
+	//frequency = FREQ_ATMOS_CONTROL
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/toxins_mixing_output
 	name = "toxins mixing output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_TOXINS_LAB
-	frequency = FREQ_ATMOS_CONTROL
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_TOXINS_LAB
+	//frequency = FREQ_ATMOS_CONTROL
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/layer1
 	piping_layer = 1
@@ -426,13 +394,13 @@
 	icon_state = "vent_map_siphon_on-3"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/atmos
-	frequency = FREQ_ATMOS_STORAGE
+	//frequency = FREQ_ATMOS_STORAGE
 	on = TRUE
 	icon_state = "vent_map_siphon_on-2"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/atmos/air_output
 	name = "air mix tank output inlet"
-	id_tag = ATMOS_GAS_MONITOR_OUTPUT_AIR
+	//id_tag = ATMOS_GAS_MONITOR_OUTPUT_AIR
 
 #undef INT_BOUND
 #undef EXT_BOUND

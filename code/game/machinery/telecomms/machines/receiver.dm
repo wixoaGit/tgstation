@@ -1,11 +1,3 @@
-/*
-	The receiver idles and receives messages from subspace-compatible radio equipment;
-	primarily headsets. They then just relay this information to all linked devices,
-	which can would probably be network hubs.
-
-	Link to Processor Units in case receiver can't send to bus units.
-*/
-
 /obj/machinery/telecomms/receiver
 	name = "subspace receiver"
 	icon_state = "broadcast receiver"
@@ -23,7 +15,6 @@
 
 	signal.levels = list()
 
-	// send the signal to the hub if possible, or a bus otherwise
 	if(!relay_information(signal, /obj/machinery/telecomms/hub))
 		relay_information(signal, /obj/machinery/telecomms/bus)
 
@@ -38,26 +29,18 @@
 
 	return FALSE
 
-//Preset Receivers
-
-//--PRESET LEFT--//
-
 /obj/machinery/telecomms/receiver/preset_left
 	id = "Receiver A"
 	network = "tcommsat"
-	autolinkers = list("receiverA") // link to relay
+	autolinkers = list("receiverA")
 	freq_listening = list(FREQ_SCIENCE, FREQ_MEDICAL, FREQ_SUPPLY, FREQ_SERVICE)
-
-
-//--PRESET RIGHT--//
 
 /obj/machinery/telecomms/receiver/preset_right
 	id = "Receiver B"
 	network = "tcommsat"
-	autolinkers = list("receiverB") // link to relay
+	autolinkers = list("receiverB")
 	freq_listening = list(FREQ_COMMAND, FREQ_ENGINEERING, FREQ_SECURITY)
 
-	//Common and other radio frequencies for people to freely use
 /obj/machinery/telecomms/receiver/preset_right/Initialize()
 	. = ..()
 	for(var/i = MIN_FREQ, i <= MAX_FREQ, i += 2)

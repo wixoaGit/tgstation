@@ -18,10 +18,10 @@
 	var/ammo_type
 	var/no_den_usage
 	clumsy_check = 0
-	trigger_guard = TRIGGER_GUARD_ALLOW_ALL // Has no trigger at all, uses magic instead
+	trigger_guard = TRIGGER_GUARD_ALLOW_ALL
 	pin = /obj/item/firing_pin/magic
 
-	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi' //not really a gun and some toys use these inhands
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 
 /obj/item/gun/magic/afterattack(atom/target, mob/living/user, flag)
@@ -32,9 +32,9 @@
 			return
 		else
 			no_den_usage = 0
-	if(checks_antimagic && user.anti_magic_check(TRUE, FALSE, major = FALSE, self = TRUE))
-		to_chat(user, "<span class='warning'>Something is interfering with [src].</span>")
-		return
+	//if(checks_antimagic && user.anti_magic_check(TRUE, FALSE, major = FALSE, self = TRUE))
+	//	to_chat(user, "<span class='warning'>Something is interfering with [src].</span>")
+	//	return
 	. = ..()
 
 /obj/item/gun/magic/can_shoot()
@@ -45,8 +45,8 @@
 		chambered.newshot()
 
 /obj/item/gun/magic/process_chamber()
-	if(chambered && !chambered.BB) //if BB is null, i.e the shot has been fired...
-		charges--//... drain a charge
+	if(chambered && !chambered.BB)
+		charges--
 		recharge_newshot()
 
 /obj/item/gun/magic/Initialize()
@@ -61,7 +61,6 @@
 	if(can_charge)
 		STOP_PROCESSING(SSobj, src)
 	return ..()
-
 
 /obj/item/gun/magic/process()
 	charge_tick++
@@ -83,9 +82,3 @@
 	user.visible_message("<span class='suicide'>[user] is twisting [src] above [user.p_their()] head, releasing a magical blast! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, fire_sound, 50, 1, -1)
 	return (FIRELOSS)
-
-/obj/item/gun/magic/vv_edit_var(var_name, var_value)
-	. = ..()
-	switch (var_name)
-		if ("charges")
-			recharge_newshot()

@@ -1,9 +1,3 @@
-/*
-CONTAINS:
-BEDSHEETS
-LINEN BINS
-*/
-
 /obj/item/bedsheet
 	name = "bedsheet"
 	desc = "A surprisingly soft linen bedsheet."
@@ -19,15 +13,15 @@ LINEN BINS
 	item_color = "white"
 	resistance_flags = FLAMMABLE
 
-	dog_fashion = /datum/dog_fashion/head/ghost
+	//dog_fashion = /datum/dog_fashion/head/ghost
 	var/list/dream_messages = list("white")
 
 /obj/item/bedsheet/attack(mob/living/M, mob/user)
-	if(!attempt_initiate_surgery(src, M, user))
-		..()
+	//if(!attempt_initiate_surgery(src, M, user))
+	//	..()
 
 /obj/item/bedsheet/attack_self(mob/user)
-	if(!user.CanReach(src))		//No telekenetic grabbing.
+	if(!user.CanReach(src))
 		return
 	if(!user.dropItemToGround(src))
 		return
@@ -127,7 +121,6 @@ LINEN BINS
 	item_color = "director"
 	dream_messages = list("authority", "a silvery ID", "a bomb", "a mech", "a facehugger", "maniacal laughter", "the research director")
 
-// for Free Golems.
 /obj/item/bedsheet/rd/royal_cape
 	name = "Royal Cape of the Liberator"
 	desc = "Majestic."
@@ -300,19 +293,26 @@ LINEN BINS
 
 
 /obj/structure/bedsheetbin/update_icon()
-	switch(amount)
-		if(0)
-			icon_state = "linenbin-empty"
-		if(1 to 5)
-			icon_state = "linenbin-half"
-		else
-			icon_state = "linenbin-full"
+	//switch(amount)
+	//	if(0)
+	//		icon_state = "linenbin-empty"
+	//	if(1 to 5)
+	//		icon_state = "linenbin-half"
+	//	else
+	//		icon_state = "linenbin-full"
+	//not_actual
+	if (amount == 0)
+		icon_state = "linenbin-empty"
+	else if (amount <= 5)
+		icon_state = "linenbin-half"
+	else
+		icon_state = "linenbin-full"
 
-/obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
-	if(amount)
-		amount = 0
-		update_icon()
-	..()
+///obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
+//	if(amount)
+//		amount = 0
+//		update_icon()
+//	..()
 
 /obj/structure/bedsheetbin/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/bedsheet))
@@ -322,13 +322,12 @@ LINEN BINS
 		amount++
 		to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
 		update_icon()
-	else if(amount && !hidden && I.w_class < WEIGHT_CLASS_BULKY)	//make sure there's sheets to hide it among, make sure nothing else is hidden in there.
+	else if(amount && !hidden && I.w_class < WEIGHT_CLASS_BULKY)
 		if(!user.transferItemToLoc(I, src))
 			to_chat(user, "<span class='warning'>\The [I] is stuck to your hand, you cannot hide it among the sheets!</span>")
 			return
 		hidden = I
 		to_chat(user, "<span class='notice'>You hide [I] among the sheets.</span>")
-
 
 /obj/structure/bedsheetbin/attack_paw(mob/user)
 	return attack_hand(user)
@@ -360,28 +359,6 @@ LINEN BINS
 		if(hidden)
 			hidden.forceMove(drop_location())
 			to_chat(user, "<span class='notice'>[hidden] falls out of [B]!</span>")
-			hidden = null
-
-
-	add_fingerprint(user)
-/obj/structure/bedsheetbin/attack_tk(mob/user)
-	if(amount >= 1)
-		amount--
-
-		var/obj/item/bedsheet/B
-		if(sheets.len > 0)
-			B = sheets[sheets.len]
-			sheets.Remove(B)
-
-		else
-			B = new /obj/item/bedsheet(loc)
-
-		B.forceMove(drop_location())
-		to_chat(user, "<span class='notice'>You telekinetically remove [B] from [src].</span>")
-		update_icon()
-
-		if(hidden)
-			hidden.forceMove(drop_location())
 			hidden = null
 
 

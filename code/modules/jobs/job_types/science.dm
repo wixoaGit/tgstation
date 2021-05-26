@@ -1,6 +1,3 @@
-/*
-Research Director
-*/
 /datum/job/rd
 	title = "Research Director"
 	flag = RD_JF
@@ -43,27 +40,13 @@ Research Director
 	uniform = /obj/item/clothing/under/rank/research_director
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	suit = /obj/item/clothing/suit/toggle/labcoat
-	l_hand = /obj/item/clipboard
-	l_pocket = /obj/item/laser_pointer
-	backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced=1, /obj/item/card/id/departmental_budget/sci=1)
+	//l_hand = /obj/item/clipboard
+	//l_pocket = /obj/item/laser_pointer
+	//backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced=1, /obj/item/card/id/departmental_budget/sci=1)
 
-	backpack = /obj/item/storage/backpack/science
-	satchel = /obj/item/storage/backpack/satchel/tox
+	//backpack = /obj/item/storage/backpack/science
+	//satchel = /obj/item/storage/backpack/satchel/tox
 
-	chameleon_extras = /obj/item/stamp/rd
-
-/datum/outfit/job/rd/rig
-	name = "Research Director (Hardsuit)"
-
-	l_hand = null
-	mask = /obj/item/clothing/mask/breath
-	suit = /obj/item/clothing/suit/space/hardsuit/rd
-	suit_store = /obj/item/tank/internals/oxygen
-	internals_slot = SLOT_S_STORE
-
-/*
-Scientist
-*/
 /datum/job/scientist
 	title = "Scientist"
 	flag = SCIENTIST
@@ -92,15 +75,12 @@ Scientist
 	belt = /obj/item/pda/toxins
 	ears = /obj/item/radio/headset/headset_sci
 	uniform = /obj/item/clothing/under/rank/scientist
-	shoes = /obj/item/clothing/shoes/sneakers/white
+	//shoes = /obj/item/clothing/shoes/sneakers/white
 	suit = /obj/item/clothing/suit/toggle/labcoat/science
 
-	backpack = /obj/item/storage/backpack/science
-	satchel = /obj/item/storage/backpack/satchel/tox
+	//backpack = /obj/item/storage/backpack/science
+	//satchel = /obj/item/storage/backpack/satchel/tox
 
-/*
-Roboticist
-*/
 /datum/job/roboticist
 	title = "Roboticist"
 	flag = ROBOTICIST
@@ -131,7 +111,7 @@ Roboticist
 	uniform = /obj/item/clothing/under/rank/roboticist
 	suit = /obj/item/clothing/suit/toggle/labcoat
 
-	backpack = /obj/item/storage/backpack/science
-	satchel = /obj/item/storage/backpack/satchel/tox
+	//backpack = /obj/item/storage/backpack/science
+	//satchel = /obj/item/storage/backpack/satchel/tox
 
 	pda_slot = SLOT_L_STORE

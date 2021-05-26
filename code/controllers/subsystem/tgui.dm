@@ -6,9 +6,9 @@ SUBSYSTEM_DEF(tgui)
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 
 	var/list/currentrun = list()
-	var/list/open_uis = list() // A list of open UIs, grouped by src_object and ui_key.
-	var/list/processing_uis = list() // A list of processing UIs, ungrouped.
-	var/basehtml // The HTML base used for all UIs.
+	var/list/open_uis = list()
+	var/list/processing_uis = list()
+	var/basehtml
 
 /datum/controller/subsystem/tgui/PreInit()
 	basehtml = file2text('tgui/tgui.html')
@@ -22,7 +22,6 @@ SUBSYSTEM_DEF(tgui)
 /datum/controller/subsystem/tgui/fire(resumed = 0)
 	if (!resumed)
 		src.currentrun = processing_uis.Copy()
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 
 	while(currentrun.len)
@@ -34,4 +33,3 @@ SUBSYSTEM_DEF(tgui)
 			processing_uis.Remove(ui)
 		if (MC_TICK_CHECK)
 			return
-

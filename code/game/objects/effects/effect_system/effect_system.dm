@@ -1,23 +1,15 @@
-/* This is an attempt to make some easily reusable "particle" type effect, to stop the code
-constantly having to be rewritten. An item like the jetpack that uses the ion_trail_follow system, just has one
-defined, then set up when it is created with New(). Then this same system can just be reused each time
-it needs to create more trails.A beaker could have a steam_trail_follow system set up, then the steam
-would spawn and follow the beaker, even if it is carried or thrown.
-*/
-
-
 /obj/effect/particle_effect
 	name = "particle effect"
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pass_flags = PASSTABLE | PASSGRILLE
 	anchored = TRUE
 
 /obj/effect/particle_effect/Initialize()
 	. = ..()
-	GLOB.cameranet.updateVisibility(src)
+	//GLOB.cameranet.updateVisibility(src)
 
 /obj/effect/particle_effect/Destroy()
-	GLOB.cameranet.updateVisibility(src)
+	//GLOB.cameranet.updateVisibility(src)
 	return ..()
 
 /datum/effect_system
@@ -27,7 +19,7 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	var/atom/holder
 	var/effect_type
 	var/total_effects = 0
-	var/autocleanup = FALSE //will delete itself after use
+	var/autocleanup = FALSE
 
 /datum/effect_system/Destroy()
 	holder = null
@@ -65,7 +57,7 @@ would spawn and follow the beaker, even if it is carried or thrown.
 		direction = pick(GLOB.alldirs)
 	var/steps_amt = pick(1,2,3)
 	for(var/j in 1 to steps_amt)
-		sleep(5)
+		//sleep(5)
 		step(E,direction)
 	addtimer(CALLBACK(src, .proc/decrement_total_effect), 20)
 

@@ -1,18 +1,11 @@
-//used for holding information about unique properties of maps
-//feed it json files that match the datum layout
-//defaults to box
-//  -Cyberboss
-
 /datum/map_config
-	// Metadata
 	var/config_filename = "_maps/boxstation.json"
-	var/defaulted = TRUE  // set to FALSE by LoadConfig() succeeding
-	// Config from maps.txt
+	var/defaulted = TRUE
+	
 	var/config_max_users = 0
 	var/config_min_users = 0
 	var/voteweight = 1
 
-	// Config actually from the JSON - should default to Box
 	var/map_name = "Box Station"
 	var/map_path = "map_files/BoxStation"
 	var/map_file = "BoxStation.dmm"
@@ -36,7 +29,7 @@
 		return config
 	if (!config.LoadConfig(filename, error_if_missing))
 		qdel(config)
-		config = new /datum/map_config  // Fall back to Box
+		config = new /datum/map_config
 	if (delete_after)
 		fdel(filename)
 	return config
@@ -71,12 +64,10 @@
 	map_path = json["map_path"]
 
 	map_file = json["map_file"]
-	// "map_file": "BoxStation.dmm"
 	if (istext(map_file))
 		if (!fexists("_maps/[map_path]/[map_file]"))
 			log_world("Map file ([map_path]/[map_file]) does not exist!")
 			return
-	// "map_file": ["Lower.dmm", "Upper.dmm"]
 	else if (islist(map_file))
 		for (var/file in map_file)
 			if (!fexists("_maps/[map_path]/[file]"))
@@ -96,14 +87,10 @@
 		return
 
 	traits = json["traits"]
-	// "traits": [{"Linkage": "Cross"}, {"Space Ruins": true}]
 	if (islist(traits))
-		// "Station" is set by default, but it's assumed if you're setting
-		// traits you want to customize which level is cross-linked
 		for (var/level in traits)
 			if (!(ZTRAIT_STATION in level))
 				level[ZTRAIT_STATION] = TRUE
-	// "traits": null or absent -> default
 	else if (!isnull(traits))
 		log_world("map_config traits is not a list!")
 		return
@@ -130,13 +117,3 @@
 	defaulted = FALSE
 	return TRUE
 #undef CHECK_EXISTS
-
-/datum/map_config/proc/GetFullMapPaths()
-	if (istext(map_file))
-		return list("_maps/[map_path]/[map_file]")
-	. = list()
-	for (var/file in map_file)
-		. += "_maps/[map_path]/[file]"
-
-/datum/map_config/proc/MakeNextMap()
-	return config_filename == "data/next_map.json" || fcopy(config_filename, "data/next_map.json")

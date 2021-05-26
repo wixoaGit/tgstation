@@ -10,13 +10,13 @@
 
 /datum/progressbar/New(mob/User, goal_number, atom/target)
 	. = ..()
-	if (!istype(target))
-		EXCEPTION("Invalid target given")
+	//if (!istype(target))
+	//	EXCEPTION("Invalid target given")
 	if (goal_number)
 		goal = goal_number
 	bar = image('icons/effects/progessbar.dmi', target, "prog_bar_0", HUD_LAYER)
-	bar.plane = ABOVE_HUD_PLANE
-	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	//bar.plane = ABOVE_HUD_PLANE
+	//bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	user = User
 	if(user)
 		client = user.client
@@ -63,5 +63,3 @@
 		client.images -= bar
 	qdel(bar)
 	. = ..()
-
-#undef PROGRESSBAR_HEIGHT

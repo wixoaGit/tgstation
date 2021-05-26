@@ -11,13 +11,5 @@ PROCESSING_SUBSYSTEM_DEF(projectiles)
 	global_pixel_speed = new_speed
 	for(var/i in processing)
 		var/obj/item/projectile/P = i
-		if(istype(P))			//there's non projectiles on this too.
+		if(istype(P))
 			P.set_pixel_speed(new_speed)
-
-/datum/controller/subsystem/processing/projectiles/vv_edit_var(var_name, var_value)
-	switch(var_name)
-		if(NAMEOF(src, global_pixel_speed))
-			set_pixel_speed(var_value)
-			return TRUE
-		else
-			return ..()

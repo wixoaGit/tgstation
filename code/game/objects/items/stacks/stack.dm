@@ -1,31 +1,20 @@
-/* Stack type objects!
- * Contains:
- * 		Stacks
- * 		Recipe datum
- * 		Recipe list datum
- */
-
-/*
- * Stacks
- */
 /obj/item/stack
 	icon = 'icons/obj/stack_objects.dmi'
 	gender = PLURAL
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
-	var/max_amount = 50 //also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
-	var/is_cyborg = 0 // It's 1 if module is used by a cyborg, and uses its storage
-	var/datum/robot_energy_storage/source
-	var/cost = 1 // How much energy from storage it costs
-	var/merge_type = null // This path and its children should merge with this stack, defaults to src.type
-	var/full_w_class = WEIGHT_CLASS_NORMAL //The weight class the stack should have at amount > 2/3rds max_amount
-	var/novariants = TRUE //Determines whether the item should update it's sprites based on amount.
-	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
+	var/max_amount = 50
+	var/is_cyborg = 0
+	//var/datum/robot_energy_storage/source
+	var/cost = 1
+	var/merge_type = null
+	var/full_w_class = WEIGHT_CLASS_NORMAL
+	var/novariants = TRUE
 
 /obj/item/stack/on_grind()
-	for(var/i in 1 to grind_results.len) //This should only call if it's ground, so no need to check if grind_results exists
-		grind_results[grind_results[i]] *= get_amount() //Gets the key at position i, then the reagent amount of that key, then multiplies it by stack size
+	for(var/i in 1 to grind_results.len)
+		grind_results[grind_results[i]] *= get_amount()
 
 /obj/item/stack/grind_requirements()
 	if(is_cyborg)
@@ -68,7 +57,6 @@
 		icon_state = "[initial(icon_state)]_3"
 	..()
 
-
 /obj/item/stack/Destroy()
 	if (usr && usr.machine==src)
 		usr << browse(null, "window=stack")
@@ -94,10 +82,11 @@
 	to_chat(user, "<span class='notice'>Alt-click to take a custom amount.</span>")
 
 /obj/item/stack/proc/get_amount()
-	if(is_cyborg)
-		. = round(source.energy / cost)
-	else
-		. = (amount)
+	//if(is_cyborg)
+	//	. = round(source.energy / cost)
+	//else
+	//	. = (amount)
+	. = (amount)//not_actual
 
 /obj/item/stack/attack_self(mob/user)
 	interact(user)
@@ -111,7 +100,7 @@
 		return
 	if (!src || get_amount() <= 0)
 		user << browse(null, "window=stack")
-	user.set_machine(src) //for correct work of onclose
+	user.set_machine(src)
 	var/list/recipe_list = recipes
 	if (recipes_sublist && recipe_list[recipes_sublist] && istype(recipe_list[recipes_sublist], /datum/stack_recipe_list))
 		var/datum/stack_recipe_list/srl = recipe_list[recipes_sublist]
@@ -177,7 +166,7 @@
 			recipes_list = srl.recipes
 		var/datum/stack_recipe/R = recipes_list[text2num(href_list["make"])]
 		var/multiplier = text2num(href_list["multiplier"])
-		if (!multiplier ||(multiplier <= 0)) //href protection
+		if (!multiplier ||(multiplier <= 0))
 			return
 		if(!building_checks(R, multiplier))
 			return
@@ -189,39 +178,36 @@
 				return
 
 		var/obj/O
-		if(R.max_res_amount > 1) //Is it a stack?
+		if(R.max_res_amount > 1)
 			O = new R.result_type(usr.drop_location(), R.res_amount * multiplier)
 		else
 			O = new R.result_type(usr.drop_location())
 		O.setDir(usr.dir)
 		use(R.req_amount * multiplier)
 
-		//START: oh fuck i'm so sorry
-		if(istype(O, /obj/structure/windoor_assembly))
-			var/obj/structure/windoor_assembly/W = O
-			W.ini_dir = W.dir
+		//if(istype(O, /obj/structure/windoor_assembly))
+		if(FALSE)//not_actual
+			//var/obj/structure/windoor_assembly/W = O
+			//W.ini_dir = W.dir
 		else if(istype(O, /obj/structure/window))
 			var/obj/structure/window/W = O
 			W.ini_dir = W.dir
-		//END: oh fuck i'm so sorry
 
-		else if(istype(O, /obj/item/restraints/handcuffs/cable))
-			var/obj/item/cuffs = O
-			cuffs.item_color = item_color
-			cuffs.update_icon()
+		//else if(istype(O, /obj/item/restraints/handcuffs/cable))
+		//	var/obj/item/cuffs = O
+		//	cuffs.item_color = item_color
+		//	cuffs.update_icon()
 
 		if (QDELETED(O))
-			return //It's a stack and has already been merged
+			return
 
 		if (isitem(O))
 			usr.put_in_hands(O)
 		O.add_fingerprint(usr)
 
-		//BubbleWrap - so newly formed boxes are empty
-		if ( istype(O, /obj/item/storage) )
-			for (var/obj/item/I in O)
-				qdel(I)
-		//BubbleWrap END
+		//if ( istype(O, /obj/item/storage) )
+		//	for (var/obj/item/I in O)
+		//		qdel(I)
 
 /obj/item/stack/proc/building_checks(datum/stack_recipe/R, multiplier)
 	if (get_amount() < R.req_amount*multiplier)
@@ -270,11 +256,11 @@
 					return FALSE
 	return TRUE
 
-/obj/item/stack/use(used, transfer = FALSE, check = TRUE) // return 0 = borked; return 1 = had enough
+/obj/item/stack/use(used, transfer = FALSE, check = TRUE)
 	if(check && zero_amount())
 		return FALSE
-	if (is_cyborg)
-		return source.use_charge(used * cost)
+	//if (is_cyborg)
+	//	return source.use_charge(used * cost)
 	if (amount < used)
 		return FALSE
 	amount -= used
@@ -299,32 +285,34 @@
 	return TRUE
 
 /obj/item/stack/proc/zero_amount()
-	if(is_cyborg)
-		return source.energy < cost
+	//if(is_cyborg)
+	//	return source.energy < cost
 	if(amount < 1)
 		qdel(src)
 		return 1
 	return 0
 
 /obj/item/stack/proc/add(amount)
-	if (is_cyborg)
-		source.add_charge(amount * cost)
-	else
-		src.amount += amount
+	//if (is_cyborg)
+	//	source.add_charge(amount * cost)
+	//else
+	//	src.amount += amount
+	src.amount += amount//not_actual
 	update_icon()
 	update_weight()
 
-/obj/item/stack/proc/merge(obj/item/stack/S) //Merge src into S, as much as possible
-	if(QDELETED(S) || QDELETED(src) || S == src) //amusingly this can cause a stack to consume itself, let's not allow that.
+/obj/item/stack/proc/merge(obj/item/stack/S)
+	if(QDELETED(S) || QDELETED(src) || S == src)
 		return
 	var/transfer = get_amount()
-	if(S.is_cyborg)
-		transfer = min(transfer, round((S.source.max_energy - S.source.energy) / S.cost))
-	else
-		transfer = min(transfer, S.max_amount - S.amount)
+	//if(S.is_cyborg)
+	//	transfer = min(transfer, round((S.source.max_energy - S.source.energy) / S.cost))
+	//else
+	//	transfer = min(transfer, S.max_amount - S.amount)
+	transfer = min(transfer, S.max_amount - S.amount)//not_actual
 	if(pulledby)
 		pulledby.start_pulling(S)
-	S.copy_evidences(src)
+	//S.copy_evidences(src)
 	use(transfer, TRUE)
 	S.add(transfer)
 	return transfer
@@ -339,15 +327,6 @@
 		merge(AM)
 	. = ..()
 
-//ATTACK HAND IGNORING PARENT RETURN VALUE
-/obj/item/stack/attack_hand(mob/user)
-	if(user.get_inactive_held_item() == src)
-		if(zero_amount())
-			return
-		return change_stack(user,1)
-	else
-		. = ..()
-
 /obj/item/stack/AltClick(mob/living/user)
 	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
 		return
@@ -356,7 +335,6 @@
 	else
 		if(zero_amount())
 			return
-		//get amount from user
 		var/max = get_amount()
 		var/stackmaterial = round(input(user,"How many sheets do you wish to take out of this stack? (Maximum  [max])") as null|num)
 		max = get_amount()
@@ -389,19 +367,11 @@
 		. = ..()
 
 /obj/item/stack/proc/copy_evidences(obj/item/stack/from)
-	add_blood_DNA(from.return_blood_DNA())
-	add_fingerprint_list(from.return_fingerprints())
-	add_hiddenprint_list(from.return_hiddenprints())
-	fingerprintslast  = from.fingerprintslast
-	//TODO bloody overlay
+	//add_blood_DNA(from.return_blood_DNA())
+	//add_fingerprint_list(from.return_fingerprints())
+	//add_hiddenprint_list(from.return_hiddenprints())
+	//fingerprintslast  = from.fingerprintslast
 
-/obj/item/stack/microwave_act(obj/machinery/microwave/M)
-	if(istype(M) && M.dirty < 100)
-		M.dirty += amount
-
-/*
- * Recipe datum
- */
 /datum/stack_recipe
 	var/title = "ERROR"
 	var/result_type
@@ -427,9 +397,7 @@
 	src.on_floor = on_floor
 	src.window_checks = window_checks
 	src.placement_checks = placement_checks
-/*
- * Recipe list datum
- */
+
 /datum/stack_recipe_list
 	var/title = "ERROR"
 	var/list/recipes

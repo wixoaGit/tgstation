@@ -1,11 +1,3 @@
-
-
-//Values for antag preferences, event roles, etc. unified here
-
-
-
-//These are synced with the Database, if you change the values of the defines
-//then you MUST update the database!
 #define ROLE_SYNDICATE			"Syndicate"
 #define ROLE_TRAITOR			"Traitor"
 #define ROLE_OPERATIVE			"Operative"
@@ -37,35 +29,31 @@
 #define ROLE_LAVALAND			"Lavaland"
 #define ROLE_INTERNAL_AFFAIRS	"Internal Affairs Agent"
 
-//Missing assignment means it's not a gamemode specific role, IT'S NOT A BUG OR ERROR.
-//The gamemode specific ones are just so the gamemodes can query whether a player is old enough
-//(in game days played) to play that role
 GLOBAL_LIST_INIT(special_roles, list(
-	ROLE_TRAITOR = /datum/game_mode/traitor,
-	ROLE_BROTHER = /datum/game_mode/traitor/bros,
-	ROLE_OPERATIVE = /datum/game_mode/nuclear,
-	ROLE_CHANGELING = /datum/game_mode/changeling,
-	ROLE_WIZARD = /datum/game_mode/wizard,
-	ROLE_MALF,
-	ROLE_REV = /datum/game_mode/revolution,
-	ROLE_ALIEN,
-	ROLE_PAI,
-	ROLE_CULTIST = /datum/game_mode/cult,
-	ROLE_BLOB,
-	ROLE_NINJA,
-	ROLE_CREEP,
-	ROLE_MONKEY = /datum/game_mode/monkey,
-	ROLE_REVENANT,
-	ROLE_ABDUCTOR,
-	ROLE_DEVIL = /datum/game_mode/devil,
-	ROLE_SERVANT_OF_RATVAR = /datum/game_mode/clockwork_cult,
-	ROLE_OVERTHROW = /datum/game_mode/overthrow,
-	ROLE_HIVE = /datum/game_mode/hivemind,
-	ROLE_INTERNAL_AFFAIRS = /datum/game_mode/traitor/internal_affairs,
-	ROLE_SENTIENCE
+	ROLE_TRAITOR = /datum/game_mode/traitor//,
+//	ROLE_BROTHER = /datum/game_mode/traitor/bros,
+//	ROLE_OPERATIVE = /datum/game_mode/nuclear,
+//	ROLE_CHANGELING = /datum/game_mode/changeling,
+//	ROLE_WIZARD = /datum/game_mode/wizard,
+//	ROLE_MALF,
+//	ROLE_REV = /datum/game_mode/revolution,
+//	ROLE_ALIEN,
+//	ROLE_PAI,
+//	ROLE_CULTIST = /datum/game_mode/cult,
+//	ROLE_BLOB,
+//	ROLE_NINJA,
+//	ROLE_CREEP,
+//	ROLE_MONKEY = /datum/game_mode/monkey,
+//	ROLE_REVENANT,
+//	ROLE_ABDUCTOR,
+//	ROLE_DEVIL = /datum/game_mode/devil,
+//	ROLE_SERVANT_OF_RATVAR = /datum/game_mode/clockwork_cult,
+//	ROLE_OVERTHROW = /datum/game_mode/overthrow,
+//	ROLE_HIVE = /datum/game_mode/hivemind,
+//	ROLE_INTERNAL_AFFAIRS = /datum/game_mode/traitor/internal_affairs,
+//	ROLE_SENTIENCE
 ))
 
-//Job defines for what happens when you fail to qualify for any job during job selection
 #define BEOVERFLOW 	1
 #define BERANDOMJOB 	2
 #define RETURNTOLOBBY 	3

@@ -25,14 +25,12 @@ SUBSYSTEM_DEF(machines)
 /datum/controller/subsystem/machines/stat_entry()
 	..("M:[processing.len]|PN:[powernets.len]")
 
-
 /datum/controller/subsystem/machines/fire(resumed = 0)
 	if (!resumed)
 		for(var/datum/powernet/Powernet in powernets)
-			Powernet.reset() //reset the power state.
+			Powernet.reset()
 		src.currentrun = processing.Copy()
 
-	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 
 	var/seconds = wait * 0.1
@@ -41,7 +39,7 @@ SUBSYSTEM_DEF(machines)
 		currentrun.len--
 		if(!QDELETED(thing) && thing.process(seconds) != PROCESS_KILL)
 			if(thing.use_power)
-				thing.auto_use_power() //add back the power state
+				thing.auto_use_power()
 		else
 			processing -= thing
 			if (!QDELETED(thing))
@@ -56,9 +54,3 @@ SUBSYSTEM_DEF(machines)
 			var/datum/powernet/NewPN = new()
 			NewPN.add_cable(PC)
 			propagate_network(PC,PC.powernet)
-
-/datum/controller/subsystem/machines/Recover()
-	if (istype(SSmachines.processing))
-		processing = SSmachines.processing
-	if (istype(SSmachines.powernets))
-		powernets = SSmachines.powernets

@@ -18,14 +18,14 @@ GLOBAL_LIST_EMPTY(radial_menus)
 /obj/screen/radial/slice/MouseEntered(location, control, params)
 	. = ..()
 	icon_state = "radial_slice_focus"
-	if(tooltips)
-		openToolTip(usr, src, params, title = name)
+	//if(tooltips)
+	//	openToolTip(usr, src, params, title = name)
 
 /obj/screen/radial/slice/MouseExited(location, control, params)
 	. = ..()
 	icon_state = "radial_slice"
-	if(tooltips)
-		closeToolTip(usr)
+	//if(tooltips)
+	//	closeToolTip(usr)
 
 /obj/screen/radial/slice/Click(location, control, params)
 	if(usr.client == parent.current_user)
@@ -37,6 +37,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 /obj/screen/radial/center
 	name = "Close Menu"
 	icon_state = "radial_center"
+	screen_loc = "CENTER,CENTER"//not_actual
 
 /obj/screen/radial/center/MouseEntered(location, control, params)
 	. = ..()
@@ -51,10 +52,10 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		parent.finished = TRUE
 
 /datum/radial_menu
-	var/list/choices = list() //List of choice id's
-	var/list/choices_icons = list() //choice_id -> icon
-	var/list/choices_values = list() //choice_id -> choice
-	var/list/page_data = list() //list of choices per page
+	var/list/choices = list()
+	var/list/choices_icons = list()
+	var/list/choices_values = list()
+	var/list/page_data = list()
 
 
 	var/selected_choice
@@ -72,16 +73,15 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/starting_angle = 0
 	var/ending_angle = 360
 	var/zone = 360
-	var/min_angle = 45 //Defaults are setup for this value, if you want to make the menu more dense these will need changes.
+	var/min_angle = 45
 	var/max_elements
 	var/pages = 1
 	var/current_page = 1
 
-	var/hudfix_method = TRUE //TRUE to change anchor to user, FALSE to shift by py_shift
+	var/hudfix_method = TRUE
 	var/py_shift = 0
 	var/entry_animation = TRUE
 
-//If we swap to vis_contens inventory these will need a redo
 /datum/radial_menu/proc/check_screen_border(mob/user)
 	var/atom/movable/AM = anchor
 	if(!istype(AM) || !AM.screen_loc)
@@ -91,10 +91,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 			anchor = user
 		else
 			py_shift = 32
-			restrict_to_dir(NORTH) //I was going to parse screen loc here but that's more effort than it's worth.
+			restrict_to_dir(NORTH)
 
-//Sets defaults
-//These assume 45 deg min_angle
 /datum/radial_menu/proc/restrict_to_dir(dir)
 	switch(dir)
 		if(NORTH)
@@ -120,7 +118,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/paged = max_elements < choices.len
 	if(elements.len < max_elements)
 		var/elements_to_add = max_elements - elements.len
-		for(var/i in 1 to elements_to_add) //Create all elements
+		for(var/i in 1 to elements_to_add)
 			var/obj/screen/radial/slice/new_element = new /obj/screen/radial/slice
 			new_element.tooltips = use_tooltips
 			new_element.parent = src
@@ -164,29 +162,29 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	E.cut_overlays()
 	E.alpha = 0
 	E.name = "None"
-	E.maptext = null
-	E.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	//E.maptext = null
+	//E.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	E.choice = null
 	E.next_page = FALSE
 
 /datum/radial_menu/proc/SetElement(obj/screen/radial/slice/E,choice_id,angle,anim,anim_order)
-	//Position
 	var/py = round(cos(angle) * radius) + py_shift
 	var/px = round(sin(angle) * radius)
 	if(anim)
 		var/timing = anim_order * 0.5
 		var/matrix/starting = matrix()
-		starting.Scale(0.1,0.1)
+		//starting.Scale(0.1,0.1)
 		E.transform = starting
 		var/matrix/TM = matrix()
-		animate(E,pixel_x = px,pixel_y = py, transform = TM, time = timing)
+		//animate(E,pixel_x = px,pixel_y = py, transform = TM, time = timing)
+		E.screen_loc = "CENTER:[px],CENTER:[py]"//not_actual
 	else
 		E.pixel_y = py
 		E.pixel_x = px
+		E.screen_loc = "CENTER:[px],CENTER:[py]"//not_actual
 
-	//Visuals
 	E.alpha = 255
-	E.mouse_opacity = MOUSE_OPACITY_ICON
+	//E.mouse_opacity = MOUSE_OPACITY_ICON
 	E.cut_overlays()
 	if(choice_id == NEXT_PAGE_ID)
 		E.name = "Next Page"
@@ -196,13 +194,16 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		if(istext(choices_values[choice_id]))
 			E.name = choices_values[choice_id]
 		else
-			var/atom/movable/AM = choices_values[choice_id] //Movables only
+			var/atom/movable/AM = choices_values[choice_id]
 			E.name = AM.name
 		E.choice = choice_id
-		E.maptext = null
+		//E.maptext = null
 		E.next_page = FALSE
 		if(choices_icons[choice_id])
-			E.add_overlay(choices_icons[choice_id])
+			//E.add_overlay(choices_icons[choice_id])
+			//not_actual
+			var/image/ci = choices_icons[choice_id]
+			E.icon_state = ci.icon_state
 
 /datum/radial_menu/New()
 	close_button = new
@@ -239,9 +240,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/mutable_appearance/MA = new /mutable_appearance(E)
 	if(MA)
 		MA.layer = ABOVE_HUD_LAYER
-		MA.appearance_flags |= RESET_TRANSFORM
+		//MA.appearance_flags |= RESET_TRANSFORM
 	return MA
-
 
 /datum/radial_menu/proc/next_page()
 	if(pages > 1)
@@ -254,15 +254,20 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	if(!M.client || !anchor)
 		return
 	current_user = M.client
-	//Blank
-	menu_holder = image(icon='icons/effects/effects.dmi',loc=anchor,icon_state="nothing",layer = ABOVE_HUD_LAYER)
-	menu_holder.appearance_flags |= KEEP_APART
-	menu_holder.vis_contents += elements + close_button
-	current_user.images += menu_holder
+	//menu_holder = image(icon='icons/effects/effects.dmi',loc=anchor,icon_state="nothing",layer = ABOVE_HUD_LAYER)
+	//menu_holder.appearance_flags |= KEEP_APART
+	//menu_holder.vis_contents += elements + close_button
+	//current_user.images += menu_holder
+	//not_actual
+	current_user.screen += close_button
+	current_user.screen += elements
 
 /datum/radial_menu/proc/hide()
 	if(current_user)
-		current_user.images -= menu_holder
+		//current_user.images -= menu_holder
+		//not_actual
+		current_user.screen -= close_button
+		current_user.screen -= elements
 
 /datum/radial_menu/proc/wait(atom/user, atom/anchor, require_near = FALSE)
 	while (current_user && !finished && !selected_choice)
@@ -279,11 +284,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	Reset()
 	hide()
 	. = ..()
-/*
-	Presents radial menu to user anchored to anchor (or user if the anchor is currently in users screen)
-	Choices should be a list where list keys are movables or text used for element names and return value
-	and list values are movables/icons/images used for element icons
-*/
+
 /proc/show_radial_menu(mob/user, atom/anchor, list/choices, uniqueid, radius, datum/callback/custom_check, require_near = FALSE, tooltips = FALSE)
 	if(!user || !anchor || !length(choices))
 		return
@@ -300,7 +301,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	if(istype(custom_check))
 		menu.custom_check_callback = custom_check
 	menu.anchor = anchor
-	menu.check_screen_border(user) //Do what's needed to make it look good near borders or on hud
+	menu.check_screen_border(user)
 	menu.set_choices(choices, tooltips)
 	menu.show_to(user)
 	menu.wait(user, anchor, require_near)

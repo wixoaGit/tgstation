@@ -10,8 +10,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	var/gpstag = "COM0"
 	var/emped = FALSE
 	var/tracking = TRUE
-	var/updating = TRUE //Automatic updating of GPS list. Can be set to manual by user.
-	var/global_mode = TRUE //If disabled, only GPS signals of the same Z level are shown
+	var/updating = TRUE
+	var/global_mode = TRUE
 
 /obj/item/gps/examine(mob/user)
 	..()
@@ -34,8 +34,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	emped = TRUE
 	cut_overlay("working")
 	add_overlay("emp")
-	addtimer(CALLBACK(src, .proc/reboot), 300, TIMER_UNIQUE|TIMER_OVERRIDE) //if a new EMP happens, remove the old timer so it doesn't reactivate early
-	SStgui.close_uis(src) //Close the UI control if it is open.
+	addtimer(CALLBACK(src, .proc/reboot), 300, TIMER_UNIQUE|TIMER_OVERRIDE)
+	SStgui.close_uis(src)
 
 /obj/item/gps/proc/reboot()
 	emped = FALSE
@@ -49,7 +49,7 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 /obj/item/gps/proc/toggletracking(mob/user)
 	if(!user.canUseTopic(src, BE_CLOSE))
-		return //user not valid to use gps
+		return
 	if(emped)
 		to_chat(user, "It's busted!")
 		return
@@ -62,19 +62,17 @@ GLOBAL_LIST_EMPTY(GPS_list)
 		to_chat(user, "[src] is now tracking, and visible to other GPS devices.")
 		tracking = TRUE
 
-
-/obj/item/gps/ui_interact(mob/user, ui_key = "gps", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state) // Remember to use the appropriate state.
+/obj/item/gps/ui_interact(mob/user, ui_key = "gps", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
 	if(emped)
 		to_chat(user, "[src] fizzles weakly.")
 		return
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		var/gps_window_height = 300 + GLOB.GPS_list.len * 20 // Variable window height, depending on how many GPS units there are to show
-		ui = new(user, src, ui_key, "gps", "Global Positioning System", 600, gps_window_height, master_ui, state) //width, height
+		var/gps_window_height = 300 + GLOB.GPS_list.len * 20
+		ui = new(user, src, ui_key, "gps", "Global Positioning System", 600, gps_window_height, master_ui, state)
 		ui.open()
 
 	ui.set_autoupdate(state = updating)
-
 
 /obj/item/gps/ui_data(mob/user)
 	var/list/data = list()
@@ -82,7 +80,7 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	data["tag"] = gpstag
 	data["updating"] = updating
 	data["globalmode"] = global_mode
-	if(!tracking || emped) //Do not bother scanning if the GPS is off or EMPed
+	if(!tracking || emped)
 		return data
 
 	var/turf/curr = get_turf(src)
@@ -99,23 +97,21 @@ GLOBAL_LIST_EMPTY(GPS_list)
 		if(!global_mode && pos.z != curr.z)
 			continue
 		var/list/signal = list()
-		signal["entrytag"] = G.gpstag //Name or 'tag' of the GPS
+		signal["entrytag"] = G.gpstag
 		signal["area"] = get_area_name(G, TRUE)
 		signal["coord"] = "[pos.x], [pos.y], [pos.z]"
-		if(pos.z == curr.z) //Distance/Direction calculations for same z-level only
-			signal["dist"] = max(get_dist(curr, pos), 0) //Distance between the src and remote GPS turfs
-			signal["degrees"] = round(Get_Angle(curr, pos)) //0-360 degree directional bearing, for more precision.
-			var/direction = uppertext(dir2text(get_dir(curr, pos))) //Direction text (East, etc). Not as precise, but still helpful.
+		if(pos.z == curr.z)
+			signal["dist"] = max(get_dist(curr, pos), 0)
+			signal["degrees"] = round(Get_Angle(curr, pos))
+			var/direction = uppertext(dir2text(get_dir(curr, pos)))
 			if(!direction)
 				direction = "CENTER"
 				signal["degrees"] = "N/A"
 			signal["direction"] = direction
 
-		signals += list(signal) //Add this signal to the list of signals
+		signals += list(signal)
 	data["signals"] = signals
 	return data
-
-
 
 /obj/item/gps/ui_act(action, params)
 	if(..())
@@ -137,7 +133,6 @@ GLOBAL_LIST_EMPTY(GPS_list)
 		if("globalmode")
 			global_mode = !global_mode
 			. = TRUE
-
 
 /obj/item/gps/science
 	icon_state = "gps-s"
@@ -190,17 +185,15 @@ GLOBAL_LIST_EMPTY(GPS_list)
 /obj/item/gps/visible_debug/process()
 	var/turf/T = get_turf(src)
 	if(T)
-		// I assume it's faster to color,tag and OR the turf in, rather
-		// then checking if its there
 		T.color = RANDOM_COLOUR
-		T.maptext = "[T.x],[T.y],[T.z]"
+		//T.maptext = "[T.x],[T.y],[T.z]"
 		tagged |= T
 
 /obj/item/gps/visible_debug/proc/clear()
 	while(tagged.len)
 		var/turf/T = pop(tagged)
 		T.color = initial(T.color)
-		T.maptext = initial(T.maptext)
+		//T.maptext = initial(T.maptext)
 
 /obj/item/gps/visible_debug/Destroy()
 	if(tagged)

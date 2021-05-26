@@ -1,18 +1,11 @@
-/proc/count_unique_techweb_nodes()
-	var/static/list/L = typesof(/datum/techweb_node)
-	return L.len
-
-/proc/count_unique_techweb_designs()
-	var/static/list/L = typesof(/datum/design)
-	return L.len
-
 /proc/node_boost_error(id, message)
-	WARNING("Invalid boost information for node \[[id]\]: [message]")
+	//WARNING("Invalid boost information for node \[[id]\]: [message]")
+	WARNING("Invalid boost information for node ([id]): [message]")//not_actual
 	SSresearch.invalid_node_boost[id] = message
 
-/proc/techweb_item_boost_check(obj/item/I)			//Returns an associative list of techweb node datums with values of the boost it gives.	var/list/returned = list()
+/proc/techweb_item_boost_check(obj/item/I)
 	if(SSresearch.techweb_boost_items[I.type])
-		return SSresearch.techweb_boost_items[I.type]		//It should already be formatted in node datum = list(point type = value)
+		return SSresearch.techweb_boost_items[I.type]
 
 /proc/techweb_item_point_check(obj/item/I)
 	if(SSresearch.techweb_point_items[I.type])

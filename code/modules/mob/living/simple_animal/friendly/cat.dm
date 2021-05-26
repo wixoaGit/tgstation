@@ -1,4 +1,3 @@
-//Cat
 /mob/living/simple_animal/pet/cat
 	name = "cat"
 	desc = "Kitty!!"
@@ -13,22 +12,23 @@
 	emote_see = list("shakes its head.", "shivers.")
 	speak_chance = 1
 	turns_per_move = 5
-	see_in_dark = 6
-	ventcrawler = VENTCRAWLER_ALWAYS
+	//see_in_dark = 6
+	//ventcrawler = VENTCRAWLER_ALWAYS
 	pass_flags = PASSTABLE
 	mob_size = MOB_SIZE_SMALL
 	mob_biotypes = list(MOB_ORGANIC, MOB_BEAST)
 	minbodytemp = 200
 	maxbodytemp = 400
-	unsuitable_atmos_damage = 1
+	//unsuitable_atmos_damage = 1
 	animal_species = /mob/living/simple_animal/pet/cat
 	childtype = list(/mob/living/simple_animal/pet/cat/kitten)
-	butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 2, /obj/item/organ/ears/cat = 1, /obj/item/organ/tail/cat = 1)
+	//butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab = 2, /obj/item/organ/ears/cat = 1, /obj/item/organ/tail/cat = 1)
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
 	var/turns_since_scan = 0
-	var/mob/living/simple_animal/mouse/movement_target
+	//var/mob/living/simple_animal/mouse/movement_target
+	var/mob/living/movement_target //not_actual
 	gold_core_spawnable = FRIENDLY_SPAWN
 	collar_type = "cat"
 
@@ -36,7 +36,7 @@
 
 /mob/living/simple_animal/pet/cat/Initialize()
 	. = ..()
-	verbs += /mob/living/proc/lay_down
+	//verbs += /mob/living/proc/lay_down
 
 /mob/living/simple_animal/pet/cat/update_mobility()
 	..()
@@ -55,7 +55,7 @@
 	icon_state = "spacecat"
 	icon_living = "spacecat"
 	icon_dead = "spacecat_dead"
-	unsuitable_atmos_damage = 0
+	//unsuitable_atmos_damage = 0
 	minbodytemp = TCMB
 	maxbodytemp = T0C + 40
 
@@ -80,7 +80,6 @@
 	mob_size = MOB_SIZE_SMALL
 	collar_type = "kitten"
 
-//RUNTIME IS ALIVE! SQUEEEEEEEE~
 /mob/living/simple_animal/pet/cat/Runtime
 	name = "Runtime"
 	desc = "GCAT"
@@ -90,8 +89,8 @@
 	gender = FEMALE
 	gold_core_spawnable = NO_SPAWN
 	unique_pet = TRUE
-	var/list/family = list()//var restored from savefile, has count of each child type
-	var/list/children = list()//Actual mob instances of children
+	var/list/family = list()
+	var/list/children = list()
 	var/cats_deployed = 0
 	var/memory_saved = FALSE
 
@@ -123,9 +122,9 @@
 	..()
 
 /mob/living/simple_animal/pet/cat/Runtime/proc/Read_Memory()
-	if(fexists("data/npc_saves/Runtime.sav")) //legacy compatability to convert old format to new
-		var/savefile/S = new /savefile("data/npc_saves/Runtime.sav")
-		S["family"] >> family
+	if(fexists("data/npc_saves/Runtime.sav"))
+		//var/savefile/S = new /savefile("data/npc_saves/Runtime.sav")
+		//S["family"] >> family
 		fdel("data/npc_saves/Runtime.sav")
 	else
 		var/json_file = file("data/npc_saves/Runtime.json")
@@ -142,7 +141,8 @@
 	family = list()
 	if(!dead)
 		for(var/mob/living/simple_animal/pet/cat/kitten/C in children)
-			if(istype(C,type) || C.stat || !C.z || !C.butcher_results) //That last one is a work around for hologram cats
+			//if(istype(C,type) || C.stat || !C.z || !C.butcher_results)
+			if(istype(C,type) || C.stat || !C.z)//not_actual
 				continue
 			if(C.type in family)
 				family[C.type] += 1
@@ -156,7 +156,7 @@
 	cats_deployed = 1
 	for(var/cat_type in family)
 		if(family[cat_type] > 0)
-			for(var/i in 1 to min(family[cat_type],100)) //Limits to about 500 cats, you wouldn't think this would be needed (BUT IT IS)
+			for(var/i in 1 to min(family[cat_type],100))
 				new cat_type(loc)
 
 /mob/living/simple_animal/pet/cat/Proc
@@ -186,20 +186,19 @@
 			else
 				emote("me", 1, pick("grooms its fur.", "twitches its whiskers.", "shakes out its coat."))
 
-	//MICE!
-	if((src.loc) && isturf(src.loc))
-		if(!stat && !resting && !buckled)
-			for(var/mob/living/simple_animal/mouse/M in view(1,src))
-				if(!M.stat && Adjacent(M))
-					emote("me", 1, "splats \the [M]!")
-					M.splat()
-					movement_target = null
-					stop_automated_movement = 0
-					break
-			for(var/obj/item/toy/cattoy/T in view(1,src))
-				if (T.cooldown < (world.time - 400))
-					emote("me", 1, "bats \the [T] around with its paw!")
-					T.cooldown = world.time
+	//if((src.loc) && isturf(src.loc))
+	//	if(!stat && !resting && !buckled)
+	//		for(var/mob/living/simple_animal/mouse/M in view(1,src))
+	//			if(!M.stat && Adjacent(M))
+	//				emote("me", 1, "splats \the [M]!")
+	//				M.splat()
+	//				movement_target = null
+	//				stop_automated_movement = 0
+	//				break
+	//		for(var/obj/item/toy/cattoy/T in view(1,src))
+	//			if (T.cooldown < (world.time - 400))
+	//				emote("me", 1, "bats \the [T] around with its paw!")
+	//				T.cooldown = world.time
 
 	..()
 
@@ -216,10 +215,10 @@
 			if( !movement_target || !(movement_target.loc in oview(src, 3)) )
 				movement_target = null
 				stop_automated_movement = 0
-				for(var/mob/living/simple_animal/mouse/snack in oview(src,3))
-					if(isturf(snack.loc) && !snack.stat)
-						movement_target = snack
-						break
+				//for(var/mob/living/simple_animal/mouse/snack in oview(src,3))
+				//	if(isturf(snack.loc) && !snack.stat)
+				//		movement_target = snack
+				//		break
 			if(movement_target)
 				stop_automated_movement = 1
 				walk_to(src,movement_target,0,3)
@@ -241,50 +240,3 @@
 		else
 			if(M && stat != DEAD)
 				emote("me", 1, "hisses!")
-
-/mob/living/simple_animal/pet/cat/cak //I told you I'd do it, Remie
-	name = "Keeki"
-	desc = "It's a cat made out of cake."
-	icon_state = "cak"
-	icon_living = "cak"
-	icon_dead = "cak_dead"
-	health = 50
-	maxHealth = 50
-	gender = FEMALE
-	harm_intent_damage = 10
-	butcher_results = list(/obj/item/organ/brain = 1, /obj/item/organ/heart = 1, /obj/item/reagent_containers/food/snacks/cakeslice/birthday = 3,  \
-	/obj/item/reagent_containers/food/snacks/meat/slab = 2)
-	response_harm = "takes a bite out of"
-	attacked_sound = 'sound/items/eatfood.ogg'
-	deathmessage = "loses its false life and collapses!"
-	deathsound = "bodyfall"
-
-/mob/living/simple_animal/pet/cat/cak/CheckParts(list/parts)
-	..()
-	var/obj/item/organ/brain/B = locate(/obj/item/organ/brain) in contents
-	if(!B || !B.brainmob || !B.brainmob.mind)
-		return
-	B.brainmob.mind.transfer_to(src)
-	to_chat(src, "<span class='big bold'>You are a cak!</span><b> You're a harmless cat/cake hybrid that everyone loves. People can take bites out of you if they're hungry, but you regenerate health \
-	so quickly that it generally doesn't matter. You're remarkably resilient to any damage besides this and it's hard for you to really die at all. You should go around and bring happiness and \
-	free cake to the station!</b>")
-	var/new_name = stripped_input(src, "Enter your name, or press \"Cancel\" to stick with Keeki.", "Name Change")
-	if(new_name)
-		to_chat(src, "<span class='notice'>Your name is now <b>\"new_name\"</b>!</span>")
-		name = new_name
-
-/mob/living/simple_animal/pet/cat/cak/Life()
-	..()
-	if(stat)
-		return
-	if(health < maxHealth)
-		adjustBruteLoss(-8) //Fast life regen
-	for(var/obj/item/reagent_containers/food/snacks/donut/D in range(1, src)) //Frosts nearby donuts!
-		if(!D.is_frosted)
-			D.frost_donut()
-
-/mob/living/simple_animal/pet/cat/cak/attack_hand(mob/living/L)
-	..()
-	if(L.a_intent == INTENT_HARM && L.reagents && !stat)
-		L.reagents.add_reagent("nutriment", 0.4)
-		L.reagents.add_reagent("vitamin", 0.4)

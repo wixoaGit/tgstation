@@ -24,57 +24,19 @@
 /obj/machinery/door/poddoor/ert
 	desc = "A heavy duty blast door that only opens for dire emergencies."
 
-//special poddoors that open when emergency shuttle docks at centcom
-/obj/machinery/door/poddoor/shuttledock
-	var/checkdir = 4	//door won't open if turf in this dir is `turftype`
-	var/turftype = /turf/open/space
-
-/obj/machinery/door/poddoor/shuttledock/proc/check()
-	var/turf/T = get_step(src, checkdir)
-	if(!istype(T, turftype))
-		INVOKE_ASYNC(src, .proc/open)
-	else
-		INVOKE_ASYNC(src, .proc/close)
-
-/obj/machinery/door/poddoor/incinerator_toxmix
-	name = "combustion chamber vent"
-	id = INCINERATOR_TOXMIX_VENT
-
-/obj/machinery/door/poddoor/incinerator_atmos_main
-	name = "turbine vent"
-	id = INCINERATOR_ATMOS_MAINVENT
-
-/obj/machinery/door/poddoor/incinerator_atmos_aux
-	name = "combustion chamber vent"
-	id = INCINERATOR_ATMOS_AUXVENT
-
-/obj/machinery/door/poddoor/incinerator_syndicatelava_main
-	name = "turbine vent"
-	id = INCINERATOR_SYNDICATELAVA_MAINVENT
-
-/obj/machinery/door/poddoor/incinerator_syndicatelava_aux
-	name = "combustion chamber vent"
-	id = INCINERATOR_SYNDICATELAVA_AUXVENT
-
 /obj/machinery/door/poddoor/Bumped(atom/movable/AM)
 	if(density)
 		return 0
 	else
 		return ..()
 
-//"BLAST" doors are obviously stronger than regular doors when it comes to BLASTS.
-/obj/machinery/door/poddoor/ex_act(severity, target)
-	if(severity == 3)
-		return
-	..()
-
 /obj/machinery/door/poddoor/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			//flick("opening", src)
 			playsound(src, 'sound/machines/blastdoor.ogg', 30, 1)
 		if("closing")
-			flick("closing", src)
+			//flick("closing", src)
 			playsound(src, 'sound/machines/blastdoor.ogg', 30, 1)
 
 /obj/machinery/door/poddoor/update_icon()
@@ -82,7 +44,7 @@
 		icon_state = "closed"
 	else
 		icon_state = "open"
-
+	
 /obj/machinery/door/poddoor/try_to_activate_door(mob/user)
 	return
 

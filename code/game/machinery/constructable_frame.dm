@@ -21,12 +21,11 @@
 			circuit = null
 	qdel(src)
 
-
 /obj/structure/frame/machine
 	name = "machine frame"
 	var/list/components = null
 	var/list/req_components = null
-	var/list/req_component_names = null // user-friendly names of components
+	var/list/req_component_names = null
 
 /obj/structure/frame/machine/examine(user)
 	..()
@@ -34,7 +33,8 @@
 		var/hasContent = 0
 		var/requires = "It requires"
 
-		for(var/i = 1 to req_components.len)
+		//for(var/i = 1 to req_components.len)
+		for(var/i = 1, i<=req_components.len, i++)//not_actual
 			var/tname = req_components[i]
 			var/amt = req_components[tname]
 			if(amt == 0)
@@ -52,7 +52,8 @@
 	if(!req_components)
 		return
 
-	req_component_names = new()
+	//req_component_names = new()
+	req_component_names = list()//not_actual
 	for(var/tname in req_components)
 		if(ispath(tname, /obj/item/stack))
 			var/obj/item/stack/S = tname
@@ -197,46 +198,44 @@
 					qdel(src)
 				return
 
-			if(istype(P, /obj/item/storage/part_replacer) && P.contents.len && get_req_components_amt())
-				var/obj/item/storage/part_replacer/replacer = P
-				var/list/added_components = list()
-				var/list/part_list = list()
+			//if(istype(P, /obj/item/storage/part_replacer) && P.contents.len && get_req_components_amt())
+			//	var/obj/item/storage/part_replacer/replacer = P
+			//	var/list/added_components = list()
+			//	var/list/part_list = list()
 
-				//Assemble a list of current parts, then sort them by their rating!
-				for(var/obj/item/co in replacer)
-					part_list += co
-				//Sort the parts. This ensures that higher tier items are applied first.
-				part_list = sortTim(part_list, /proc/cmp_rped_sort)
+			//	for(var/obj/item/co in replacer)
+			//		part_list += co
+			//	part_list = sortTim(part_list, /proc/cmp_rped_sort)
 
-				for(var/path in req_components)
-					while(req_components[path] > 0 && (locate(path) in part_list))
-						var/obj/item/part = (locate(path) in part_list)
-						part_list -= part
-						if(istype(part,/obj/item/stack))
-							var/obj/item/stack/S = part
-							var/used_amt = min(round(S.get_amount()), req_components[path])
-							if(!used_amt || !S.use(used_amt))
-								continue
-							var/NS = new S.merge_type(src, used_amt)
-							added_components[NS] = path
-							req_components[path] -= used_amt
-						else
-							added_components[part] = path
-							if(SEND_SIGNAL(replacer, COMSIG_TRY_STORAGE_TAKE, part, src))
-								req_components[path]--
+			//	for(var/path in req_components)
+			//		while(req_components[path] > 0 && (locate(path) in part_list))
+			//			var/obj/item/part = (locate(path) in part_list)
+			//			part_list -= part
+			//			if(istype(part,/obj/item/stack))
+			//				var/obj/item/stack/S = part
+			//				var/used_amt = min(round(S.get_amount()), req_components[path])
+			//				if(!used_amt || !S.use(used_amt))
+			//					continue
+			//				var/NS = new S.merge_type(src, used_amt)
+			//				added_components[NS] = path
+			//				req_components[path] -= used_amt
+			//			else
+			//				added_components[part] = path
+			//				if(SEND_SIGNAL(replacer, COMSIG_TRY_STORAGE_TAKE, part, src))
+			//					req_components[path]--
 
-				for(var/obj/item/part in added_components)
-					if(istype(part,/obj/item/stack))
-						var/obj/item/stack/S = part
-						var/obj/item/stack/NS = locate(S.merge_type) in components //find a stack to merge with
-						if(NS)
-							S.merge(NS)
-					if(!QDELETED(part)) //If we're a stack and we merged we might not exist anymore
-						components += part
-					to_chat(user, "<span class='notice'>[part.name] applied.</span>")
-				if(added_components.len)
-					replacer.play_rped_sound()
-				return
+			//	for(var/obj/item/part in added_components)
+			//		if(istype(part,/obj/item/stack))
+			//			var/obj/item/stack/S = part
+			//			var/obj/item/stack/NS = locate(S.merge_type) in components
+			//			if(NS)
+			//				S.merge(NS)
+			//		if(!QDELETED(part)) //If we're a stack and we merged we might not exist anymore
+			//			components += part
+			//		to_chat(user, "<span class='notice'>[part.name] applied.</span>")
+			//	if(added_components.len)
+			//		replacer.play_rped_sound()
+			//	return
 
 			if(isitem(P) && get_req_components_amt())
 				for(var/I in req_components)

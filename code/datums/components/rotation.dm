@@ -6,9 +6,9 @@
 #define ROTATION_FLIP				(1<<5)
 
 /datum/component/simple_rotation
-	var/datum/callback/can_user_rotate //Checks if user can rotate
-	var/datum/callback/can_be_rotated  //Check if object can be rotated at all
-	var/datum/callback/after_rotation     //Additional stuff to do after rotation
+	var/datum/callback/can_user_rotate
+	var/datum/callback/can_be_rotated
+	var/datum/callback/after_rotation
 
 	var/rotation_flags = NONE
 	var/default_rotation_direction = ROTATION_CLOCKWISE
@@ -16,8 +16,6 @@
 /datum/component/simple_rotation/Initialize(rotation_flags = NONE ,can_user_rotate,can_be_rotated,after_rotation)
 	if(!ismovableatom(parent))
 		return COMPONENT_INCOMPATIBLE
-
-	//throw if no rotation direction is specificed ?
 
 	src.rotation_flags = rotation_flags
 
@@ -36,7 +34,6 @@
 	else
 		src.after_rotation = CALLBACK(src,.proc/default_after_rotation)
 
-	//Try Clockwise,counter,flip in order
 	if(src.rotation_flags & ROTATION_FLIP)
 		default_rotation_direction = ROTATION_FLIP
 	if(src.rotation_flags & ROTATION_COUNTERCLOCKWISE)
@@ -97,11 +94,14 @@
 	var/atom/movable/AM = parent
 	var/rot_degree
 	switch(rotation_type)
-		if(ROTATION_CLOCKWISE)
+		//if(ROTATION_CLOCKWISE)
+		if(16)//not_actual
 			rot_degree = -90
-		if(ROTATION_COUNTERCLOCKWISE)
+		//if(ROTATION_COUNTERCLOCKWISE)
+		if(8)//not_actual
 			rot_degree = 90
-		if(ROTATION_FLIP)
+		//if(ROTATION_FLIP)
+		if(32)//not_actual
 			rot_degree = 180
 	AM.setDir(turn(AM.dir,rot_degree))
 	after_rotation.Invoke(user,rotation_type)
@@ -119,25 +119,25 @@
 	to_chat(user,"<span class='notice'>You [rotation_type == ROTATION_FLIP ? "flip" : "rotate"] [parent].</span>")
 
 /atom/movable/proc/simple_rotate_clockwise()
-	set name = "Rotate Clockwise"
-	set category = "Object"
-	set src in oview(1)
+	//set name = "Rotate Clockwise"
+	//set category = "Object"
+	//set src in oview(1)
 	GET_COMPONENT(rotcomp,/datum/component/simple_rotation)
 	if(rotcomp)
 		rotcomp.HandRot(null,usr,ROTATION_CLOCKWISE)
 
 /atom/movable/proc/simple_rotate_counterclockwise()
-	set name = "Rotate Counter-Clockwise"
-	set category = "Object"
-	set src in oview(1)
+	//set name = "Rotate Counter-Clockwise"
+	//set category = "Object"
+	//set src in oview(1)
 	GET_COMPONENT(rotcomp,/datum/component/simple_rotation)
 	if(rotcomp)
 		rotcomp.HandRot(null,usr,ROTATION_COUNTERCLOCKWISE)
 
 /atom/movable/proc/simple_rotate_flip()
-	set name = "Flip"
-	set category = "Object"
-	set src in oview(1)
+	//set name = "Flip"
+	//set category = "Object"
+	//set src in oview(1)
 	GET_COMPONENT(rotcomp,/datum/component/simple_rotation)
 	if(rotcomp)
 		rotcomp.HandRot(null,usr,ROTATION_FLIP)

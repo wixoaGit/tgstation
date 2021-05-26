@@ -9,7 +9,7 @@
 	var/appearance_cache
 
 	var/id
-	var/ordered = TRUE //If the button gets placed into the default bar
+	var/ordered = TRUE
 
 /obj/screen/movable/action_button/proc/can_use(mob/user)
 	if (linked_action)
@@ -35,13 +35,13 @@
 			to_chat(usr, "<span class='warning'>Action button \"[name]\" is locked, unlock it first.</span>")
 			return TRUE
 		moved = 0
-		usr.update_action_buttons() //redraw buttons that are no longer considered "moved"
+		usr.update_action_buttons()
 		return TRUE
 	if(modifiers["ctrl"])
 		locked = !locked
 		to_chat(usr, "<span class='notice'>Action button \"[name]\" [locked ? "" : "un"]locked.</span>")
-		if(id && usr.client) //try to (un)remember position
-			usr.client.prefs.action_buttons_screen_locs["[name]_[id]"] = locked ? moved : null
+		//if(id && usr.client)
+		//	usr.client.prefs.action_buttons_screen_locs["[name]_[id]"] = locked ? moved : null
 		return TRUE
 	if(usr.next_click > world.time)
 		return
@@ -49,7 +49,6 @@
 	linked_action.Trigger()
 	return TRUE
 
-//Hide/Show Action Buttons ... Button
 /obj/screen/movable/action_button/hide_toggle
 	name = "Hide Buttons"
 	desc = "Shift-click any button to reset its position, and Control-click it to lock it in place. Alt-click this button to reset all buttons to their default positions."
@@ -75,21 +74,21 @@
 	if(modifiers["ctrl"])
 		locked = !locked
 		to_chat(usr, "<span class='notice'>Action button \"[name]\" [locked ? "" : "un"]locked.</span>")
-		if(id && usr.client) //try to (un)remember position
-			usr.client.prefs.action_buttons_screen_locs["[name]_[id]"] = locked ? moved : null
+		//if(id && usr.client)
+		//	usr.client.prefs.action_buttons_screen_locs["[name]_[id]"] = locked ? moved : null
 		return TRUE
 	if(modifiers["alt"])
 		for(var/V in usr.actions)
 			var/datum/action/A = V
 			var/obj/screen/movable/action_button/B = A.button
 			B.moved = FALSE
-			if(B.id && usr.client)
-				usr.client.prefs.action_buttons_screen_locs["[B.name]_[B.id]"] = null
-			B.locked = usr.client.prefs.buttons_locked
-		locked = usr.client.prefs.buttons_locked
+			//if(B.id && usr.client)
+			//	usr.client.prefs.action_buttons_screen_locs["[B.name]_[B.id]"] = null
+			//B.locked = usr.client.prefs.buttons_locked
+		//locked = usr.client.prefs.buttons_locked
 		moved = FALSE
-		if(id && usr.client)
-			usr.client.prefs.action_buttons_screen_locs["[name]_[id]"] = null
+		//if(id && usr.client)
+		//	usr.client.prefs.action_buttons_screen_locs["[name]_[id]"] = null
 		usr.update_action_buttons(TRUE)
 		to_chat(usr, "<span class='notice'>Action button positions have been reset.</span>")
 		return TRUE
@@ -113,7 +112,6 @@
 	user.update_action_buttons(TRUE)
 	to_chat(user, "<span class='notice'>Action button positions have been reset.</span>")
 
-
 /obj/screen/movable/action_button/hide_toggle/proc/InitialiseIcon(datum/hud/owner_hud)
 	var/settings = owner_hud.get_action_buttons_icons()
 	icon = settings["bg_icon"]
@@ -128,32 +126,27 @@
 	add_overlay(mutable_appearance(hide_icon, hidden ? show_state : hide_state))
 
 
-/obj/screen/movable/action_button/MouseEntered(location,control,params)
-	if(!QDELETED(src))
-		openToolTip(usr,src,params,title = name,content = desc,theme = actiontooltipstyle)
+///obj/screen/movable/action_button/MouseEntered(location,control,params)
+//	if(!QDELETED(src))
+//		openToolTip(usr,src,params,title = name,content = desc,theme = actiontooltipstyle)
 
-
-/obj/screen/movable/action_button/MouseExited()
-	closeToolTip(usr)
+///obj/screen/movable/action_button/MouseExited()
+//	closeToolTip(usr)
 
 /datum/hud/proc/get_action_buttons_icons()
 	. = list()
 	.["bg_icon"] = ui_style
 	.["bg_state"] = "template"
 
-	//TODO : Make these fit theme
 	.["toggle_icon"] = 'icons/mob/actions.dmi'
 	.["toggle_hide"] = "hide"
 	.["toggle_show"] = "show"
-
-//see human and alien hud for specific implementations.
 
 /mob/proc/update_action_buttons_icon(status_only = FALSE)
 	for(var/X in actions)
 		var/datum/action/A = X
 		A.UpdateButtonIcon(status_only)
 
-//This is the proc used to update all the action buttons.
 /mob/proc/update_action_buttons(reload_screen)
 	if(!hud_used || !client)
 		return
@@ -192,11 +185,9 @@
 	if(reload_screen)
 		client.screen += hud_used.hide_actions_toggle
 
-
-
 #define AB_MAX_COLUMNS 10
 
-/datum/hud/proc/ButtonNumberToScreenCoords(number) // TODO : Make this zero-indexed for readabilty
+/datum/hud/proc/ButtonNumberToScreenCoords(number)
 	var/row = round((number - 1)/AB_MAX_COLUMNS)
 	var/col = ((number - 1)%(AB_MAX_COLUMNS)) + 1
 
@@ -206,13 +197,3 @@
 	var/coord_row = "[row ? -row : "+0"]"
 
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:-6"
-
-/datum/hud/proc/SetButtonCoords(obj/screen/button,number)
-	var/row = round((number-1)/AB_MAX_COLUMNS)
-	var/col = ((number - 1)%(AB_MAX_COLUMNS)) + 1
-	var/x_offset = 32*(col-1) + 4 + 2*col
-	var/y_offset = -32*(row+1) + 26
-
-	var/matrix/M = matrix()
-	M.Translate(x_offset,y_offset)
-	button.transform = M

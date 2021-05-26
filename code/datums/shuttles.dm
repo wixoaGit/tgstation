@@ -12,7 +12,7 @@
 	var/credit_cost = INFINITY
 	var/can_be_bought = TRUE
 
-	var/list/movement_force // If set, overrides default movement_force on shuttle
+	var/list/movement_force 
 
 	var/port_x_offset
 	var/port_y_offset
@@ -26,7 +26,7 @@
 	. = ..()
 
 /datum/map_template/shuttle/preload_size(path, cache)
-	. = ..(path, TRUE) // Done this way because we still want to know if someone actualy wanted to cache the map
+	. = ..(path, TRUE)
 	if(!cached_map)
 		return
 
@@ -39,8 +39,8 @@
 	var/key
 	var/list/models = cached_map.grid_models
 	for(key in models)
-		if(findtext(models[key], "[/obj/docking_port/mobile]")) // Yay compile time checks
-			break // This works by assuming there will ever only be one mobile dock in a template at most
+		if(findtext(models[key], "[/obj/docking_port/mobile]"))
+			break
 
 	for(var/i in cached_map.gridSets)
 		var/datum/grid_set/gset = i
@@ -63,9 +63,9 @@
 							locate(.[MAP_MAXX], .[MAP_MAXY], .[MAP_MAXZ]))
 	for(var/i in 1 to turfs.len)
 		var/turf/place = turfs[i]
-		if(istype(place, /turf/open/space)) // This assumes all shuttles are loaded in a single spot then moved to their real destination.
+		if(istype(place, /turf/open/space))
 			continue
-		if(length(place.baseturfs) < 2) // Some snowflake shuttle shit
+		if(length(place.baseturfs) < 2)
 			continue
 		place.baseturfs.Insert(3, /turf/baseturf_skipover/shuttle)
 
@@ -74,7 +74,7 @@
 				port.register()
 			if(isnull(port_x_offset))
 				continue
-			switch(port.dir) // Yeah this looks a little ugly but mappers had to do this in their head before
+			switch(port.dir)
 				if(NORTH)
 					port.width = width
 					port.height = height
@@ -96,7 +96,6 @@
 					port.dwidth = port_y_offset - 1
 					port.dheight = width - port_x_offset
 
-//Whatever special stuff you want
 /datum/map_template/shuttle/proc/post_load(obj/docking_port/mobile/M)
 	if(movement_force)
 		M.movement_force = movement_force.Copy()
@@ -152,15 +151,13 @@
 	port_id = "pirate"
 	can_be_bought = FALSE
 
-/datum/map_template/shuttle/ruin //For random shuttles in ruins
+/datum/map_template/shuttle/ruin
 	port_id = "ruin"
 	can_be_bought = FALSE
 
 /datum/map_template/shuttle/snowdin
 	port_id = "snowdin"
 	can_be_bought = FALSE
-
-// Shuttles start here:
 
 /datum/map_template/shuttle/emergency/backup
 	suffix = "backup"
@@ -174,15 +171,13 @@
 	admin_notes = "No brig, no medical facilities, no air."
 	credit_cost = -7500
 
-/datum/map_template/shuttle/emergency/airless/prerequisites_met()
-	// first 10 minutes only
-	return world.time - SSticker.round_start_time < 6000
+///datum/map_template/shuttle/emergency/airless/prerequisites_met()
+//	return world.time - SSticker.round_start_time < 6000
 
-/datum/map_template/shuttle/emergency/airless/post_load()
-	. = ..()
-	//enable buying engines from cargo
-	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shuttle_engine]
-	P.special_enabled = TRUE
+///datum/map_template/shuttle/emergency/airless/post_load()
+//	. = ..()
+//	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shuttle_engine]
+//	P.special_enabled = TRUE
 
 
 /datum/map_template/shuttle/emergency/asteroid
@@ -204,7 +199,7 @@
 	name = "Mother Russia Bleeds"
 	description = "Dis is a high-quality shuttle, da. Many seats, lots of space, all equipment! Even includes entertainment! Such as lots to drink, and a fighting arena for drunk crew to have fun! If arena not fun enough, simply press button of releasing bears. Do not worry, bears trained not to break out of fighting pit, so totally safe so long as nobody stupid or drunk enough to leave door open. Try not to let asimov babycons ruin fun!"
 	admin_notes = "Includes a small variety of weapons. And bears. Only captain-access can release the bears. Bears won't smash the windows themselves, but they can escape if someone lets them."
-	credit_cost = 5000 // While the shuttle is rusted and poorly maintained, trained bears are costly.
+	credit_cost = 5000
 
 /datum/map_template/shuttle/emergency/meteor
 	suffix = "meteor"
@@ -235,10 +230,10 @@
 	admin_notes = "RIP AND TEAR."
 	credit_cost = 10000
 
-/datum/map_template/shuttle/emergency/arena/prerequisites_met()
-	if("bubblegum" in SSshuttle.shuttle_purchase_requirements_met)
-		return TRUE
-	return FALSE
+///datum/map_template/shuttle/emergency/arena/prerequisites_met()
+//	if("bubblegum" in SSshuttle.shuttle_purchase_requirements_met)
+//		return TRUE
+//	return FALSE
 
 /datum/map_template/shuttle/emergency/birdboat
 	suffix = "birdboat"

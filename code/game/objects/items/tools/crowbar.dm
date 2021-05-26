@@ -27,41 +27,6 @@
 	icon_state = "crowbar_red"
 	force = 8
 
-/obj/item/crowbar/brass
-	name = "brass crowbar"
-	desc = "A brass crowbar. It feels faintly warm to the touch."
-	resistance_flags = FIRE_PROOF | ACID_PROOF
-	icon_state = "crowbar_brass"
-	toolspeed = 0.5
-
-/obj/item/crowbar/abductor
-	name = "alien crowbar"
-	desc = "A hard-light crowbar. It appears to pry by itself, without any effort required."
-	icon = 'icons/obj/abductor.dmi'
-	usesound = 'sound/weapons/sonic_jackhammer.ogg'
-	icon_state = "crowbar"
-	toolspeed = 0.1
-
-
-/obj/item/crowbar/large
-	name = "crowbar"
-	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
-	force = 12
-	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 3
-	throw_range = 3
-	materials = list(MAT_METAL=70)
-	icon_state = "crowbar_large"
-	item_state = "crowbar"
-	toolspeed = 0.7
-
-/obj/item/crowbar/cyborg
-	name = "hydraulic crowbar"
-	desc = "A hydraulic prying tool, compact but powerful. Designed to replace crowbar in construction cyborgs."
-	usesound = 'sound/items/jaws_pry.ogg'
-	force = 10
-	toolspeed = 0.5
-
 /obj/item/crowbar/power
 	name = "jaws of life"
 	desc = "A set of jaws of life, compressed through the magic of science. It's fitted with a prying head."

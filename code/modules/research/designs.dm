@@ -1,51 +1,20 @@
-/***************************************************************
-**						Design Datums						  **
-**	All the data for building stuff.						  **
-***************************************************************/
-/*
-For the materials datum, it assumes you need reagents unless specified otherwise. To designate a material that isn't a reagent,
-you use one of the material IDs below. These are NOT ids in the usual sense (they aren't defined in the object or part of a datum),
-they are simply references used as part of a "has materials?" type proc. They all start with a $ to denote that they aren't reagents.
-The currently supporting non-reagent materials. All material amounts are set as the define MINERAL_MATERIAL_AMOUNT, which defaults to 2000
-- MAT_METAL (/obj/item/stack/metal).
-- MAT_GLASS (/obj/item/stack/glass).
-- MAT_PLASMA (/obj/item/stack/plasma).
-- MAT_SILVER (/obj/item/stack/silver).
-- MAT_GOLD (/obj/item/stack/gold).
-- MAT_URANIUM (/obj/item/stack/uranium).
-- MAT_DIAMOND (/obj/item/stack/diamond).
-- MAT_BANANIUM (/obj/item/stack/bananium).
-(Insert new ones here)
-
-Don't add new keyword/IDs if they are made from an existing one (such as rods which are made from metal). Only add raw materials.
-
-Design Guidelines
-- When adding new designs, check rdreadme.dm to see what kind of things have already been made and where new stuff is needed.
-- A single sheet of anything is 2000 units of material. Materials besides metal/glass require help from other jobs (mining for
-other types of metals and chemistry for reagents).
-- Add the AUTOLATHE tag to
-*/
-
-//DESIGNS ARE GLOBAL. DO NOT CREATE OR DESTROY THEM AT RUNTIME OUTSIDE OF INIT, JUST REFERENCE THEM TO WHATEVER YOU'RE DOING! //why are you yelling?
-//DO NOT REFERENCE OUTSIDE OF SSRESEARCH. USE THE PROCS IN SSRESEARCH TO OBTAIN A REFERENCE.
-
-/datum/design						//Datum for object designs, used in construction
-	var/name = "Name"					//Name of the created object.
-	var/desc = "Desc"					//Description of the created object.
-	var/id = DESIGN_ID_IGNORE						//ID of the created object for easy refernece. Alphanumeric, lower-case, no symbols
-	var/build_type = null				//Flag as to what kind machine the design is built in. See defines.
-	var/list/materials = list()			//List of materials. Format: "id" = amount.
-	var/construction_time				//Amount of time required for building the object
-	var/build_path = null				//The file path of the object that gets created
-	var/list/make_reagents = list()			//Reagents produced. Format: "id" = amount. Currently only supported by the biogenerator.
-	var/list/category = null 			//Primarily used for Mech Fabricators, but can be used for anything
-	var/list/reagents_list = list()			//List of reagents. Format: "id" = amount.
+/datum/design
+	var/name = "Name"
+	var/desc = "Desc"
+	var/id = DESIGN_ID_IGNORE
+	var/build_type = null
+	var/list/materials = list()
+	var/construction_time
+	var/build_path = null
+	var/list/make_reagents = list()
+	var/list/category = null
+	var/list/reagents_list = list()
 	var/maxstack = 1
-	var/lathe_time_factor = 1			//How many times faster than normal is this to build on the protolathe
-	var/dangerous_construction = FALSE	//notify and log for admin investigations if this is printed.
-	var/departmental_flags = ALL			//bitflags for deplathes.
+	var/lathe_time_factor = 1
+	var/dangerous_construction = FALSE
+	var/departmental_flags = ALL
 	var/list/datum/techweb_node/unlocked_by = list()
-	var/research_icon					//Replaces the item icon in the research console
+	var/research_icon
 	var/research_icon_state
 	var/icon_cache
 
@@ -58,13 +27,10 @@ other types of metals and chemistry for reagents).
 	return ..()
 
 /datum/design/proc/icon_html(client/user)
-	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/research_designs)
-	sheet.send(user)
-	return sheet.icon_tag(id)
-
-////////////////////////////////////////
-//Disks for transporting design datums//
-////////////////////////////////////////
+	//var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/research_designs)
+	//sheet.send(user)
+	//return sheet.icon_tag(id)
+	return "([id])"//not_actual
 
 /obj/item/disk/design_disk
 	name = "Component Design Disk"
@@ -78,8 +44,9 @@ other types of metals and chemistry for reagents).
 	. = ..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)
-	for(var/i in 1 to max_blueprints)
-		blueprints += null
+	//for(var/i in 1 to max_blueprints)
+	//	blueprints += null
+	blueprints.len = max_blueprints//not_actual
 
 /obj/item/disk/design_disk/adv
 	name = "Advanced Component Design Disk"

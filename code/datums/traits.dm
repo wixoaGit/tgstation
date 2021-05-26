@@ -6,18 +6,17 @@
 	else
 		status_traits[trait] |= list(source)
 
-
 /datum/proc/remove_trait(trait, list/sources, force)
 	if(!status_traits)
-		return //nothing to remove
+		return
 
 	if(!status_traits[trait])
 		return
 
-	if(locate(ROUNDSTART_TRAIT) in status_traits[trait] && !force) //mob traits applied through roundstart cannot normally be removed
+	if(locate(ROUNDSTART_TRAIT) in status_traits[trait] && !force)
 		return
 
-	if(!sources) // No defined source cures the trait entirely.
+	if(!sources)
 		status_traits -= trait
 		return
 
@@ -36,7 +35,7 @@
 
 /datum/proc/has_trait(trait, list/sources)
 	if(!status_traits)
-		return FALSE //well of course it doesn't have the trait
+		return FALSE
 
 	if(!status_traits[trait])
 		return FALSE
@@ -54,7 +53,7 @@
 
 /datum/proc/remove_all_traits(remove_species_traits = FALSE, remove_organ_traits = FALSE, remove_quirks = FALSE)
 	if(!status_traits)
-		return //nothing to remove
+		return
 
 	var/list/blacklisted_sources = list()
 	if(!remove_species_traits)

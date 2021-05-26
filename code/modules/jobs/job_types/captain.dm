@@ -1,6 +1,3 @@
-/*
-Captain
-*/
 /datum/job/captain
 	title = "Captain"
 	flag = CAPTAIN
@@ -18,8 +15,8 @@ Captain
 
 	outfit = /datum/outfit/job/captain
 
-	access = list() 			//See get_access()
-	minimal_access = list() 	//See get_access()
+	access = list()
+	minimal_access = list()
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_SEC
 
@@ -27,10 +24,6 @@ Captain
 
 /datum/job/captain/get_access()
 	return get_all_accesses()
-
-/datum/job/captain/announce(mob/living/carbon/human/H)
-	..()
-	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/minor_announce, "Captain [H.real_name] on deck!"))
 
 /datum/outfit/job/captain
 	name = "Captain"
@@ -45,27 +38,8 @@ Captain
 	suit = /obj/item/clothing/suit/armor/vest/capcarapace
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	head = /obj/item/clothing/head/caphat
-	backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/station_charter=1, /obj/item/card/id/departmental_budget/civ=1)
+	//backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/station_charter=1, /obj/item/card/id/departmental_budget/civ=1)
 
-	backpack = /obj/item/storage/backpack/captain
-	satchel = /obj/item/storage/backpack/satchel/cap
-	duffelbag = /obj/item/storage/backpack/duffelbag/captain
-
-	implants = list(/obj/item/implant/mindshield)
-	accessory = /obj/item/clothing/accessory/medal/gold/captain
-
-	chameleon_extras = list(/obj/item/gun/energy/e_gun, /obj/item/stamp/captain)
-
-/datum/outfit/job/captain/hardsuit
-	name = "Captain (Hardsuit)"
-
-	mask = /obj/item/clothing/mask/gas/sechailer
-	suit = /obj/item/clothing/suit/space/hardsuit/swat/captain
-	suit_store = /obj/item/tank/internals/oxygen
-
-/*
-Head of Personnel
-*/
 /datum/job/hop
 	title = "Head of Personnel"
 	flag = HOP
@@ -82,7 +56,7 @@ Head of Personnel
 	exp_requirements = 180
 	exp_type = EXP_TYPE_CREW
 	exp_type_department = EXP_TYPE_SUPPLY
-
+	
 	outfit = /datum/outfit/job/hop
 
 	access = list(ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_COURT, ACCESS_WEAPONS,
@@ -105,14 +79,14 @@ Head of Personnel
 /datum/outfit/job/hop
 	name = "Head of Personnel"
 	jobtype = /datum/job/hop
-
+	
 	id = /obj/item/card/id/silver
 	belt = /obj/item/pda/heads/hop
 	ears = /obj/item/radio/headset/heads/hop
 	uniform = /obj/item/clothing/under/rank/head_of_personnel
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	head = /obj/item/clothing/head/hopcap
-	backpack_contents = list(/obj/item/storage/box/ids=1,\
-		/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced = 1, /obj/item/card/id/departmental_budget/srv=1)
+	//backpack_contents = list(/obj/item/storage/box/ids=1,\
+	//	/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced = 1, /obj/item/card/id/departmental_budget/srv=1)
 
-	chameleon_extras = list(/obj/item/gun/energy/e_gun, /obj/item/stamp/hop)
+	//chameleon_extras = list(/obj/item/gun/energy/e_gun, /obj/item/stamp/hop)

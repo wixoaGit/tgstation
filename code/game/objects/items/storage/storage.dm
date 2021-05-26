@@ -1,4 +1,3 @@
-
 /obj/item/storage
 	name = "storage"
 	icon = 'icons/obj/storage.dmi'
@@ -22,7 +21,5 @@
 	for(var/atom/A in contents)
 		A.ex_act(severity, target)
 		CHECK_TICK
-
-//Cyberboss says: "USE THIS TO FILL IT, NOT INITIALIZE OR NEW"
 
 /obj/item/storage/proc/PopulateContents()

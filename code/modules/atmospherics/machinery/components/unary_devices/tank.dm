@@ -11,7 +11,7 @@
 	layer = ABOVE_WINDOW_LAYER
 	pipe_flags = PIPING_ONE_PER_TURF
 
-	var/volume = 10000 //in liters
+	var/volume = 10000
 	var/gas_type = 0
 
 /obj/machinery/atmospherics/components/unary/tank/New()
@@ -24,7 +24,6 @@
 		air_contents.gases[gas_type][MOLES] = AIR_CONTENTS
 		name = "[name] ([air_contents.gases[gas_type][GAS_META][META_GAS_NAME]])"
 	setPipingLayer(piping_layer)
-
 
 /obj/machinery/atmospherics/components/unary/tank/air
 	icon_state = "grey"

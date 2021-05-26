@@ -11,10 +11,8 @@
 	var/node1_concentration = 0.5
 	var/node2_concentration = 0.5
 
-	construction_type = /obj/item/pipe/trinary/flippable
+	//construction_type = /obj/item/pipe/trinary/flippable
 	pipe_state = "mixer"
-
-	//node 3 is the outlet, nodes 1 & 2 are intakes
 
 /obj/machinery/atmospherics/components/trinary/mixer/update_icon()
 	cut_overlays()
@@ -54,7 +52,6 @@
 	if(!on || !(nodes[1] && nodes[2] && nodes[3]) && !is_operational())
 		return
 
-	//Get those gases, mah boiiii
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
@@ -66,10 +63,8 @@
 	var/output_starting_pressure = air3.return_pressure()
 
 	if(output_starting_pressure >= target_pressure)
-		//No need to mix if target is already full!
 		return
 
-	//Calculate necessary moles to transfer using PV=nRT
 	var/general_transfer = (target_pressure - output_starting_pressure) * air3.volume / R_IDEAL_GAS_EQUATION
 
 	var/transfer_moles1 = air1.temperature ? node1_concentration * general_transfer / air1.temperature : 0
@@ -98,8 +93,6 @@
 			ratio = min(air1_moles / transfer_moles1, air2_moles / transfer_moles2)
 			transfer_moles1 *= ratio
 			transfer_moles2 *= ratio
-
-	//Actually transfer the gas
 
 	if(transfer_moles1)
 		var/datum/gas_mixture/removed1 = air1.remove(transfer_moles1)
@@ -138,7 +131,7 @@
 	switch(action)
 		if("power")
 			on = !on
-			investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", INVESTIGATE_ATMOS)
+			//investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", INVESTIGATE_ATMOS)
 			. = TRUE
 		if("pressure")
 			var/pressure = params["pressure"]
@@ -154,16 +147,16 @@
 				. = TRUE
 			if(.)
 				target_pressure = CLAMP(pressure, 0, MAX_OUTPUT_PRESSURE)
-				investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
+				//investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
 		if("node1")
 			var/value = text2num(params["concentration"])
 			adjust_node1_value(value)
-			investigate_log("was set to [node1_concentration] % on node 1 by [key_name(usr)]", INVESTIGATE_ATMOS)
+			//investigate_log("was set to [node1_concentration] % on node 1 by [key_name(usr)]", INVESTIGATE_ATMOS)
 			. = TRUE
 		if("node2")
 			var/value = text2num(params["concentration"])
 			adjust_node1_value(-value)
-			investigate_log("was set to [node2_concentration] % on node 2 by [key_name(usr)]", INVESTIGATE_ATMOS)
+			//investigate_log("was set to [node2_concentration] % on node 2 by [key_name(usr)]", INVESTIGATE_ATMOS)
 			. = TRUE
 	update_icon()
 
@@ -176,8 +169,6 @@
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")
 		return FALSE
-
-// mapping
 
 /obj/machinery/atmospherics/components/trinary/mixer/layer1
 	piping_layer = 1
@@ -219,7 +210,7 @@
 	piping_layer = 3
 	icon_state = "mixer_on_f_map-3"
 
-/obj/machinery/atmospherics/components/trinary/mixer/airmix //For standard airmix to distro
+/obj/machinery/atmospherics/components/trinary/mixer/airmix
 	name = "air mixer"
 	icon_state = "mixer_on"
 	node1_concentration = N2STANDARD

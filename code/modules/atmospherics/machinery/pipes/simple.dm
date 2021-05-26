@@ -1,6 +1,3 @@
-// Simple Pipe
-// The regular pipe you see everywhere, including bent ones.
-
 /obj/machinery/atmospherics/pipe/simple
 	icon = 'icons/obj/atmospherics/pipes/simple.dmi'
 	icon_state = "pipe11-2"
@@ -14,7 +11,7 @@
 
 	device_type = BINARY
 
-	construction_type = /obj/item/pipe/binary/bendable
+	//construction_type = /obj/item/pipe/binary/bendable
 	pipe_state = "simple"
 
 /obj/machinery/atmospherics/pipe/simple/SetInitDirections()

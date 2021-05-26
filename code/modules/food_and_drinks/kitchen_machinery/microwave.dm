@@ -1,5 +1,3 @@
-//Microwaving doesn't use recipes, instead it calls the microwave_act of the objects. For food, this creates something based on the food's cooked_type
-
 /obj/machinery/microwave
 	name = "microwave oven"
 	desc = "Cooks and boils stuff."
@@ -14,34 +12,34 @@
 	pass_flags = PASSTABLE
 	light_color = LIGHT_COLOR_YELLOW
 	light_power = 3
-	var/wire_disabled = FALSE // is its internal wire cut?
+	var/wire_disabled = FALSE
 	var/operating = FALSE
-	var/dirty = 0 // 0 to 100 // Does it need cleaning?
+	var/dirty = 0
 	var/dirty_anim_playing = FALSE
-	var/broken = 0 // 0, 1 or 2 // How broken is it???
+	var/broken = 0
 	var/max_n_of_items = 10
 	var/efficiency = 0
 	var/datum/looping_sound/microwave/soundloop
-	var/list/ingredients = list() // may only contain /atom/movables
+	var/list/ingredients = list()
 
-	var/static/radial_examine = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_examine")
-	var/static/radial_eject = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_eject")
-	var/static/radial_use = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_use")
+	//var/static/radial_examine = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_examine")
+	//var/static/radial_eject = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_eject")
+	//var/static/radial_use = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_use")
 
-	// we show the button even if the proc will not work
-	var/static/list/radial_options = list("eject" = radial_eject, "use" = radial_use)
-	var/static/list/ai_radial_options = list("eject" = radial_eject, "use" = radial_use, "examine" = radial_examine)
+	//var/static/list/radial_options = list("eject" = radial_eject, "use" = radial_use)
+	//var/static/list/ai_radial_options = list("eject" = radial_eject, "use" = radial_use, "examine" = radial_examine)
 
 /obj/machinery/microwave/Initialize()
 	. = ..()
-	wires = new /datum/wires/microwave(src)
+	//wires = new /datum/wires/microwave(src)
 	create_reagents(100)
-	soundloop = new(list(src), FALSE)
+	//soundloop = new(list(src), FALSE)
+	soundloop = new /datum/looping_sound/microwave(list(src), FALSE)//not_actual
 
 /obj/machinery/microwave/Destroy()
 	eject()
-	if(wires)
-		QDEL_NULL(wires)
+	//if(wires)
+	//	QDEL_NULL(wires)
 	. = ..()
 
 /obj/machinery/microwave/RefreshParts()
@@ -117,61 +115,61 @@
 		return TRUE
 
 	if(broken > 0)
-		if(broken == 2 && O.tool_behaviour == TOOL_WIRECUTTER) // If it's broken and they're using a screwdriver
+		if(broken == 2 && O.tool_behaviour == TOOL_WIRECUTTER)
 			user.visible_message("[user] starts to fix part of \the [src].", "<span class='notice'>You start to fix part of \the [src]...</span>")
 			if(O.use_tool(src, user, 20))
 				user.visible_message("[user] fixes part of \the [src].", "<span class='notice'>You fix part of \the [src].</span>")
-				broken = 1 // Fix it a bit
-		else if(broken == 1 && O.tool_behaviour == TOOL_WELDER) // If it's broken and they're doing the wrench
+				broken = 1
+		else if(broken == 1 && O.tool_behaviour == TOOL_WELDER)
 			user.visible_message("[user] starts to fix part of \the [src].", "<span class='notice'>You start to fix part of \the [src]...</span>")
 			if(O.use_tool(src, user, 20))
 				user.visible_message("[user] fixes \the [src].", "<span class='notice'>You fix \the [src].</span>")
 				broken = 0
 				update_icon()
-				return FALSE //to use some fuel
+				return FALSE
 		else
 			to_chat(user, "<span class='warning'>It's broken!</span>")
 			return TRUE
 		return
 
-	if(istype(O, /obj/item/reagent_containers/spray))
-		var/obj/item/reagent_containers/spray/clean_spray = O
-		if(clean_spray.reagents.has_reagent("cleaner", clean_spray.amount_per_transfer_from_this))
-			clean_spray.reagents.remove_reagent("cleaner", clean_spray.amount_per_transfer_from_this,1)
-			playsound(loc, 'sound/effects/spray3.ogg', 50, 1, -6)
-			user.visible_message("[user] has cleaned \the [src].", "<span class='notice'>You clean \the [src].</span>")
-			dirty = 0
-			update_icon()
-		else
-			to_chat(user, "<span class='warning'>You need more space cleaner!</span>")
-		return TRUE
+	//if(istype(O, /obj/item/reagent_containers/spray))
+	//	var/obj/item/reagent_containers/spray/clean_spray = O
+	//	if(clean_spray.reagents.has_reagent("cleaner", clean_spray.amount_per_transfer_from_this))
+	//		clean_spray.reagents.remove_reagent("cleaner", clean_spray.amount_per_transfer_from_this,1)
+	//		playsound(loc, 'sound/effects/spray3.ogg', 50, 1, -6)
+	//		user.visible_message("[user] has cleaned \the [src].", "<span class='notice'>You clean \the [src].</span>")
+	//		dirty = 0
+	//		update_icon()
+	//	else
+	//		to_chat(user, "<span class='warning'>You need more space cleaner!</span>")
+	//	return TRUE
 
-	if(istype(O, /obj/item/soap))
-		var/obj/item/soap/P = O
-		user.visible_message("[user] starts to clean \the [src].", "<span class='notice'>You start to clean \the [src]...</span>")
-		if(do_after(user, P.cleanspeed, target = src))
-			user.visible_message("[user] has cleaned \the [src].", "<span class='notice'>You clean \the [src].</span>")
-			dirty = 0
-			update_icon()
-		return TRUE
+	//if(istype(O, /obj/item/soap))
+	//	var/obj/item/soap/P = O
+	//	user.visible_message("[user] starts to clean \the [src].", "<span class='notice'>You start to clean \the [src]...</span>")
+	//	if(do_after(user, P.cleanspeed, target = src))
+	//		user.visible_message("[user] has cleaned \the [src].", "<span class='notice'>You clean \the [src].</span>")
+	//		dirty = 0
+	//		update_icon()
+	//	return TRUE
 
-	if(dirty == 100) // The microwave is all dirty so can't be used!
+	if(dirty == 100)
 		to_chat(user, "<span class='warning'>\The [src] is dirty!</span>")
 		return TRUE
 
-	if(istype(O, /obj/item/storage/bag/tray))
-		var/obj/item/storage/T = O
-		var/loaded = 0
-		for(var/obj/item/reagent_containers/food/snacks/S in T.contents)
-			if(ingredients.len >= max_n_of_items)
-				to_chat(user, "<span class='warning'>\The [src] is full, you can't put anything in!</span>")
-				return TRUE
-			if(SEND_SIGNAL(T, COMSIG_TRY_STORAGE_TAKE, S, src))
-				loaded++
-				ingredients += S
-		if(loaded)
-			to_chat(user, "<span class='notice'>You insert [loaded] items into \the [src].</span>")
-		return
+	//if(istype(O, /obj/item/storage/bag/tray))
+	//	var/obj/item/storage/T = O
+	//	var/loaded = 0
+	//	for(var/obj/item/reagent_containers/food/snacks/S in T.contents)
+	//		if(ingredients.len >= max_n_of_items)
+	//			to_chat(user, "<span class='warning'>\The [src] is full, you can't put anything in!</span>")
+	//			return TRUE
+	//		if(SEND_SIGNAL(T, COMSIG_TRY_STORAGE_TAKE, S, src))
+	//			loaded++
+	//			ingredients += S
+	//	if(loaded)
+	//		to_chat(user, "<span class='notice'>You insert [loaded] items into \the [src].</span>")
+	//	return
 
 	if(O.w_class <= WEIGHT_CLASS_NORMAL && !istype(O, /obj/item/storage) && user.a_intent == INTENT_HELP)
 		if(ingredients.len >= max_n_of_items)
@@ -191,38 +189,6 @@
 	if(user.canUseTopic(src, BE_CLOSE))
 		cook()
 
-/obj/machinery/microwave/ui_interact(mob/user)
-	. = ..()
-
-	if(operating || panel_open || !anchored || !user.canUseTopic(src))
-		return
-	if(isAI(user) && (stat & NOPOWER))
-		return
-
-	if(!length(ingredients))
-		if(isAI(user))
-			examine(user)
-		else
-			to_chat(user, "<span class='warning'>\The [src] is empty.</span>")
-		return
-
-	var/choice = show_radial_menu(user, src, isAI(user) ? ai_radial_options : radial_options, require_near = !issilicon(user))
-
-	// post choice verification
-	if(operating || panel_open || !anchored || !user.canUseTopic(src))
-		return
-	if(isAI(user) && (stat & NOPOWER))
-		return
-
-	usr.set_machine(src)
-	switch(choice)
-		if("eject")
-			eject()
-		if("use")
-			cook()
-		if("examine")
-			examine(user)
-
 /obj/machinery/microwave/proc/eject()
 	for(var/i in ingredients)
 		var/atom/movable/AM = i
@@ -240,7 +206,7 @@
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 50, 0)
 		return
 
-	if(prob(max((5 / efficiency) - 5, dirty * 5))) //a clean unupgraded microwave has no risk of failure
+	if(prob(max((5 / efficiency) - 5, dirty * 5)))
 		muck()
 		return
 	for(var/obj/O in ingredients)
@@ -285,7 +251,7 @@
 	update_icon()
 	loop(MICROWAVE_MUCK, 4)
 
-/obj/machinery/microwave/proc/loop(type, time, wait = max(12 - 2 * efficiency, 2)) // standard wait is 10
+/obj/machinery/microwave/proc/loop(type, time, wait = max(12 - 2 * efficiency, 2))
 	if(stat & (NOPOWER|BROKEN))
 		if(MICROWAVE_PRE)
 			pre_fail()

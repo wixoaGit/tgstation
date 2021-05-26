@@ -1,12 +1,8 @@
-// **********************
-// Other harvested materials from plants (that are not food)
-// **********************
-
 /obj/item/grown // Grown weapons
 	name = "grown_weapon"
 	icon = 'icons/obj/hydroponics/harvest.dmi'
 	resistance_flags = FLAMMABLE
-	var/obj/item/seeds/seed = null // type path, gets converted to item on New(). It's safe to assume it's always a seed item.
+	var/obj/item/seeds/seed = null
 
 /obj/item/grown/Initialize(newloc, obj/item/seeds/new_seed)
 	. = ..()
@@ -15,7 +11,6 @@
 	if(new_seed)
 		seed = new_seed.Copy()
 	else if(ispath(seed))
-		// This is for adminspawn or map-placed growns. They get the default stats of their seed type.
 		seed = new seed()
 		seed.adjust_potency(50-seed.potency)
 
@@ -26,9 +21,9 @@
 		for(var/datum/plant_gene/trait/T in seed.genes)
 			T.on_new(src, newloc)
 
-		if(istype(src, seed.product)) // no adding reagents if it is just a trash item
+		if(istype(src, seed.product))
 			seed.prepare_result(src)
-		transform *= TRANSFORM_USING_VARIABLE(seed.potency, 100) + 0.5
+		//transform *= TRANSFORM_USING_VARIABLE(seed.potency, 100) + 0.5
 		add_juice()
 
 
@@ -48,7 +43,7 @@
 	return 0
 
 /obj/item/grown/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	if(!..()) //was it caught by a mob?
+	if(!..())
 		if(seed)
 			for(var/datum/plant_gene/trait/T in seed.genes)
 				T.on_throw_impact(src, hit_atom)

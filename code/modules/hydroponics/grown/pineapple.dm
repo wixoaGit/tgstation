@@ -1,4 +1,3 @@
-// Pineapple!
 /obj/item/seeds/pineapple
 	name = "pack of pineapple seeds"
 	desc = "Oooooooooooooh!"

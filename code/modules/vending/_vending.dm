@@ -1,21 +1,3 @@
-/*
- * Vending machine types - Can be found under /code/modules/vending/
- */
-
-/*
-
-/obj/machinery/vending/[vendors name here]   // --vending machine template   :)
-	name = ""
-	desc = ""
-	icon = ''
-	icon_state = ""
-	products = list()
-	contraband = list()
-	premium = list()
-
-IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY CANISTER CHARGES in vending_items.dm
-*/
-
 /datum/data/vending_product
 	name = "generic"
 	var/product_path = null
@@ -40,84 +22,81 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	armor = list("melee" = 20, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
 	payment_department = ACCOUNT_SRV
-	var/active = 1		//No sales pitches if off!
-	var/vend_ready = 1	//Are we ready to vend?? Is it time??
+	var/active = 1
+	var/vend_ready = 1
 
-	// To be filled out at compile time
-	var/list/products	= list()	//For each, use the following pattern:
-	var/list/contraband	= list()	//list(/type/path = amount, /type/path2 = amount2)
-	var/list/premium 	= list()	//No specified amount = only one in stock
+	var/list/products	= list()
+	var/list/contraband	= list()
+	var/list/premium 	= list()
 
-	var/product_slogans = ""	//String of slogans separated by semicolons, optional
-	var/product_ads = ""		//String of small ad messages in the vending screen - random chance
+	var/product_slogans = ""
+	var/product_ads = ""
 	var/list/product_records = list()
 	var/list/hidden_records = list()
 	var/list/coin_records = list()
 	var/list/slogan_list = list()
-	var/list/small_ads = list()	//Small ad messages in the vending screen - random chance of popping up whenever you open it
-	var/vend_reply				//Thank you for shopping!
+	var/list/small_ads = list()
+	var/vend_reply	
 	var/last_reply = 0
-	var/last_slogan = 0			//When did we last pitch?
-	var/slogan_delay = 6000		//How long until we can pitch again?
-	var/icon_vend				//Icon_state when vending!
-	var/icon_deny				//Icon_state when vending!
-	var/seconds_electrified = MACHINE_NOT_ELECTRIFIED	//Shock customers like an airlock.
-	var/shoot_inventory = 0		//Fire items at customers! We're broken!
+	var/last_slogan = 0
+	var/slogan_delay = 6000
+	var/icon_vend
+	var/icon_deny
+	var/seconds_electrified = MACHINE_NOT_ELECTRIFIED
+	var/shoot_inventory = 0
 	var/shoot_inventory_chance = 2
-	var/shut_up = 0				//Stop spouting those godawful pitches!
-	var/extended_inventory = 0	//can we access the hidden inventory?
+	var/shut_up = 0
+	var/extended_inventory = 0
 	var/scan_id = 1
-	var/obj/item/coin/coin
-	var/obj/item/stack/spacecash/bill
+	//var/obj/item/coin/coin
+	//var/obj/item/stack/spacecash/bill
 	var/chef_price = 10
 	var/default_price = 25
 	var/extra_price = 50
-	var/onstation = TRUE //if it doesn't originate from off-station during mapload, everything is free
+	var/onstation = TRUE
 
-	var/dish_quants = list()  //used by the snack machine's custom compartment to count dishes.
+	var/dish_quants = list()
 
-	var/obj/item/vending_refill/refill_canister = null		//The type of refill canisters used by this machine.
+	//var/obj/item/vending_refill/refill_canister = null
 
 /obj/item/circuitboard
-	var/onstation = TRUE //if the circuit board originated from a vendor off station or not.
+	var/onstation = TRUE
 
 /obj/machinery/vending/Initialize(mapload)
 	var/build_inv = FALSE
-	if(!refill_canister)
+	//if(!refill_canister)
+	if(TRUE)//not_actual
 		circuit = null
 		build_inv = TRUE
 	. = ..()
-	wires = new /datum/wires/vending(src)
-	if(build_inv) //non-constructable vending machine
+	//wires = new /datum/wires/vending(src)
+	if(build_inv)
 		build_inventory(products, product_records)
 		build_inventory(contraband, hidden_records)
 		build_inventory(premium, coin_records)
 
 	slogan_list = splittext(product_slogans, ";")
-	// So not all machines speak at the exact same time.
-	// The first time this machine says something will be at slogantime + this random value,
-	// so if slogantime is 10 minutes, it will say it at somewhere between 10 and 20 minutes after the machine is crated.
 	last_slogan = world.time + rand(0, slogan_delay)
 	power_change()
 
-	if(mapload) //check if it was initially created off station during mapload.
+	if(mapload)
 		if(!is_station_level(z))
 			onstation = FALSE
 			if(circuit)
-				circuit.onstation = onstation //sync up the circuit so the pricing schema is carried over if it's reconstructed.
-	else if(circuit && (circuit.onstation != onstation)) //check if they're not the same to minimize the amount of edited values.
-		onstation = circuit.onstation //if it was constructed outside mapload, sync the vendor up with the circuit's var so you can't bypass price requirements by moving / reconstructing it off station.
+				circuit.onstation = onstation
+	else if(circuit && (circuit.onstation != onstation))
+		onstation = circuit.onstation
 
 /obj/machinery/vending/Destroy()
-	QDEL_NULL(wires)
-	QDEL_NULL(coin)
-	QDEL_NULL(bill)
+	//QDEL_NULL(wires)
+	//QDEL_NULL(coin)
+	//QDEL_NULL(bill)
 	return ..()
 
 /obj/machinery/vending/can_speak()
 	return !shut_up
 
-/obj/machinery/vending/RefreshParts()         //Better would be to make constructable child
+/obj/machinery/vending/RefreshParts()
 	if(!component_parts)
 		return
 
@@ -127,13 +106,14 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	build_inventory(products, product_records, start_empty = TRUE)
 	build_inventory(contraband, hidden_records, start_empty = TRUE)
 	build_inventory(premium, coin_records, start_empty = TRUE)
-	for(var/obj/item/vending_refill/VR in component_parts)
-		restock(VR)
+	//for(var/obj/item/vending_refill/VR in component_parts)
+	//	restock(VR)
 
 /obj/machinery/vending/deconstruct(disassembled = TRUE)
-	if(!refill_canister) //the non constructable vendors drop metal instead of a machine frame.
-		if(!(flags_1 & NODECONSTRUCT_1))
-			new /obj/item/stack/sheet/metal(loc, 3)
+	//if(!refill_canister)
+	if(TRUE)//not_actual
+		//if(!(flags_1 & NODECONSTRUCT_1))
+		//	new /obj/item/stack/sheet/metal(loc, 3)
 		qdel(src)
 	else
 		..()
@@ -149,13 +129,12 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 			found_anything = FALSE
 			for(var/record in shuffle(product_records))
 				var/datum/data/vending_product/R = record
-				if(R.amount <= 0) //Try to use a record that actually has something to dump.
+				if(R.amount <= 0)
 					continue
 				var/dump_path = R.product_path
 				if(!dump_path)
 					continue
 				R.amount--
-				// busting open a vendor will destroy some of the contents
 				if(found_anything && prob(80))
 					continue
 
@@ -184,47 +163,6 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 		R.custom_premium_price = initial(temp.custom_premium_price)
 		recordlist += R
 
-/obj/machinery/vending/proc/restock(obj/item/vending_refill/canister)
-	if (!canister.products)
-		canister.products = products.Copy()
-	if (!canister.contraband)
-		canister.contraband = contraband.Copy()
-	if (!canister.premium)
-		canister.premium = premium.Copy()
-	. = 0
-	. += refill_inventory(canister.products, product_records)
-	. += refill_inventory(canister.contraband, hidden_records)
-	. += refill_inventory(canister.premium, coin_records)
-
-/obj/machinery/vending/proc/refill_inventory(list/productlist, list/recordlist)
-	. = 0
-	for(var/R in recordlist)
-		var/datum/data/vending_product/record = R
-		var/diff = min(record.max_amount - record.amount, productlist[record.product_path])
-		if (diff)
-			productlist[record.product_path] -= diff
-			record.amount += diff
-			. += diff
-
-/obj/machinery/vending/proc/update_canister()
-	if (!component_parts)
-		return
-
-	var/obj/item/vending_refill/R = locate() in component_parts
-	if (!R)
-		CRASH("Constructible vending machine did not have a refill canister")
-		return
-
-	R.products = unbuild_inventory(product_records)
-	R.contraband = unbuild_inventory(hidden_records)
-	R.premium = unbuild_inventory(coin_records)
-
-/obj/machinery/vending/proc/unbuild_inventory(list/recordlist)
-	. = list()
-	for(var/R in recordlist)
-		var/datum/data/vending_product/record = R
-		.[record.product_path] += record.amount
-
 /obj/machinery/vending/crowbar_act(mob/living/user, obj/item/I)
 	if(!component_parts)
 		return FALSE
@@ -250,54 +188,31 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	return TRUE
 
 /obj/machinery/vending/attackby(obj/item/I, mob/user, params)
-	if(panel_open && is_wire_tool(I))
-		wires.interact(user)
-		return
-	if(refill_canister && istype(I, refill_canister))
-		if (!panel_open)
-			to_chat(user, "<span class='notice'>You should probably unscrew the service panel first.</span>")
-		else if (stat & (BROKEN|NOPOWER))
-			to_chat(user, "<span class='notice'>[src] does not respond.</span>")
-		else
-			//if the panel is open we attempt to refill the machine
-			var/obj/item/vending_refill/canister = I
-			if(canister.get_part_rating() == 0)
-				to_chat(user, "<span class='notice'>[canister] is empty!</span>")
-			else
-				// instantiate canister if needed
-				var/transferred = restock(canister)
-				if(transferred)
-					to_chat(user, "<span class='notice'>You loaded [transferred] items in [src].</span>")
-				else
-					to_chat(user, "<span class='notice'>There's nothing to restock!</span>")
-			return
+	//if(panel_open && is_wire_tool(I))
+	//	wires.interact(user)
+	//	return
+	//if(refill_canister && istype(I, refill_canister))
+	if(FALSE)//not_actual
+		//if (!panel_open)
+		//	to_chat(user, "<span class='notice'>You should probably unscrew the service panel first.</span>")
+		//else if (stat & (BROKEN|NOPOWER))
+		//	to_chat(user, "<span class='notice'>[src] does not respond.</span>")
+		//else
+		//	var/obj/item/vending_refill/canister = I
+		//	if(canister.get_part_rating() == 0)
+		//		to_chat(user, "<span class='notice'>[canister] is empty!</span>")
+		//	else
+		//		var/transferred = restock(canister)
+		//		if(transferred)
+		//			to_chat(user, "<span class='notice'>You loaded [transferred] items in [src].</span>")
+		//		else
+		//			to_chat(user, "<span class='notice'>There's nothing to restock!</span>")
+		//	return
 	else
 		return ..()
 
-/obj/machinery/vending/exchange_parts(mob/user, obj/item/storage/part_replacer/W)
-	if(!istype(W))
-		return FALSE
-	if((flags_1 & NODECONSTRUCT_1) && !W.works_from_distance)
-		return FALSE
-	if(!component_parts || !refill_canister)
-		return FALSE
-
-	var/moved = 0
-	if(panel_open || W.works_from_distance)
-		if(W.works_from_distance)
-			display_parts(user)
-		for(var/I in W)
-			if(istype(I, refill_canister))
-				moved += restock(I)
-	else
-		display_parts(user)
-	if(moved)
-		to_chat(user, "[moved] items restocked.")
-		W.play_rped_sound()
-	return TRUE
-
 /obj/machinery/vending/on_deconstruction()
-	update_canister()
+	//update_canister()
 	. = ..()
 
 /obj/machinery/vending/emag_act(mob/user)
@@ -307,9 +222,9 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	to_chat(user, "<span class='notice'>You short out the product lock on [src].</span>")
 
 /obj/machinery/vending/_try_interact(mob/user)
-	if(seconds_electrified && !(stat & NOPOWER))
-		if(shock(user, 100))
-			return
+	//if(seconds_electrified && !(stat & NOPOWER))
+	//	if(shock(user, 100))
+	//		return
 	return ..()
 
 /obj/machinery/vending/ui_interact(mob/user)
@@ -359,19 +274,19 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	dat += "</div>"
 	if(onstation && C && C.registered_account)
 		dat += "<b>Balance: $[account.account_balance]</b>"
-	if(istype(src, /obj/machinery/vending/snack))
-		dat += "<h3>Chef's Food Selection</h3>"
-		dat += "<div class='statusDisplay'>"
-		for (var/O in dish_quants)
-			if(dish_quants[O] > 0)
-				var/N = dish_quants[O]
-				dat += "<a href='byond://?src=[REF(src)];dispense=[sanitize(O)]'>Dispense</A> "
-				dat += "<B>[capitalize(O)] ($[default_price]): [N]</B><br>"
-		dat += "</div>"
+	//if(istype(src, /obj/machinery/vending/snack))
+	//	dat += "<h3>Chef's Food Selection</h3>"
+	//	dat += "<div class='statusDisplay'>"
+	//	for (var/O in dish_quants)
+	//		if(dish_quants[O] > 0)
+	//			var/N = dish_quants[O]
+	//			dat += "<a href='byond://?src=[REF(src)];dispense=[sanitize(O)]'>Dispense</A> "
+	//			dat += "<B>[capitalize(O)] ($[default_price]): [N]</B><br>"
+	//	dat += "</div>"
 
 	var/datum/browser/popup = new(user, "vending", (name))
 	popup.set_content(dat)
-	popup.set_title_image(user.browse_rsc_icon(icon, icon_state))
+	//popup.set_title_image(user.browse_rsc_icon(icon, icon_state))
 	popup.open()
 
 /obj/machinery/vending/Topic(href, href_list)
@@ -382,7 +297,7 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 
 	if((href_list["dispense"]) && (vend_ready))
 		var/N = href_list["dispense"]
-		if(dish_quants[N] <= 0) // Sanity check, there are probably ways to press the button when it shouldn't be possible.
+		if(dish_quants[N] <= 0)
 			return
 		vend_ready = 0
 		if(ishuman(usr) && onstation)
@@ -391,20 +306,20 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 
 			if(!C)
 				say("No card found.")
-				flick(icon_deny,src)
+				//flick(icon_deny,src)
 				vend_ready = 1
 				return
 			else if (!C.registered_account)
 				say("No account found.")
-				flick(icon_deny,src)
+				//flick(icon_deny,src)
 				vend_ready = 1
 				return
 			var/datum/bank_account/account = C.registered_account
 			if(!account.adjust_money(-chef_price))
 				say("You do not possess the funds to purchase this meal.")
-		var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_SRV)
-		if(D)
-			D.adjust_money(chef_price)
+		//var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_SRV)
+		//if(D)
+		//	D.adjust_money(chef_price)
 		use_power(5)
 
 		dish_quants[N] = max(dish_quants[N] - 1, 0)
@@ -422,7 +337,7 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 			to_chat(usr, "<span class='notice'>The vending machine cannot dispense products while its service panel is open!</span>")
 			return
 
-		vend_ready = 0 //One thing at a time!!
+		vend_ready = 0
 
 		var/datum/data/vending_product/R = locate(href_list["vend"])
 		var/list/record_to_check = product_records + coin_records
@@ -441,11 +356,11 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 
 		else if (!(R in record_to_check))
 			vend_ready = 1
-			message_admins("Vending machine exploit attempted by [ADMIN_LOOKUPFLW(usr)]!")
+			//message_admins("Vending machine exploit attempted by [ADMIN_LOOKUPFLW(usr)]!")
 			return
 		if (R.amount <= 0)
 			say("Sold out of [R.name].")
-			flick(icon_deny,src)
+			//flick(icon_deny,src)
 			vend_ready = 1
 			return
 		if(onstation && ishuman(usr))
@@ -454,12 +369,12 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 
 			if(!C)
 				say("No card found.")
-				flick(icon_deny,src)
+				//flick(icon_deny,src)
 				vend_ready = 1
 				return
 			else if (!C.registered_account)
 				say("No account found.")
-				flick(icon_deny,src)
+				//flick(icon_deny,src)
 				vend_ready = 1
 				return
 			var/datum/bank_account/account = C.registered_account
@@ -469,26 +384,25 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 				price_to_use = R.custom_premium_price ? R.custom_premium_price : extra_price
 			if(price_to_use && !account.adjust_money(-price_to_use))
 				say("You do not possess the funds to purchase [R.name].")
-				flick(icon_deny,src)
+				//flick(icon_deny,src)
 				vend_ready = 1
 				return
-			var/datum/bank_account/D = SSeconomy.get_dep_account(payment_department)
-			if(D)
-				D.adjust_money(price_to_use)
+			//var/datum/bank_account/D = SSeconomy.get_dep_account(payment_department)
+			//if(D)
+			//	D.adjust_money(price_to_use)
 		say("Thank you for shopping with [src]!")
 		use_power(5)
-		if(icon_vend) //Show the vending animation if needed
-			flick(icon_vend,src)
+		//if(icon_vend)
+		//	flick(icon_vend,src)
 		new R.product_path(get_turf(src))
 		R.amount--
-		SSblackbox.record_feedback("nested tally", "vending_machine_usage", 1, list("[type]", "[R.product_path]"))
+		//SSblackbox.record_feedback("nested tally", "vending_machine_usage", 1, list("[type]", "[R.product_path]"))
 		vend_ready = 1
 
 	else if(href_list["togglevoice"] && panel_open)
 		shut_up = !shut_up
 
 	updateUsrDialog()
-
 
 /obj/machinery/vending/process()
 	if(stat & (BROKEN|NOPOWER))
@@ -499,7 +413,6 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	if(seconds_electrified > MACHINE_NOT_ELECTRIFIED)
 		seconds_electrified--
 
-	//Pitch to the people!  Really sell it!
 	if(last_slogan + slogan_delay <= world.time && slogan_list.len > 0 && !shut_up && prob(5))
 		var/slogan = pick(slogan_list)
 		speak(slogan)
@@ -528,46 +441,46 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 			icon_state = "[initial(icon_state)]-off"
 			stat |= NOPOWER
 
-//Somebody cut an important wire and now we're following a new definition of "pitch."
 /obj/machinery/vending/proc/throw_item()
-	var/obj/throw_item = null
-	var/mob/living/target = locate() in view(7,src)
-	if(!target)
-		return 0
+	//var/obj/throw_item = null
+	//var/mob/living/target = locate() in view(7,src)
+	//if(!target)
+	//	return 0
 
-	for(var/datum/data/vending_product/R in shuffle(product_records))
-		if(R.amount <= 0) //Try to use a record that actually has something to dump.
-			continue
-		var/dump_path = R.product_path
-		if(!dump_path)
-			continue
+	//for(var/datum/data/vending_product/R in shuffle(product_records))
+	//	if(R.amount <= 0)
+	//		continue
+	//	var/dump_path = R.product_path
+	//	if(!dump_path)
+	//		continue
 
-		R.amount--
-		throw_item = new dump_path(loc)
-		break
-	if(!throw_item)
-		return 0
+	//	R.amount--
+	//	throw_item = new dump_path(loc)
+	//	break
+	//if(!throw_item)
+	//	return 0
 
-	pre_throw(throw_item)
+	//pre_throw(throw_item)
 
-	throw_item.throw_at(target, 16, 3)
-	visible_message("<span class='danger'>[src] launches [throw_item] at [target]!</span>")
+	//throw_item.throw_at(target, 16, 3)
+	//visible_message("<span class='danger'>[src] launches [throw_item] at [target]!</span>")
 	return 1
 
 /obj/machinery/vending/proc/pre_throw(obj/item/I)
 	return
 
 /obj/machinery/vending/proc/shock(mob/user, prb)
-	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
+	if(stat & (BROKEN|NOPOWER))
 		return FALSE
 	if(!prob(prb))
 		return FALSE
 	do_sparks(5, TRUE, src)
-	var/check_range = TRUE
-	if(electrocute_mob(user, get_area(src), src, 0.7, check_range))
-		return TRUE
-	else
-		return FALSE
+	//var/check_range = TRUE
+	//if(electrocute_mob(user, get_area(src), src, 0.7, check_range))
+	//	return TRUE
+	//else
+	//	return FALSE
+	return FALSE//not_actual
 
-/obj/machinery/vending/onTransitZ()
-	return
+///obj/machinery/vending/onTransitZ()
+//	return

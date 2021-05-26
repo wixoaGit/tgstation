@@ -3,8 +3,8 @@
 	opacity = 1
 	density = TRUE
 	blocks_air = TRUE
-	rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
-	rad_insulation = RAD_MEDIUM_INSULATION
+	//rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
+	//rad_insulation = RAD_MEDIUM_INSULATION
 
 /turf/closed/AfterChange()
 	. = ..()
@@ -23,41 +23,11 @@
 	icon = 'icons/turf/walls.dmi'
 	explosion_block = 50
 
-/turf/closed/indestructible/TerraformTurf(path, defer_change = FALSE, ignore_air = FALSE)
-	return
-
-/turf/closed/indestructible/acid_act(acidpwr, acid_volume, acid_id)
-	return 0
-
-/turf/closed/indestructible/Melt()
-	to_be_destroyed = FALSE
-	return src
-
-/turf/closed/indestructible/singularity_act()
-	return
-
-/turf/closed/indestructible/oldshuttle
-	name = "strange shuttle wall"
-	icon = 'icons/turf/shuttleold.dmi'
-	icon_state = "block"
-
-/turf/closed/indestructible/sandstone
-	name = "sandstone wall"
-	desc = "A wall with sandstone plating. Rough."
-	icon = 'icons/turf/walls/sandstone_wall.dmi'
-	icon_state = "sandstone"
-	baseturfs = /turf/closed/indestructible/sandstone
-	smooth = SMOOTH_TRUE
-
-/turf/closed/indestructible/oldshuttle/corner
-	icon_state = "corner"
-
 /turf/closed/indestructible/splashscreen
 	name = "Space Station 13"
-	icon = 'icons/blank_title.png'
+	//icon = 'icons/blank_title.png'
 	icon_state = ""
 	layer = FLY_LAYER
-	bullet_bounce_sound = null
 
 /turf/closed/indestructible/splashscreen/New()
 	SStitle.splash_turf = src
@@ -65,12 +35,12 @@
 		icon = SStitle.icon
 	..()
 
-/turf/closed/indestructible/splashscreen/vv_edit_var(var_name, var_value)
-	. = ..()
-	if(.)
-		switch(var_name)
-			if("icon")
-				SStitle.icon = icon
+///turf/closed/indestructible/splashscreen/vv_edit_var(var_name, var_value)
+//	. = ..()
+//	if(.)
+//		switch(var_name)
+//			if("icon")
+//				SStitle.icon = icon
 
 /turf/closed/indestructible/riveted
 	icon = 'icons/turf/walls/riveted.dmi'
@@ -96,9 +66,9 @@
 
 /turf/closed/indestructible/fakeglass/Initialize()
 	. = ..()
-	icon_state = null //set the icon state to null, so our base state isn't visible
-	underlays += mutable_appearance('icons/obj/structures.dmi', "grille") //add a grille underlay
-	underlays += mutable_appearance('icons/turf/floors.dmi', "plating") //add the plating underlay, below the grille
+	icon_state = null
+	underlays += mutable_appearance('icons/obj/structures.dmi', "grille")
+	underlays += mutable_appearance('icons/turf/floors.dmi', "plating")
 
 /turf/closed/indestructible/fakedoor
 	name = "CentCom Access"
@@ -130,39 +100,3 @@
 	desc = "A wall layered with impenetrable sheets of paper."
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "paperwall"
-
-/turf/closed/indestructible/necropolis
-	name = "necropolis wall"
-	desc = "A seemingly impenetrable wall."
-	icon = 'icons/turf/walls.dmi'
-	icon_state = "necro"
-	explosion_block = 50
-	baseturfs = /turf/closed/indestructible/necropolis
-
-/turf/closed/indestructible/necropolis/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "necro1"
-	return TRUE
-
-/turf/closed/indestructible/riveted/boss
-	name = "necropolis wall"
-	desc = "A thick, seemingly indestructible stone wall."
-	icon = 'icons/turf/walls/boss_wall.dmi'
-	icon_state = "wall"
-	canSmoothWith = list(/turf/closed/indestructible/riveted/boss, /turf/closed/indestructible/riveted/boss/see_through)
-	explosion_block = 50
-	baseturfs = /turf/closed/indestructible/riveted/boss
-
-/turf/closed/indestructible/riveted/boss/see_through
-	opacity = FALSE
-
-/turf/closed/indestructible/riveted/boss/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
-
-/turf/closed/indestructible/riveted/hierophant
-	name = "wall"
-	desc = "A wall made out of a strange metal. The squares on it pulse in a predictable pattern."
-	icon = 'icons/turf/walls/hierophant_wall.dmi'
-	icon_state = "wall"

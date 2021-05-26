@@ -4,29 +4,29 @@
 	desc = "A basic energy-based gun."
 	icon = 'icons/obj/guns/energy.dmi'
 
-	var/obj/item/stock_parts/cell/cell //What type of power cell this uses
+	var/obj/item/stock_parts/cell/cell
 	var/cell_type = /obj/item/stock_parts/cell
 	var/modifystate = 0
 	var/list/ammo_type = list(/obj/item/ammo_casing/energy)
-	var/select = 1 //The state of the select fire switch. Determines from the ammo_type list what kind of shot is fired next.
-	var/can_charge = 1 //Can it be charged in a recharger?
-	var/automatic_charge_overlays = TRUE	//Do we handle overlays with base update_icon()?
+	var/select = 1
+	var/can_charge = 1
+	var/automatic_charge_overlays = TRUE
 	var/charge_sections = 4
 	ammo_x_offset = 2
-	var/shaded_charge = FALSE //if this gun uses a stateful charge bar for more detail
-	var/old_ratio = 0 // stores the gun's previous ammo "ratio" to see if it needs an updated icon
+	var/shaded_charge = FALSE
+	var/old_ratio = 0
 	var/selfcharge = 0
 	var/charge_tick = 0
 	var/charge_delay = 4
-	var/use_cyborg_cell = 0 //whether the gun's cell drains the cyborg user's cell to recharge
-	var/dead_cell = FALSE //set to true so the gun is given an empty cell
+	var/use_cyborg_cell = 0
+	var/dead_cell = FALSE
 
 /obj/item/gun/energy/emp_act(severity)
 	. = ..()
 	if(!(. & EMP_PROTECT_CONTENTS))
 		cell.use(round(cell.charge / severity))
-		chambered = null //we empty the chamber
-		recharge_newshot() //and try to charge a new shot
+		chambered = null
+		recharge_newshot()
 		update_icon()
 
 /obj/item/gun/energy/get_cell()
@@ -68,7 +68,7 @@
 			return
 		charge_tick = 0
 		cell.give(100)
-		if(!chambered) //if empty chamber we try to charge a new shot
+		if(!chambered)
 			recharge_newshot(TRUE)
 		update_icon()
 
@@ -84,35 +84,35 @@
 /obj/item/gun/energy/recharge_newshot(no_cyborg_drain)
 	if (!ammo_type || !cell)
 		return
-	if(use_cyborg_cell && !no_cyborg_drain)
-		if(iscyborg(loc))
-			var/mob/living/silicon/robot/R = loc
-			if(R.cell)
-				var/obj/item/ammo_casing/energy/shot = ammo_type[select] //Necessary to find cost of shot
-				if(R.cell.use(shot.e_cost)) 		//Take power from the borg...
-					cell.give(shot.e_cost)	//... to recharge the shot
+	//if(use_cyborg_cell && !no_cyborg_drain)
+	//	if(iscyborg(loc))
+	//		var/mob/living/silicon/robot/R = loc
+	//		if(R.cell)
+	//			var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+	//			if(R.cell.use(shot.e_cost))
+	//				cell.give(shot.e_cost)
 	if(!chambered)
 		var/obj/item/ammo_casing/energy/AC = ammo_type[select]
-		if(cell.charge >= AC.e_cost) //if there's enough power in the cell cell...
-			chambered = AC //...prepare a new shot based on the current ammo type selected
+		if(cell.charge >= AC.e_cost)
+			chambered = AC
 			if(!chambered.BB)
 				chambered.newshot()
 
 /obj/item/gun/energy/process_chamber()
-	if(chambered && !chambered.BB) //if BB is null, i.e the shot has been fired...
+	if(chambered && !chambered.BB)
 		var/obj/item/ammo_casing/energy/shot = chambered
-		cell.use(shot.e_cost)//... drain the cell cell
-	chambered = null //either way, released the prepared shot
-	recharge_newshot() //try to charge a new shot
+		cell.use(shot.e_cost)
+	chambered = null
+	recharge_newshot()
 
 /obj/item/gun/energy/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(!chambered && can_shoot())
-		process_chamber()	// If the gun was drained and then recharged, load a new shot.
+		process_chamber()
 	return ..()
 
 /obj/item/gun/energy/process_burst(mob/living/user, atom/target, message = TRUE, params = null, zone_override="", sprd = 0, randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0)
 	if(!chambered && can_shoot())
-		process_chamber()	// Ditto.
+		process_chamber()
 	return ..()
 
 /obj/item/gun/energy/proc/select_fire(mob/living/user)
@@ -185,15 +185,14 @@
 		return (OXYLOSS)
 
 
-/obj/item/gun/energy/vv_edit_var(var_name, var_value)
-	switch(var_name)
-		if("selfcharge")
-			if(var_value)
-				START_PROCESSING(SSobj, src)
-			else
-				STOP_PROCESSING(SSobj, src)
-	. = ..()
-
+///obj/item/gun/energy/vv_edit_var(var_name, var_value)
+//	switch(var_name)
+//		if("selfcharge")
+//			if(var_value)
+//				START_PROCESSING(SSobj, src)
+//			else
+//				STOP_PROCESSING(SSobj, src)
+//	. = ..()
 
 /obj/item/gun/energy/ignition_effect(atom/A, mob/living/user)
 	if(!can_shoot() || !ammo_type[select])

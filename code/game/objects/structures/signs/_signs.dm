@@ -6,8 +6,8 @@
 	layer = SIGN_LAYER
 	max_integrity = 100
 	armor = list("melee" = 50, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 50)
-	var/buildable_sign = 1 //unwrenchable and modifiable
-	rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
+	var/buildable_sign = 1
+	//rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
 
 /obj/structure/sign/basic
 	name = "blank sign"
@@ -43,46 +43,42 @@
 		var/list/sign_types = list("Secure Area", "Biohazard", "High Voltage", "Radiation", "Hard Vacuum Ahead", "Disposal: Leads To Space", "Danger: Fire", "No Smoking", "Medbay", "Science", "Chemistry", \
 		"Hydroponics", "Xenobiology")
 		var/obj/structure/sign/sign_type
-		switch(input(user, "Select a sign type.", "Sign Customization") as null|anything in sign_types)
-			if("Blank")
-				sign_type = /obj/structure/sign/basic
-			if("Secure Area")
-				sign_type = /obj/structure/sign/warning/securearea
-			if("Biohazard")
-				sign_type = /obj/structure/sign/warning/biohazard
-			if("High Voltage")
-				sign_type = /obj/structure/sign/warning/electricshock
-			if("Radiation")
-				sign_type = /obj/structure/sign/warning/radiation
-			if("Hard Vacuum Ahead")
-				sign_type = /obj/structure/sign/warning/vacuum
-			if("Disposal: Leads To Space")
-				sign_type = /obj/structure/sign/warning/deathsposal
-			if("Danger: Fire")
-				sign_type = /obj/structure/sign/warning/fire
-			if("No Smoking")
-				sign_type = /obj/structure/sign/warning/nosmoking/circle
-			if("Medbay")
-				sign_type = /obj/structure/sign/departments/medbay/alt
-			if("Science")
-				sign_type = /obj/structure/sign/departments/science
-			if("Chemistry")
-				sign_type = /obj/structure/sign/departments/chemistry
-			if("Hydroponics")
-				sign_type = /obj/structure/sign/departments/botany
-			if("Xenobiology")
-				sign_type = /obj/structure/sign/departments/xenobio
+		//switch(input(user, "Select a sign type.", "Sign Customization") as null|anything in sign_types)
+		//	if("Blank")
+		//		sign_type = /obj/structure/sign/basic
+		//	if("Secure Area")
+		//		sign_type = /obj/structure/sign/warning/securearea
+		//	if("Biohazard")
+		//		sign_type = /obj/structure/sign/warning/biohazard
+		//	if("High Voltage")
+		//		sign_type = /obj/structure/sign/warning/electricshock
+		//	if("Radiation")
+		//		sign_type = /obj/structure/sign/warning/radiation
+		//	if("Hard Vacuum Ahead")
+		//		sign_type = /obj/structure/sign/warning/vacuum
+		//	if("Disposal: Leads To Space")
+		//		sign_type = /obj/structure/sign/warning/deathsposal
+		//	if("Danger: Fire")
+		//		sign_type = /obj/structure/sign/warning/fire
+		//	if("No Smoking")
+		//		sign_type = /obj/structure/sign/warning/nosmoking/circle
+		//	if("Medbay")
+		//		sign_type = /obj/structure/sign/departments/medbay/alt
+		//	if("Science")
+		//		sign_type = /obj/structure/sign/departments/science
+		//	if("Chemistry")
+		//		sign_type = /obj/structure/sign/departments/chemistry
+		//	if("Hydroponics")
+		//		sign_type = /obj/structure/sign/departments/botany
+		//	if("Xenobiology")
+		//		sign_type = /obj/structure/sign/departments/xenobio
 
-		//Make sure user is adjacent still
 		if(!Adjacent(user))
 			return
 
 		if(!sign_type)
 			return
 
-		//It's import to clone the pixel layout information
-		//Otherwise signs revert to being on the turf and
-		//move jarringly
 		var/obj/structure/sign/newsign = new sign_type(get_turf(src))
 		newsign.pixel_x = pixel_x
 		newsign.pixel_y = pixel_y
@@ -97,7 +93,7 @@
 	icon_state = "backing"
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = FLAMMABLE
-	var/sign_path = /obj/structure/sign/basic //the type of sign that will be created when placed on a turf
+	var/sign_path = /obj/structure/sign/basic
 
 /obj/item/sign_backing/afterattack(atom/target, mob/user, proximity)
 	. = ..()
@@ -111,7 +107,6 @@
 		qdel(src)
 
 /obj/item/sign_backing/Move(atom/new_loc, direct = 0)
-	// pulling, throwing, or conveying a sign backing does not rotate it
 	var/old_dir = dir
 	. = ..()
 	setDir(old_dir)

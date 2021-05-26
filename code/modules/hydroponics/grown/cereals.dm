@@ -1,4 +1,3 @@
-// Wheat
 /obj/item/seeds/wheat
 	name = "pack of wheat seeds"
 	desc = "These may, or may not, grow into wheat."
@@ -26,7 +25,6 @@
 	tastes = list("wheat" = 1)
 	distill_reagent = "beer"
 
-// Oat
 /obj/item/seeds/wheat/oat
 	name = "pack of oat seeds"
 	desc = "These may, or may not, grow into oat."
@@ -49,7 +47,6 @@
 	tastes = list("oat" = 1)
 	distill_reagent = "ale"
 
-// Rice
 /obj/item/seeds/wheat/rice
 	name = "pack of rice seeds"
 	desc = "These may, or may not, grow into rice."
@@ -73,7 +70,6 @@
 	tastes = list("rice" = 1)
 	distill_reagent = "sake"
 
-//Meatwheat - grows into synthetic meat
 /obj/item/seeds/wheat/meat
 	name = "pack of meatwheat seeds"
 	desc = "If you ever wanted to drive a vegetarian to insanity, here's how."
@@ -88,7 +84,8 @@
 	desc = "Some blood-drenched wheat stalks. You can crush them into what passes for meat if you squint hard enough."
 	icon_state = "meatwheat"
 	gender = PLURAL
-	filling_color = rgb(150, 0, 0)
+	//filling_color = rgb(150, 0, 0)
+	filling_color = "#960000"//not_actual
 	bitesize_mod = 2
 	seed = /obj/item/seeds/wheat/meat
 	foodtype = MEAT | GRAIN

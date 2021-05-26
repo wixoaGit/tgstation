@@ -3,13 +3,13 @@
 	icon_state = "black"
 	dir = SOUTH
 	baseturfs = /turf/open/space/transit
-	flags_1 = NOJAUNT_1 //This line goes out to every wizard that ever managed to escape the den. I'm sorry.
+	flags_1 = NOJAUNT_1
 	explosion_block = INFINITY
 
 /turf/open/space/transit/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
 	. = ..()
 	underlay_appearance.icon_state = "speedspace_ns_[get_transit_state(asking_turf)]"
-	underlay_appearance.transform = turn(matrix(), get_transit_angle(asking_turf))
+	//underlay_appearance.transform = turn(matrix(), get_transit_angle(asking_turf))
 
 /turf/open/space/transit/south
 	dir = SOUTH
@@ -35,8 +35,8 @@
 	set waitfor = FALSE
 	if(!AM || istype(AM, /obj/docking_port))
 		return
-	if(AM.loc != src) 	// Multi-tile objects are "in" multiple locs but its loc is it's true placement.
-		return			// Don't move multi tile objects if their origin isnt in transit
+	if(AM.loc != src)
+		return
 	var/max = world.maxx-TRANSITIONEDGE
 	var/min = 1+TRANSITIONEDGE
 
@@ -47,7 +47,6 @@
 			possible_transtitons += D.z_value
 	var/_z = pick(possible_transtitons)
 
-	//now select coordinates for a border turf
 	var/_x
 	var/_y
 	switch(dir)
@@ -68,8 +67,8 @@
 	AM.forceMove(T)
 
 
-/turf/open/space/transit/CanBuildHere()
-	return SSshuttle.is_in_shuttle_bounds(src)
+///turf/open/space/transit/CanBuildHere()
+//	return SSshuttle.is_in_shuttle_bounds(src)
 
 
 /turf/open/space/transit/Initialize()
@@ -80,7 +79,7 @@
 
 /turf/open/space/transit/proc/update_icon()
 	icon_state = "speedspace_ns_[get_transit_state(src)]"
-	transform = turn(matrix(), get_transit_angle(src))
+	//transform = turn(matrix(), get_transit_angle(src))
 
 /proc/get_transit_state(turf/T)
 	var/p = 9

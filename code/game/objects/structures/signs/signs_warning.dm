@@ -41,12 +41,6 @@
 	desc = "A warning sign which reads 'ESCAPE PODS'."
 	icon_state = "pods"
 
-/obj/structure/sign/warning/fire
-	name = "\improper DANGER: FIRE"
-	desc = "A warning sign which reads 'DANGER: FIRE'."
-	icon_state = "fire"
-	resistance_flags = FIRE_PROOF
-
 /obj/structure/sign/warning/nosmoking
 	name = "\improper NO SMOKING"
 	desc = "A warning sign which reads 'NO SMOKING'."

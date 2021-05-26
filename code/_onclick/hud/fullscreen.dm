@@ -5,11 +5,9 @@
 /mob/proc/overlay_fullscreen(category, type, severity)
 	var/obj/screen/fullscreen/screen = screens[category]
 	if (!screen || screen.type != type)
-		// needs to be recreated
 		clear_fullscreen(category, FALSE)
 		screens[category] = screen = new type()
 	else if ((!severity || severity == screen.severity) && (!client || screen.screen_loc != "CENTER-7,CENTER-7" || screen.view == client.view))
-		// doesn't need to be updated
 		return screen
 
 	screen.icon_state = "[initial(screen.icon_state)][severity]"
@@ -66,7 +64,7 @@
 	screen_loc = "CENTER-7,CENTER-7"
 	layer = FULLSCREEN_LAYER
 	plane = FULLSCREEN_PLANE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/view = 7
 	var/severity = 0
 	var/show_when_dead = FALSE
@@ -130,22 +128,26 @@
 
 /obj/screen/fullscreen/flash
 	icon = 'icons/mob/screen_gen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	//screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = "WEST,SOUTH"//not_actual
 	icon_state = "flash"
 
 /obj/screen/fullscreen/flash/static
 	icon = 'icons/mob/screen_gen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	//screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = "WEST,SOUTH"//not_actual
 	icon_state = "noise"
 
 /obj/screen/fullscreen/high
 	icon = 'icons/mob/screen_gen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	//screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = "WEST,SOUTH"//not_actual
 	icon_state = "druggy"
 
 /obj/screen/fullscreen/color_vision
 	icon = 'icons/mob/screen_gen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	//screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = "WEST,SOUTH"//not_actual
 	icon_state = "flash"
 	alpha = 80
 
@@ -161,19 +163,17 @@
 /obj/screen/fullscreen/lighting_backdrop
 	icon = 'icons/mob/screen_gen.dmi'
 	icon_state = "flash"
-	transform = matrix(200, 0, 0, 0, 200, 0)
+	//transform = matrix(200, 0, 0, 0, 200, 0)
 	plane = LIGHTING_PLANE
-	blend_mode = BLEND_OVERLAY
+	//blend_mode = BLEND_OVERLAY
 	show_when_dead = TRUE
 
-//Provides darkness to the back of the lighting plane
 /obj/screen/fullscreen/lighting_backdrop/lit
 	invisibility = INVISIBILITY_LIGHTING
 	layer = BACKGROUND_LAYER+21
 	color = "#000"
 	show_when_dead = TRUE
 
-//Provides whiteness in case you don't see lights so everything is still visible
 /obj/screen/fullscreen/lighting_backdrop/unlit
 	layer = BACKGROUND_LAYER+20
 	show_when_dead = TRUE
@@ -182,5 +182,5 @@
 	icon_state = "nightvision"
 	plane = LIGHTING_PLANE
 	layer = LIGHTING_LAYER
-	blend_mode = BLEND_ADD
+	//blend_mode = BLEND_ADD
 	show_when_dead = TRUE

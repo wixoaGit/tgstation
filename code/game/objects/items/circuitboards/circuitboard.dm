@@ -1,8 +1,3 @@
-//File with the circuitboard and circuitboard/machine class definitions and procs
-
-
-// Circuitboard
-
 /obj/item/circuitboard
 	name = "circuit board"
 	icon = 'icons/obj/module.dmi'
@@ -18,25 +13,16 @@
 /obj/item/circuitboard/proc/apply_default_parts(obj/machinery/M)
 	return
 
-// Circuitboard/machine
-/*Common Parts: Parts List: Ignitor, Timer, Infra-red laser, Infra-red sensor, t_scanner, Capacitor, Valve, sensor unit,
-micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
-*/
-
 /obj/item/circuitboard/machine
-	var/needs_anchored = TRUE // Whether this machine must be anchored to be constructed.
-	var/list/req_components // Components required by the machine.
-							// Example: list(/obj/item/stock_parts/matter_bin = 5)
+	var/needs_anchored = TRUE
+	var/list/req_components
+	var/list/def_components
 
-	var/list/def_components // Default replacements for req_components, to be used in apply_default_parts instead of req_components types
-							// Example: list(/obj/item/stock_parts/matter_bin = /obj/item/stock_parts/matter_bin/super)
-
-// Applies the default parts defined by the circuit board when the machine is created
 /obj/item/circuitboard/machine/apply_default_parts(obj/machinery/M)
 	if(!req_components)
 		return
 
-	M.component_parts = list(src) // List of components always contains a board
+	M.component_parts = list(src)
 	moveToNullspace()
 
 	for(var/comp_path in req_components)

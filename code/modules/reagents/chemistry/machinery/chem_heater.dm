@@ -73,7 +73,7 @@
 		return
 
 	if(istype(I, /obj/item/reagent_containers) && !(I.item_flags & ABSTRACT) && I.is_open_container())
-		. = TRUE //no afterattack
+		. = TRUE
 		var/obj/item/reagent_containers/B = I
 		if(!user.transferItemToLoc(B, src))
 			return
@@ -105,10 +105,11 @@
 	data["beakerCurrentVolume"] = beaker ? beaker.reagents.total_volume : null
 	data["beakerMaxVolume"] = beaker ? beaker.volume : null
 
-	var beakerContents[0]
+	//var beakerContents[0]
+	var/list/beakerContents = list()
 	if(beaker)
 		for(var/datum/reagent/R in beaker.reagents.reagent_list)
-			beakerContents.Add(list(list("name" = R.name, "volume" = R.volume))) // list in a list because Byond merges the first list...
+			beakerContents.Add(list(list("name" = R.name, "volume" = R.volume)))
 	data["beakerContents"] = beakerContents
 	return data
 

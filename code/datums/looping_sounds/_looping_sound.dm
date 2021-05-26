@@ -1,19 +1,3 @@
-/*
-	output_atoms	(list of atoms)			The destination(s) for the sounds
-
-	mid_sounds		(list or soundfile)		Since this can be either a list or a single soundfile you can have random sounds. May contain further lists but must contain a soundfile at the end.
-	mid_length		(num)					The length to wait between playing mid_sounds
-
-	start_sound		(soundfile)				Played before starting the mid_sounds loop
-	start_length	(num)					How long to wait before starting the main loop after playing start_sound
-
-	end_sound		(soundfile)				The sound played after the main loop has concluded
-
-	chance			(num)					Chance per loop to play a mid_sound
-	volume			(num)					Sound output volume
-	max_loops		(num)					The max amount of loops to run for.
-	direct			(bool)					If true plays directly to provided atoms instead of from them
-*/
 /datum/looping_sound
 	var/list/atom/output_atoms
 	var/mid_sounds
@@ -57,7 +41,7 @@
 	if(!timerid)
 		return
 	on_stop()
-	deltimer(timerid)
+	//deltimer(timerid)
 	timerid = null
 
 /datum/looping_sound/proc/sound_loop(starttime)
@@ -66,8 +50,8 @@
 		return
 	if(!chance || prob(chance))
 		play(get_sound(starttime))
-	if(!timerid)
-		timerid = addtimer(CALLBACK(src, .proc/sound_loop, world.time), mid_length, TIMER_CLIENT_TIME | TIMER_STOPPABLE | TIMER_LOOP)
+	//if(!timerid)
+	//	timerid = addtimer(CALLBACK(src, .proc/sound_loop, world.time), mid_length, TIMER_CLIENT_TIME | TIMER_STOPPABLE | TIMER_LOOP)
 
 /datum/looping_sound/proc/play(soundfile)
 	var/list/atoms_cache = output_atoms

@@ -23,19 +23,19 @@
 	var/glass = FALSE
 	var/welded = FALSE
 	var/normalspeed = 1
-	var/heat_proof = FALSE // For rglass-windowed airlocks and firedoors
-	var/emergency = FALSE // Emergency access override
-	var/sub_door = FALSE // true if it's meant to go under another door.
+	var/heat_proof = FALSE
+	var/emergency = FALSE
+	var/sub_door = FALSE
 	var/closingLayer = CLOSED_DOOR_LAYER
-	var/autoclose = FALSE //does it automatically close after some time
-	var/safe = TRUE //whether the door detects things and mobs in its way and reopen or crushes them.
-	var/locked = FALSE //whether the door is bolted or not.
-	var/assemblytype //the type of door frame to drop during deconstruction
+	var/autoclose = FALSE
+	var/safe = TRUE
+	var/locked = FALSE
+	var/assemblytype
 	var/datum/effect_system/spark_spread/spark_system
-	var/real_explosion_block	//ignore this, just use explosion_block
-	var/red_alert_access = FALSE //if TRUE, this door will always open on red alert
+	var/real_explosion_block
+	var/red_alert_access = FALSE
 	var/poddoor = FALSE
-	var/unres_sides = 0 //Unrestricted sides. A bitflag for which direction (if any) can open the door with no access
+	var/unres_sides = 0
 
 /obj/machinery/door/examine(mob/user)
 	..()
@@ -61,7 +61,6 @@
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 
-	//doors only block while dense though so we have to use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
 
@@ -93,7 +92,7 @@
 		if(isliving(AM))
 			var/mob/living/M = AM
 			if(world.time - M.last_bumped <= 10)
-				return	//Can bump-open one airlock per second. This is to prevent shock spam.
+				return
 			M.last_bumped = world.time
 			if(M.restrained() && !check_access(null))
 				return
@@ -101,16 +100,16 @@
 			return
 
 	if(ismecha(AM))
-		var/obj/mecha/mecha = AM
-		if(density)
-			if(mecha.occupant)
-				if(world.time - mecha.occupant.last_bumped <= 10)
-					return
-				mecha.occupant.last_bumped = world.time
-			if(mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
-				open()
-			else
-				do_animate("deny")
+		//var/obj/mecha/mecha = AM
+		//if(density)
+		//	if(mecha.occupant)
+		//		if(world.time - mecha.occupant.last_bumped <= 10)
+		//			return
+		//		mecha.occupant.last_bumped = world.time
+		//	if(mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
+		//		open()
+		//	else
+		//		do_animate("deny")
 		return
 	return
 
@@ -144,17 +143,12 @@
 		return
 	return try_to_activate_door(user)
 
-/obj/machinery/door/attack_tk(mob/user)
-	if(requiresID() && !allowed(null))
-		return
-	..()
-
 /obj/machinery/door/proc/try_to_activate_door(mob/user)
 	add_fingerprint(user)
 	if(operating || (obj_flags & EMAGGED))
 		return
 	if(!requiresID())
-		user = null //so allowed(user) always succeeds
+		user = null
 	if(allowed(user))
 		if(density)
 			open()
@@ -171,7 +165,7 @@
 		return TRUE
 	return ..()
 
-/obj/machinery/door/proc/unrestricted_side(mob/M) //Allows for specific side of airlocks to be unrestrected (IE, can exit maint freely, but need access to enter)
+/obj/machinery/door/proc/unrestricted_side(mob/M)
 	return get_dir(src, M) & unres_sides
 
 /obj/machinery/door/proc/try_to_weld(obj/item/weldingtool/W, mob/user)
@@ -181,7 +175,8 @@
 	return
 
 /obj/machinery/door/attackby(obj/item/I, mob/user, params)
-	if(user.a_intent != INTENT_HARM && (I.tool_behaviour == TOOL_CROWBAR || istype(I, /obj/item/twohanded/fireaxe)))
+	//if(user.a_intent != INTENT_HARM && (I.tool_behaviour == TOOL_CROWBAR || istype(I, /obj/item/twohanded/fireaxe)))
+	if(user.a_intent != INTENT_HARM && I.tool_behaviour == TOOL_CROWBAR)//not_actual
 		try_to_crowbar(I, user)
 		return 1
 	else if(I.tool_behaviour == TOOL_WELDER)
@@ -214,16 +209,13 @@
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
-	if(prob(20/severity) && (istype(src, /obj/machinery/door/airlock) || istype(src, /obj/machinery/door/window)) )
-		INVOKE_ASYNC(src, .proc/open)
-	if(prob(severity*10 - 20))
-		if(secondsElectrified == MACHINE_NOT_ELECTRIFIED)
-			secondsElectrified = MACHINE_ELECTRIFIED_PERMANENT
-			LAZYADD(shockedby, "\[[time_stamp()]\]EM Pulse")
-			addtimer(CALLBACK(src, .proc/unelectrify), 300)
-
-/obj/machinery/door/proc/unelectrify()
-	secondsElectrified = MACHINE_NOT_ELECTRIFIED
+	//if(prob(20/severity) && (istype(src, /obj/machinery/door/airlock) || istype(src, /obj/machinery/door/window)) )
+	//	INVOKE_ASYNC(src, .proc/open)
+	//if(prob(severity*10 - 20))
+	//	if(secondsElectrified == MACHINE_NOT_ELECTRIFIED)
+	//		secondsElectrified = MACHINE_ELECTRIFIED_PERMANENT
+	//		LAZYADD(shockedby, "\[[time_stamp()]\]EM Pulse")
+	//		addtimer(CALLBACK(src, .proc/unelectrify), 300)
 
 /obj/machinery/door/update_icon()
 	if(density)
@@ -232,21 +224,20 @@
 		icon_state = "door0"
 
 /obj/machinery/door/proc/do_animate(animation)
-	switch(animation)
-		if("opening")
-			if(panel_open)
-				flick("o_doorc0", src)
-			else
-				flick("doorc0", src)
-		if("closing")
-			if(panel_open)
-				flick("o_doorc1", src)
-			else
-				flick("doorc1", src)
-		if("deny")
-			if(!stat)
-				flick("door_deny", src)
-
+	//switch(animation)
+	//	if("opening")
+	//		if(panel_open)
+	//			flick("o_doorc0", src)
+	//		else
+	//			flick("doorc0", src)
+	//	if("closing")
+	//		if(panel_open)
+	//			flick("o_doorc1", src)
+	//		else
+	//			flick("doorc1", src)
+	//	if("deny")
+	//		if(!stat)
+	//			flick("door_deny", src)
 
 /obj/machinery/door/proc/open()
 	if(!density)
@@ -277,7 +268,7 @@
 		return
 	if(safe)
 		for(var/atom/movable/M in get_turf(src))
-			if(M.density && M != src) //something is blocking the door
+			if(M.density && M != src)
 				if(autoclose)
 					autoclose_in(60)
 				return
@@ -290,42 +281,16 @@
 	density = TRUE
 	sleep(5)
 	update_icon()
-	if(visible && !glass)
-		set_opacity(1)
+	//if(visible && !glass)
+	//	set_opacity(1)
 	operating = FALSE
 	air_update_turf(1)
 	update_freelook_sight()
-	if(safe)
-		CheckForMobs()
-	else
-		crush()
+	//if(safe)
+	//	CheckForMobs()
+	//else
+	//	crush()
 	return 1
-
-/obj/machinery/door/proc/CheckForMobs()
-	if(locate(/mob/living) in get_turf(src))
-		sleep(1)
-		open()
-
-/obj/machinery/door/proc/crush()
-	for(var/mob/living/L in get_turf(src))
-		L.visible_message("<span class='warning'>[src] closes on [L], crushing [L.p_them()]!</span>", "<span class='userdanger'>[src] closes on you and crushes you!</span>")
-		if(isalien(L))  //For xenos
-			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE * 1.5) //Xenos go into crit after aproximately the same amount of crushes as humans.
-			L.emote("roar")
-		else if(ishuman(L)) //For humans
-			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
-			L.emote("scream")
-			L.Paralyze(100)
-		else if(ismonkey(L)) //For monkeys
-			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
-			L.Paralyze(100)
-		else //for simple_animals & borgs
-			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
-		var/turf/location = get_turf(src)
-		//add_blood doesn't work for borgs/xenos, but add_blood_floor does.
-		L.add_splatter_floor(location)
-	for(var/obj/mecha/M in get_turf(src))
-		M.take_damage(DOOR_CRUSH_DAMAGE)
 
 /obj/machinery/door/proc/autoclose()
 	if(!QDELETED(src) && !density && !operating && !locked && !welded && autoclose)
@@ -341,36 +306,13 @@
 	return !(stat & NOPOWER)
 
 /obj/machinery/door/proc/update_freelook_sight()
-	if(!glass && GLOB.cameranet)
-		GLOB.cameranet.updateVisibility(src, 0)
-
-/obj/machinery/door/BlockSuperconductivity() // All non-glass airlocks block heat, this is intended.
-	if(opacity || heat_proof)
-		return 1
-	return 0
-
-/obj/machinery/door/morgue
-	icon = 'icons/obj/doors/doormorgue.dmi'
+	//if(!glass && GLOB.cameranet)
+	//	GLOB.cameranet.updateVisibility(src, 0)
 
 /obj/machinery/door/get_dumping_location(obj/item/storage/source,mob/user)
 	return null
 
-/obj/machinery/door/proc/lock()
-	return
-
-/obj/machinery/door/proc/unlock()
-	return
-
-/obj/machinery/door/proc/hostile_lockdown(mob/origin)
-	if(!stat) //So that only powered doors are closed.
-		close() //Close ALL the doors!
-
-/obj/machinery/door/proc/disable_lockdown()
-	if(!stat) //Opens only powered doors.
-		open() //Open everything!
-
 /obj/machinery/door/ex_act(severity, target)
-	//if it blows up a wall it should blow up a door
 	..(severity ? max(1, severity - 1) : 0, target)
 
 /obj/machinery/door/GetExplosionBlock()

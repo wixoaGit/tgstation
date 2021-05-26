@@ -41,18 +41,18 @@
 	..()
 	if(copy)
 		copy_type = copy.type
-		if(istype(copy, /obj/item/documents/photocopy)) // Copy Of A Copy Of A Copy
+		if(istype(copy, /obj/item/documents/photocopy))
 			var/obj/item/documents/photocopy/C = copy
 			copy_type = C.copy_type
 
 /obj/item/documents/photocopy/attackby(obj/item/O, mob/user, params)
-	if(istype(O, /obj/item/toy/crayon/red) || istype(O, /obj/item/toy/crayon/blue))
-		if (forgedseal)
-			to_chat(user, "<span class='warning'>You have already forged a seal on [src]!</span>")
-		else
-			var/obj/item/toy/crayon/C = O
-			name = "[C.item_color] secret documents"
-			icon_state = "docs_[C.item_color]"
-			forgedseal = C.item_color
-			to_chat(user, "<span class='notice'>You forge the official seal with a [C.item_color] crayon. No one will notice... right?</span>")
-			update_icon()
+	//if(istype(O, /obj/item/toy/crayon/red) || istype(O, /obj/item/toy/crayon/blue))
+	//	if (forgedseal)
+	//		to_chat(user, "<span class='warning'>You have already forged a seal on [src]!</span>")
+	//	else
+	//		var/obj/item/toy/crayon/C = O
+	//		name = "[C.item_color] secret documents"
+	//		icon_state = "docs_[C.item_color]"
+	//		forgedseal = C.item_color
+	//		to_chat(user, "<span class='notice'>You forge the official seal with a [C.item_color] crayon. No one will notice... right?</span>")
+	//		update_icon()

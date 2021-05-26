@@ -1,16 +1,16 @@
 /obj/item/melee/transforming
 	sharpness = IS_SHARP
 	var/active = FALSE
-	var/force_on = 30 //force when active
-	var/faction_bonus_force = 0 //Bonus force dealt against certain factions
+	var/force_on = 30
+	var/faction_bonus_force = 0
 	var/throwforce_on = 20
 	var/icon_state_on = "axe1"
 	var/hitsound_on = 'sound/weapons/blade1.ogg'
 	var/list/attack_verb_on = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	var/list/attack_verb_off = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	w_class = WEIGHT_CLASS_SMALL
-	var/bonus_active = FALSE //If the faction damage bonus is active
-	var/list/nemesis_factions //Any mob with a faction that exists in this list will take bonus damage/effects
+	var/bonus_active = FALSE
+	var/list/nemesis_factions
 	var/w_class_on = WEIGHT_CLASS_BULKY
 	var/clumsy_check = TRUE
 
@@ -77,7 +77,7 @@
 	return
 
 /obj/item/melee/transforming/proc/transform_messages(mob/living/user, supress_message_text)
-	playsound(user, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, 1)  //changed it from 50% volume to 35% because deafness
+	playsound(user, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, 1)
 	if(!supress_message_text)
 		to_chat(user, "<span class='notice'>[src] [active ? "is now active":"can now be concealed"].</span>")
 

@@ -51,7 +51,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /obj/machinery/announcement_system/Destroy()
 	QDEL_NULL(radio)
-	GLOB.announcement_systems -= src //"OH GOD WHY ARE THERE 100,000 LISTED ANNOUNCEMENT SYSTEMS?!!"
+	GLOB.announcement_systems -= src
 	return ..()
 
 /obj/machinery/announcement_system/power_change()
@@ -73,7 +73,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	else
 		return ..()
 
-/obj/machinery/announcement_system/proc/CompileText(str, user, rank) //replaces user-given variables with actual thingies.
+/obj/machinery/announcement_system/proc/CompileText(str, user, rank)
 	str = replacetext(str, "%PERSON", "[user]")
 	str = replacetext(str, "%RANK", "[rank]")
 	return str
@@ -96,8 +96,6 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	else
 		for(var/channel in channels)
 			radio.talk_into(src, message, channel, list(SPAN_ROBOT), get_default_language())
-
-//config stuff
 
 /obj/machinery/announcement_system/ui_interact(mob/user)
 	. = ..()
@@ -160,7 +158,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		return
 	interact(user)
 
-/obj/machinery/announcement_system/proc/act_up() //does funny breakage stuff
+/obj/machinery/announcement_system/proc/act_up()
 	stat |= BROKEN
 	update_icon()
 

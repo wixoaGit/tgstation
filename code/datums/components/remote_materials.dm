@@ -1,15 +1,4 @@
-/*
-This component allows machines to connect remotely to a material container
-(namely an /obj/machinery/ore_silo) elsewhere. It offers optional graceful
-fallback to a local material storage in case remote storage is unavailable, and
-handles linking back and forth.
-*/
-
 /datum/component/remote_materials
-	// Three possible states:
-	// 1. silo exists, materials is parented to silo
-	// 2. silo is null, materials is parented to parent
-	// 3. silo is null, materials is null
 	var/obj/machinery/ore_silo/silo
 	var/datum/component/material_container/mat_container
 	var/category
@@ -46,7 +35,6 @@ handles linking back and forth.
 		silo = null
 		mat_container = null
 	else if (mat_container)
-		// specify explicitly in case the other component is deleted first
 		var/atom/P = parent
 		mat_container.retrieve_all(P.drop_location())
 	return ..()
@@ -64,7 +52,6 @@ handles linking back and forth.
 	if (!silo && mat_container)
 		mat_container.max_amount = size
 
-// called if disconnected by ore silo UI or destruction
 /datum/component/remote_materials/proc/disconnect_from(obj/machinery/ore_silo/old_silo)
 	if (!old_silo || silo != old_silo)
 		return
@@ -75,25 +62,25 @@ handles linking back and forth.
 
 /datum/component/remote_materials/proc/OnAttackBy(datum/source, obj/item/I, mob/user)
 	if(I.tool_behaviour == TOOL_MULTITOOL)
-		if(!I.multitool_check_buffer(user, I))
-			return COMPONENT_NO_AFTERATTACK
-		var/obj/item/multitool/M = I
-		if (!QDELETED(M.buffer) && istype(M.buffer, /obj/machinery/ore_silo))
-			if (silo == M.buffer)
-				to_chat(user, "<span class='notice'>[parent] is already connected to [silo].</span>")
-				return COMPONENT_NO_AFTERATTACK
-			if (silo)
-				silo.connected -= src
-				silo.updateUsrDialog()
-			else if (mat_container)
-				mat_container.retrieve_all()
-				qdel(mat_container)
-			silo = M.buffer
-			silo.connected += src
-			silo.updateUsrDialog()
-			mat_container = silo.GetComponent(/datum/component/material_container)
-			to_chat(user, "<span class='notice'>You connect [parent] to [silo] from the multitool's buffer.</span>")
-			return COMPONENT_NO_AFTERATTACK
+		//if(!I.multitool_check_buffer(user, I))
+		//	return COMPONENT_NO_AFTERATTACK
+		//var/obj/item/multitool/M = I
+		//if (!QDELETED(M.buffer) && istype(M.buffer, /obj/machinery/ore_silo))
+		//	if (silo == M.buffer)
+		//		to_chat(user, "<span class='notice'>[parent] is already connected to [silo].</span>")
+		//		return COMPONENT_NO_AFTERATTACK
+		//	if (silo)
+		//		silo.connected -= src
+		//		silo.updateUsrDialog()
+		//	else if (mat_container)
+		//		mat_container.retrieve_all()
+		//		qdel(mat_container)
+		//	silo = M.buffer
+		//	silo.connected += src
+		//	silo.updateUsrDialog()
+		//	mat_container = silo.GetComponent(/datum/component/material_container)
+		//	to_chat(user, "<span class='notice'>You connect [parent] to [silo] from the multitool's buffer.</span>")
+		//	return COMPONENT_NO_AFTERATTACK
 
 	else if (silo && istype(I, /obj/item/stack))
 		if (silo.remote_attackby(parent, user, I))

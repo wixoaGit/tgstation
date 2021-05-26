@@ -46,9 +46,9 @@
 					to_chat(user, "<span class='notice'>You transfer [trans] unit\s of the solution.</span>")
 					update_icon()
 					return
-			else if(isalien(target)) //hiss-hiss has no eyes!
-				to_chat(target, "<span class='danger'>[target] does not seem to have any eyes!</span>")
-				return
+			//else if(isalien(target))
+			//	to_chat(target, "<span class='danger'>[target] does not seem to have any eyes!</span>")
+			//	return
 
 			target.visible_message("<span class='danger'>[user] squirts something into [target]'s eyes!</span>", \
 									"<span class='userdanger'>[user] squirts something into [target]'s eyes!</span>")
@@ -68,7 +68,7 @@
 
 	else
 
-		if(!target.is_drawable(user, FALSE)) //No drawing from mobs here
+		if(!target.is_drawable(user, FALSE))
 			to_chat(user, "<span class='notice'>You cannot directly remove reagents from [target].</span>")
 			return
 
