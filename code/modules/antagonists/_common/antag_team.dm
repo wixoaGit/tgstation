@@ -16,8 +16,7 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 		else
 			add_member(starting_members)
 
-///datum/team/Destroy(force, ...)
-/datum/team/Destroy(force)//not_actual
+/datum/team/Destroy(force, ...)
 	GLOB.antagonist_teams -= src
 	. = ..()
 

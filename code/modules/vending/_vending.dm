@@ -482,5 +482,5 @@
 	//	return FALSE
 	return FALSE//not_actual
 
-///obj/machinery/vending/onTransitZ()
-//	return
+/obj/machinery/vending/onTransitZ()
+	return

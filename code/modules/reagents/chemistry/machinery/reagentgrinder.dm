@@ -194,8 +194,8 @@
 	if(length(holdingitems))
 		options["grind"] = radial_grind
 		options["juice"] = radial_juice
-	//else if(beaker?.reagents.total_volume)
-	//	options["mix"] = radial_mix
+	else if(beaker?.reagents.total_volume)
+		options["mix"] = radial_mix
 
 	var/choice
 

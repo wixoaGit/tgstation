@@ -258,9 +258,10 @@
 		//if (client)
 		//	stat(null, "Ping: [round(client.lastping, 1)]ms (Average: [round(client.avgping, 1)]ms)")
 		//stat(null, "Map: [SSmapping.config?.map_name || "Loading..."]")
-		//var/datum/map_config/cached = SSmapping.next_map_config
-		//if(cached)
-		//	stat(null, "Next Map: [cached.map_name]")
+		stat(null, "Map: [SSmapping.map_config?.map_name || "Loading..."]")//not_actual
+		var/datum/map_config/cached = SSmapping.next_map_config
+		if(cached)
+			stat(null, "Next Map: [cached.map_name]")
 		stat(null, "Round ID: [GLOB.round_id ? GLOB.round_id : "NULL"]")
 		stat(null, "Server Time: [time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")]")
 		//stat(null, "Round Time: [worldtime2text()]")
@@ -275,7 +276,7 @@
 		if(statpanel("MC"))
 			//var/turf/T = get_turf(client.eye)
 			//stat("Location:", COORD(T))
-			//stat("CPU:", "[world.cpu]")
+			stat("CPU:", "[world.cpu]")
 			stat("Instances:", "[num2text(world.contents.len, 10)]")
 			stat("World Time:", "[world.time]")
 			//GLOB.stat_entry()

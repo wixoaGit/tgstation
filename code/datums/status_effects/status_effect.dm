@@ -12,8 +12,7 @@
 /datum/status_effect/New(list/arguments)
 	on_creation(arglist(arguments))
 
-///datum/status_effect/proc/on_creation(mob/living/new_owner, ...)
-/datum/status_effect/proc/on_creation(mob/living/new_owner)//not_actual
+/datum/status_effect/proc/on_creation(mob/living/new_owner, ...)
 	if(new_owner)
 		owner = new_owner
 	if(owner)
@@ -72,8 +71,7 @@
 /datum/status_effect/proc/nextmove_adjust()
 	return 0
 
-///mob/living/proc/apply_status_effect(effect, ...)
-/mob/living/proc/apply_status_effect(effect)//not_actual
+/mob/living/proc/apply_status_effect(effect, ...)
 	. = FALSE
 	var/datum/status_effect/S1 = effect
 	LAZYINITLIST(status_effects)

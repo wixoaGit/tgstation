@@ -3,8 +3,7 @@
 	var/dupe_type
 	var/datum/parent
 
-///datum/component/New(datum/P, ...)
-/datum/component/New(datum/P)//not_actual
+/datum/component/New(datum/P, ...)
 	parent = P
 	var/list/arguments = args.Copy(2)
 	if(Initialize(arglist(arguments)) == COMPONENT_INCOMPATIBLE)
@@ -50,8 +49,7 @@
 /datum/component/proc/RegisterWithParent()
 	return
 
-///datum/component/proc/Initialize(...)
-/datum/component/proc/Initialize()//not_actual
+/datum/component/proc/Initialize(...)
 	return
 
 /datum/component/Destroy(force=FALSE, silent=FALSE)
@@ -201,8 +199,7 @@
 			return C
 	return null
 
-///datum/proc/AddComponent(new_type, ...)
-/datum/proc/AddComponent(new_type)//not_actual
+/datum/proc/AddComponent(new_type, ...)
 	var/datum/component/nt = new_type
 	var/dm = initial(nt.dupe_mode)
 	var/dt = initial(nt.dupe_type)
@@ -254,8 +251,7 @@
 		return new_comp
 	return old_comp
 
-///datum/proc/LoadComponent(component_type, ...)
-/datum/proc/LoadComponent(component_type)//not_actual
+/datum/proc/LoadComponent(component_type, ...)
 	. = GetComponent(component_type)
 	if(!.)
 		return AddComponent(arglist(args))

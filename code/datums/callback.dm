@@ -12,8 +12,7 @@
 	//if(usr)
 	//	user = WEAKREF(usr)
 
-///world/proc/ImmediateInvokeAsync(thingtocall, proctocall, ...)
-/world/proc/ImmediateInvokeAsync(thingtocall, proctocall)//not_actual
+/world/proc/ImmediateInvokeAsync(thingtocall, proctocall, ...)
 	set waitfor = FALSE
 
 	if (!thingtocall)
@@ -42,8 +41,7 @@
 		return call(delegate)(arglist(calling_arguments))
 	return call(object, delegate)(arglist(calling_arguments))
 
-///datum/callback/proc/InvokeAsync(...)
-/datum/callback/proc/InvokeAsync()//not_actual
+/datum/callback/proc/InvokeAsync(...)
 	set waitfor = FALSE
 
 	//(!usr)

@@ -150,8 +150,8 @@
 	for(var/datum/mind/M in owners)
 		if(considered_alive(M))
 			return FALSE
-		//if(M.current?.suiciding)
-		//	return FALSE
+		if(M.current?.suiciding)
+			return FALSE
 	return TRUE
 
 GLOBAL_LIST_EMPTY(possible_items)

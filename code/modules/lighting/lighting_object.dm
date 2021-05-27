@@ -126,8 +126,8 @@
 ///atom/movable/lighting_object/blob_act()
 //	return
 
-///atom/movable/lighting_object/onTransitZ()
-//	return
+/atom/movable/lighting_object/onTransitZ()
+	return
 
 /atom/movable/lighting_object/forceMove(atom/destination, var/no_tp=FALSE, var/harderforce = FALSE)
 	if(harderforce)

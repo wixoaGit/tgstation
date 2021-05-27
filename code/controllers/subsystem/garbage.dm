@@ -87,8 +87,7 @@ SUBSYSTEM_DEF(garbage)
 	//	message_admins("Error: [type]([refID]) took longer than 1 second to delete (took [time/10] seconds to delete).")
 	//	postpone(time)
 
-///proc/qdel(datum/D, force=FALSE, ...)
-/proc/qdel(datum/D, force=FALSE)//not_actual
+/proc/qdel(datum/D, force=FALSE, ...)
 	if(!istype(D))
 		del(D)
 		return

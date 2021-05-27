@@ -560,15 +560,9 @@
 				dst = previous
 			else
 				dst = destination
-			//. = "transit towards [dst?.name || "unknown location"] ([getTimerStr()])"
-			//not_actual
-			if (dst != null)
-				. = "transit towards [dst.name] ([getTimerStr()])"
-			else
-				. = "transit towards unknown location ([getTimerStr()])"
+			. = "transit towards [dst?.name || "unknown location"] ([getTimerStr()])"
 	else
-		//return dockedAt?.name || "unknown"
-		return isnull(dockedAt) ? "unknown" : dockedAt.name//not_actual
+		return dockedAt?.name || "unknown"
 
 /obj/docking_port/mobile/proc/getDbgStatusText()
 	var/obj/docking_port/stationary/dockedAt = get_docked()

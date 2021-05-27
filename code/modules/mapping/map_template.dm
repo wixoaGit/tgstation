@@ -17,8 +17,7 @@
 
 /datum/map_template/proc/preload_size(path, cache = FALSE)
 	var/datum/parsed_map/parsed = new(file(path))
-	//var/bounds = parsed?.bounds
-	var/bounds = parsed ? parsed.bounds : null//not_actual
+	var/bounds = parsed?.bounds
 	if(bounds)
 		width = bounds[MAP_MAXX]
 		height = bounds[MAP_MAXY]

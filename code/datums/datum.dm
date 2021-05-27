@@ -7,8 +7,7 @@
 	var/signal_enabled = FALSE
 	var/datum_flags = NONE
 
-///datum/proc/Destroy(force=FALSE, ...)
-/datum/proc/Destroy(force=FALSE)//not_actual
+/datum/proc/Destroy(force=FALSE, ...)
 	tag = null
 	datum_flags &= ~DF_USE_TAG
 	//weak_reference = null

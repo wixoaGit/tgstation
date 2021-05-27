@@ -16,8 +16,7 @@
 	var/custom_price
 	var/custom_premium_price
 
-///atom/New(loc, ...)
-/atom/New(loc)//not_actual
+/atom/New(loc, ...)
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))
 		GLOB._preloader.load(src)
 
@@ -30,8 +29,7 @@
 		if(SSatoms.InitAtom(src, args))
 			return
 
-///atom/proc/Initialize(mapload, ...)
-/atom/proc/Initialize(mapload)//not_actual
+/atom/proc/Initialize(mapload, ...)
 	if(flags_1 & INITIALIZED_1)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
