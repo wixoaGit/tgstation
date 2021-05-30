@@ -224,6 +224,10 @@
 	contents_explosion(severity, target)
 	SEND_SIGNAL(src, COMSIG_ATOM_EX_ACT, severity, target)
 
+/atom/proc/fire_act(exposed_temperature, exposed_volume)
+	SEND_SIGNAL(src, COMSIG_ATOM_FIRE_ACT, exposed_temperature, exposed_volume)
+	return
+
 /atom/proc/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(density && !has_gravity(AM))
 		addtimer(CALLBACK(src, .proc/hitby_react, AM), 2)

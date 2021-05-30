@@ -5,7 +5,7 @@
 	icon_state = "unknown"
 	layer = AREA_LAYER
 	plane = BLACKNESS_PLANE
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	invisibility = INVISIBILITY_LIGHTING
 
 	var/map_name
@@ -197,7 +197,7 @@
 
 /area/proc/set_fire_alarm_effect()
 	fire = TRUE
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	for(var/alarm in firealarms)
 		var/obj/machinery/firealarm/F = alarm
 		F.update_fire_light(fire)
@@ -206,7 +206,7 @@
 
 /area/proc/unset_fire_alarm_effects()
 	fire = FALSE
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	for(var/alarm in firealarms)
 		var/obj/machinery/firealarm/F = alarm
 		F.update_fire_light(fire)

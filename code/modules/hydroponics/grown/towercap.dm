@@ -196,8 +196,8 @@
 		Burn()
 		START_PROCESSING(SSobj, src)
 
-///obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
-//	StartBurning()
+/obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
+	StartBurning()
 
 /obj/structure/bonfire/Crossed(atom/movable/AM)
 	if(burning & !grill)
@@ -211,7 +211,7 @@
 			continue
 		if(isobj(A))
 			var/obj/O = A
-			//O.fire_act(1000, 500)
+			O.fire_act(1000, 500)
 		else if(isliving(A))
 			var/mob/living/L = A
 			//L.adjust_fire_stacks(fire_stack_strength)

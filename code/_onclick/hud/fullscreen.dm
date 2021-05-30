@@ -64,7 +64,7 @@
 	screen_loc = "CENTER-7,CENTER-7"
 	layer = FULLSCREEN_LAYER
 	plane = FULLSCREEN_PLANE
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/view = 7
 	var/severity = 0
 	var/show_when_dead = FALSE

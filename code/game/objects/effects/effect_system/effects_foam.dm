@@ -9,7 +9,7 @@
 	anchored = TRUE
 	density = FALSE
 	layer = EDGED_TURF_LAYER
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/amount = 3
 	//animate_movement = 0
 	var/metal = 0

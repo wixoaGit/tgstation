@@ -100,48 +100,28 @@
 			cardinal_smooth(A, adjacencies)
 
 /atom/proc/diagonal_smooth(adjacencies)
-	//switch(adjacencies)
-	//	if(N_NORTH|N_WEST)
-	//		replace_smooth_overlays("d-se","d-se-0")
-	//	if(N_NORTH|N_EAST)
-	//		replace_smooth_overlays("d-sw","d-sw-0")
-	//	if(N_SOUTH|N_WEST)
-	//		replace_smooth_overlays("d-ne","d-ne-0")
-	//	if(N_SOUTH|N_EAST)
-	//		replace_smooth_overlays("d-nw","d-nw-0")
+	switch(adjacencies)
+		if(N_NORTH|N_WEST)
+			replace_smooth_overlays("d-se","d-se-0")
+		if(N_NORTH|N_EAST)
+			replace_smooth_overlays("d-sw","d-sw-0")
+		if(N_SOUTH|N_WEST)
+			replace_smooth_overlays("d-ne","d-ne-0")
+		if(N_SOUTH|N_EAST)
+			replace_smooth_overlays("d-nw","d-nw-0")
 
-	//	if(N_NORTH|N_WEST|N_NORTHWEST)
-	//		replace_smooth_overlays("d-se","d-se-1")
-	//	if(N_NORTH|N_EAST|N_NORTHEAST)
-	//		replace_smooth_overlays("d-sw","d-sw-1")
-	//	if(N_SOUTH|N_WEST|N_SOUTHWEST)
-	//		replace_smooth_overlays("d-ne","d-ne-1")
-	//	if(N_SOUTH|N_EAST|N_SOUTHEAST)
-	//		replace_smooth_overlays("d-nw","d-nw-1")
+		if(N_NORTH|N_WEST|N_NORTHWEST)
+			replace_smooth_overlays("d-se","d-se-1")
+		if(N_NORTH|N_EAST|N_NORTHEAST)
+			replace_smooth_overlays("d-sw","d-sw-1")
+		if(N_SOUTH|N_WEST|N_SOUTHWEST)
+			replace_smooth_overlays("d-ne","d-ne-1")
+		if(N_SOUTH|N_EAST|N_SOUTHEAST)
+			replace_smooth_overlays("d-nw","d-nw-1")
 
-	//	else
-	//		cardinal_smooth(src, adjacencies)
-	//		return
-	//not_actual
-	if (adjacencies == N_NORTH || adjacencies == N_WEST)
-		replace_smooth_overlays("d-se","d-se-0")
-	else if (adjacencies == N_NORTH || adjacencies == N_EAST)
-		replace_smooth_overlays("d-sw","d-sw-0")
-	else if (adjacencies == N_SOUTH || adjacencies == N_WEST)
-		replace_smooth_overlays("d-ne","d-ne-0")
-	else if (adjacencies == N_SOUTH || adjacencies == N_EAST)
-		replace_smooth_overlays("d-nw","d-nw-0")
-	else if (adjacencies == N_NORTH || adjacencies == N_WEST || adjacencies == N_NORTHWEST)
-		replace_smooth_overlays("d-se","d-se-1")
-	else if (adjacencies == N_NORTH || adjacencies == N_EAST|N_NORTHEAST)
-		replace_smooth_overlays("d-sw","d-sw-1")
-	else if (adjacencies == N_SOUTH || adjacencies == N_WEST || adjacencies == N_SOUTHWEST)
-		replace_smooth_overlays("d-ne","d-ne-1")
-	else if (adjacencies == N_SOUTH || adjacencies == N_EAST || adjacencies == N_SOUTHEAST)
-		replace_smooth_overlays("d-nw","d-nw-1")
-	else
-		cardinal_smooth(src, adjacencies)
-		return
+		else
+			cardinal_smooth(src, adjacencies)
+			return
 
 	icon_state = ""
 	return adjacencies
@@ -326,76 +306,41 @@
 	add_overlay(O)
 
 /proc/reverse_ndir(ndir)
-	//switch(ndir)
-	//	if(N_NORTH)
-	//		return NORTH
-	//	if(N_SOUTH)
-	//		return SOUTH
-	//	if(N_WEST)
-	//		return WEST
-	//	if(N_EAST)
-	//		return EAST
-	//	if(N_NORTHWEST)
-	//		return NORTHWEST
-	//	if(N_NORTHEAST)
-	//		return NORTHEAST
-	//	if(N_SOUTHEAST)
-	//		return SOUTHEAST
-	//	if(N_SOUTHWEST)
-	//		return SOUTHWEST
-	//	if(N_NORTH|N_WEST)
-	//		return NORTHWEST
-	//	if(N_NORTH|N_EAST)
-	//		return NORTHEAST
-	//	if(N_SOUTH|N_WEST)
-	//		return SOUTHWEST
-	//	if(N_SOUTH|N_EAST)
-	//		return SOUTHEAST
-	//	if(N_NORTH|N_WEST|N_NORTHWEST)
-	//		return NORTHWEST
-	//	if(N_NORTH|N_EAST|N_NORTHEAST)
-	//		return NORTHEAST
-	//	if(N_SOUTH|N_WEST|N_SOUTHWEST)
-	//		return SOUTHWEST
-	//	if(N_SOUTH|N_EAST|N_SOUTHEAST)
-	//		return SOUTHEAST
-	//	else
-	//		return 0
-	//not_actual
-	if(ndir == N_NORTH)
-		return NORTH
-	if(ndir == N_SOUTH)
-		return SOUTH
-	if(ndir == N_WEST)
-		return WEST
-	if(ndir == N_EAST)
-		return EAST
-	if(ndir == N_NORTHWEST)
-		return NORTHWEST
-	if(ndir == N_NORTHEAST)
-		return NORTHEAST
-	if(ndir == N_SOUTHEAST)
-		return SOUTHEAST
-	if(ndir == N_SOUTHWEST)
-		return SOUTHWEST
-	if(ndir == N_NORTH || ndir ==N_WEST)
-		return NORTHWEST
-	if(ndir == N_NORTH || ndir ==N_EAST)
-		return NORTHEAST
-	if(ndir == N_SOUTH || ndir ==N_WEST)
-		return SOUTHWEST
-	if(ndir == N_SOUTH || ndir ==N_EAST)
-		return SOUTHEAST
-	if(ndir == N_NORTH || ndir ==N_WEST || ndir ==N_NORTHWEST)
-		return NORTHWEST
-	if(ndir == N_NORTH || ndir ==N_EAST || ndir ==N_NORTHEAST)
-		return NORTHEAST
-	if(ndir == N_SOUTH || ndir ==N_WEST || ndir ==N_SOUTHWEST)
-		return SOUTHWEST
-	if(ndir == N_SOUTH || ndir ==N_EAST || ndir ==N_SOUTHEAST)
-		return SOUTHEAST
-	else
-		return 0
+	switch(ndir)
+		if(N_NORTH)
+			return NORTH
+		if(N_SOUTH)
+			return SOUTH
+		if(N_WEST)
+			return WEST
+		if(N_EAST)
+			return EAST
+		if(N_NORTHWEST)
+			return NORTHWEST
+		if(N_NORTHEAST)
+			return NORTHEAST
+		if(N_SOUTHEAST)
+			return SOUTHEAST
+		if(N_SOUTHWEST)
+			return SOUTHWEST
+		if(N_NORTH|N_WEST)
+			return NORTHWEST
+		if(N_NORTH|N_EAST)
+			return NORTHEAST
+		if(N_SOUTH|N_WEST)
+			return SOUTHWEST
+		if(N_SOUTH|N_EAST)
+			return SOUTHEAST
+		if(N_NORTH|N_WEST|N_NORTHWEST)
+			return NORTHWEST
+		if(N_NORTH|N_EAST|N_NORTHEAST)
+			return NORTHEAST
+		if(N_SOUTH|N_WEST|N_SOUTHWEST)
+			return SOUTHWEST
+		if(N_SOUTH|N_EAST|N_SOUTHEAST)
+			return SOUTHEAST
+		else
+			return 0
 
 /proc/queue_smooth_neighbors(atom/A)
 	for(var/V in orange(1,A))

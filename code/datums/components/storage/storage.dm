@@ -234,7 +234,7 @@
 		for(var/obj/O in real_location)
 			if(QDELETED(O))
 				continue
-			//O.mouse_opacity = MOUSE_OPACITY_OPAQUE
+			O.mouse_opacity = MOUSE_OPACITY_OPAQUE
 			O.screen_loc = "[cx]:[screen_pixel_x],[cy]:[screen_pixel_y]"
 			//O.maptext = ""
 			O.layer = ABOVE_HUD_LAYER

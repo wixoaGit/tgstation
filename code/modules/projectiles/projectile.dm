@@ -9,7 +9,7 @@
 	anchored = TRUE
 	item_flags = ABSTRACT
 	pass_flags = PASSTABLE
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	movement_type = FLYING
 	hitsound = 'sound/weapons/pierce.ogg'
 	var/hitsound_wall = ""

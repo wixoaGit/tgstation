@@ -14,8 +14,8 @@
 
 /datum/component/storage/concrete/Destroy()
 	var/atom/real_location = real_location()
-	//for(var/atom/_A in real_location)
-	//	_A.mouse_opacity = initial(_A.mouse_opacity)
+	for(var/atom/_A in real_location)
+		_A.mouse_opacity = initial(_A.mouse_opacity)
 	if(drop_all_on_destroy)
 		do_quick_empty()
 	for(var/i in slaves)
@@ -57,7 +57,7 @@
 /datum/component/storage/concrete/_removal_reset(atom/movable/thing)
 	thing.layer = initial(thing.layer)
 	//thing.plane = initial(thing.plane)
-	//thing.mouse_opacity = initial(thing.mouse_opacity)
+	thing.mouse_opacity = initial(thing.mouse_opacity)
 	//if(thing.maptext)
 	//	thing.maptext = ""
 
@@ -115,7 +115,7 @@
 		return FALSE
 	I.on_enter_storage(master)
 	refresh_mob_views()
-	//I.mouse_opacity = MOUSE_OPACITY_OPAQUE
+	I.mouse_opacity = MOUSE_OPACITY_OPAQUE
 	if(M)
 		if(M.client && M.active_storage != src)
 			M.client.screen -= I

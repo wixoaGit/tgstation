@@ -314,8 +314,8 @@
 			//	if(I.loc && I.loc.loc == listed_turf && I.override)
 			//		overrides += I.loc
 			for(var/atom/A in listed_turf)
-				//if(!A.mouse_opacity)
-				//	continue
+				if(!A.mouse_opacity)
+					continue
 				if(A.invisibility > see_invisible)
 					continue
 				if(overrides.len && (A in overrides))

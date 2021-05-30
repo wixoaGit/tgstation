@@ -110,3 +110,14 @@
 	for(var/i in 1 to min(fields, 15))
 		addtofield(i, "<font face=\"[PEN_FONT]\"><A href='?src=[REF(src)];write=[i]'>write</A></font>", 1)
 	info_links = info_links + "<font face=\"[PEN_FONT]\"><A href='?src=[REF(src)];write=end'>write</A></font>"
+
+/obj/item/paper/fire_act(exposed_temperature, exposed_volume)
+	..()
+	if(!(resistance_flags & FIRE_PROOF))
+		icon_state = "paper_onfire"
+		info = "[stars(info)]"
+
+
+/obj/item/paper/extinguish()
+	..()
+	update_icon()

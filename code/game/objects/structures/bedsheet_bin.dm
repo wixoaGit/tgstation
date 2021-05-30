@@ -308,11 +308,11 @@
 	else
 		icon_state = "linenbin-full"
 
-///obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
-//	if(amount)
-//		amount = 0
-//		update_icon()
-//	..()
+/obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
+	if(amount)
+		amount = 0
+		update_icon()
+	..()
 
 /obj/structure/bedsheetbin/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/bedsheet))

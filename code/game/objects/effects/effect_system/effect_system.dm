@@ -1,6 +1,6 @@
 /obj/effect/particle_effect
 	name = "particle effect"
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pass_flags = PASSTABLE | PASSGRILLE
 	anchored = TRUE
 

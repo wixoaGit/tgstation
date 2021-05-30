@@ -31,8 +31,19 @@
   src.magic = magic
   tag = ARMORID
 
+/datum/armor/proc/setRating(melee, bullet, laser, energy, bomb, bio, rad, fire, acid, magic)
+  return getArmor((isnull(melee) ? src.melee : melee),\
+                  (isnull(bullet) ? src.bullet : bullet),\
+                  (isnull(laser) ? src.laser : laser),\
+                  (isnull(energy) ? src.energy : energy),\
+                  (isnull(bomb) ? src.bomb : bomb),\
+                  (isnull(bio) ? src.bio : bio),\
+                  (isnull(rad) ? src.rad : rad),\
+                  (isnull(fire) ? src.fire : fire),\
+                  (isnull(acid) ? src.acid : acid),\
+				  (isnull(magic) ? src.magic : magic))
+
 /datum/armor/proc/getRating(rating)
   return vars[rating]
-  CRASH("Invalid rating name '[rating]'")
 
 #undef ARMORID

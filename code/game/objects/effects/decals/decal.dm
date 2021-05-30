@@ -14,6 +14,13 @@
 	//return isclosedturf(T) || isgroundlessturf(T)
 	return isclosedturf(T)//not_actual
 
+/obj/effect/decal/ex_act(severity, target)
+	qdel(src)
+
+/obj/effect/decal/fire_act(exposed_temperature, exposed_volume)
+	if(!(resistance_flags & FIRE_PROOF))
+		qdel(src)
+
 /obj/effect/turf_decal
 	icon = 'icons/turf/decals.dmi'
 	icon_state = "warningline"

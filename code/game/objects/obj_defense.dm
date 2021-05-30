@@ -75,6 +75,19 @@
 	//SSacid.processing -= src
 	deconstruct(FALSE)
 
+/obj/fire_act(exposed_temperature, exposed_volume)
+	if(isturf(loc))
+		var/turf/T = loc
+		if(T.intact && level == 1)
+			return
+	if(exposed_temperature && !(resistance_flags & FIRE_PROOF))
+		take_damage(CLAMP(0.02 * exposed_temperature, 0, 20), BURN, "fire", 0)
+	if(!(resistance_flags & ON_FIRE) && (resistance_flags & FLAMMABLE))
+		resistance_flags |= ON_FIRE
+		//SSfire_burning.processing[src] = src
+		add_overlay(GLOB.fire_overlay, TRUE)
+		return 1
+
 /obj/proc/burn()
 	//if(resistance_flags & ON_FIRE)
 	//	SSfire_burning.processing -= src
@@ -83,7 +96,7 @@
 /obj/proc/extinguish()
 	if(resistance_flags & ON_FIRE)
 		resistance_flags &= ~ON_FIRE
-		//cut_overlay(GLOB.fire_overlay, TRUE)
+		cut_overlay(GLOB.fire_overlay, TRUE)
 		//SSfire_burning.processing -= src
 
 /obj/proc/deconstruct(disassembled = TRUE)

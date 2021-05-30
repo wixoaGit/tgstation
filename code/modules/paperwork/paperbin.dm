@@ -34,6 +34,12 @@
 		papers = null
 	. = ..()
 
+/obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume)
+	if(total_paper)
+		total_paper = 0
+		update_icon()
+	..()
+
 /obj/item/paper_bin/attack_hand(mob/user)
 	if(isliving(user))
 		var/mob/living/L = user

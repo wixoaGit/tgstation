@@ -159,8 +159,8 @@
 	else
 		return ..()
 
-///obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume)
-//	light()
+/obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume)
+	light()
 
 /obj/item/clothing/mask/cigarette/is_hot()
 	return lit * heat

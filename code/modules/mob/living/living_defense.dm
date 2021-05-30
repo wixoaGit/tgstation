@@ -84,6 +84,10 @@
 		playsound(loc, 'sound/weapons/genhit.ogg', 50, 1, -1)
 	..()
 
+/mob/living/fire_act()
+	//adjust_fire_stacks(3)
+	//IgniteMob()
+
 /mob/living/ex_act(severity, target, origin)
 	//if(origin && istype(origin, /datum/spacevine_mutation) && isvineimmune(src))
 	//	return

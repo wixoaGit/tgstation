@@ -27,7 +27,7 @@
 	icon_state = "dirt"
 	//canSmoothWith = list(/obj/effect/decal/cleanable/dirt, /turf/closed/wall, /obj/structure/falsewall)
 	smooth = SMOOTH_FALSE
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/decal/cleanable/dirt/Initialize()
 	. = ..()

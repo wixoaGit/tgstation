@@ -2,7 +2,7 @@
 	icon_state = "nothing"
 	anchored = TRUE
 	layer = ABOVE_MOB_LAYER
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/duration = 10
 	var/randomdir = TRUE
 	var/timerid

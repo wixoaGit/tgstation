@@ -88,7 +88,7 @@ GLOBAL_LIST_INIT(hardcoded_gases, list(/datum/gas/oxygen, /datum/gas/nitrogen, /
 
 /obj/effect/overlay/gas
 	icon = 'icons/effects/atmospherics.dmi'
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	anchored = TRUE
 	layer = FLY_LAYER
 	//appearance_flags = TILE_BOUND

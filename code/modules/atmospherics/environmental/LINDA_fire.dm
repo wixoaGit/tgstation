@@ -3,7 +3,7 @@
 
 /obj/effect/hotspot
 	anchored = TRUE
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	icon = 'icons/effects/fire.dmi'
 	icon_state = "1"
 	layer = GASFIRE_LAYER

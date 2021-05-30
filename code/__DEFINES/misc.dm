@@ -124,6 +124,10 @@
 #define FIXED_COLOUR_PRIORITY 		4
 #define COLOUR_PRIORITY_AMOUNT 4
 
+#define MOUSE_OPACITY_TRANSPARENT 0
+#define MOUSE_OPACITY_ICON 1
+#define MOUSE_OPACITY_OPAQUE 2
+
 #define SPACE_ICON_STATE "[((x + y) ^ ~(x * y) + z) % 25]"
 
 #define MAP_MINX 1
