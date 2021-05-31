@@ -117,7 +117,8 @@ GLOBAL_LIST_EMPTY(species_list)
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		stoplag(1)
+		//stoplag(1)
+		sleep(1)//not_actual (stoplag is broken)
 		if (progress)
 			progbar.update(world.time - starttime)
 		if(QDELETED(user) || QDELETED(target))
@@ -165,7 +166,8 @@ GLOBAL_LIST_EMPTY(species_list)
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		stoplag(1)
+		//stoplag(1)
+		sleep(1)//not_actual (stoplag is broken)
 		if (progress)
 			progbar.update(world.time - starttime)
 
