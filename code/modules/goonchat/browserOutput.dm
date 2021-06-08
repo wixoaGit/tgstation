@@ -94,12 +94,10 @@
 	SEND_TEXT(owner, "<span class='userdanger'>Failed to load fancy chat, reverting to old chat. Certain features won't work.</span>")//not_actual
 
 /datum/chatOutput/proc/showChat()
-	//winset(owner, "output", "is-visible=false")
-	//winset(owner, "browseroutput", "is-disabled=false;is-visible=true")
+	winset(owner, "output", "is-visible=false")
+	winset(owner, "browseroutput", "is-disabled=false;is-visible=true")
 
-///datum/chatOutput/proc/ehjax_send(client/C = owner, window = "browseroutput", data)
-/datum/chatOutput/proc/ehjax_send(client/C, window = "browseroutput", data)//not_actual
-	if (C == null) C = owner//not_actual
+/datum/chatOutput/proc/ehjax_send(client/C = owner, window = "browseroutput", data)
 	if(islist(data))
 		data = json_encode(data)
 	C << output("[data]", "[window]:ehjaxCallback")

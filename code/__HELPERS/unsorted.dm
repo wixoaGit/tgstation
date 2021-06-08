@@ -281,8 +281,7 @@
 			return 1
 
 /proc/stack_trace(msg)
-	//CRASH(msg)
-	world.log << "stack_trace: [msg]"//not_actual
+	CRASH(msg)
 
 //#define DELTA_CALC max(((max(TICK_USAGE, world.cpu) / 100) * max(Master.sleep_delta-1,1)), 1)
 #define DELTA_CALC max(((TICK_USAGE / 100) * max(Master.sleep_delta-1,1)), 1)//not_actual

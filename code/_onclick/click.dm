@@ -166,7 +166,7 @@
 	var/turf/T = get_turf(src)
 	if(T && user.TurfAdjacent(T))
 		user.listed_turf = T
-		//user.client.statpanel = T.name
+		user.client.statpanel = T.name
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.Adjacent(src)

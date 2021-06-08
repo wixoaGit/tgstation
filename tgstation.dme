@@ -137,6 +137,7 @@
 #include "code\controllers\subsystem\economy.dm"
 #include "code\controllers\subsystem\garbage.dm"
 #include "code\controllers\subsystem\icon_smooth.dm"
+#include "code\controllers\subsystem\input.dm"
 #include "code\controllers\subsystem\job.dm"
 #include "code\controllers\subsystem\language.dm"
 #include "code\controllers\subsystem\lighting.dm"
@@ -554,6 +555,7 @@
 #include "code\modules\jobs\job_types\job.dm"
 #include "code\modules\jobs\job_types\science.dm"
 #include "code\modules\jobs\job_types\security.dm"
+#include "code\modules\keybindings\setup.dm"
 #include "code\modules\language\common.dm"
 #include "code\modules\language\language.dm"
 #include "code\modules\language\language_holder.dm"
@@ -778,5 +780,5 @@
 #include "code\modules\vending\megaseed.dm"
 #include "code\modules\vending\nutrimax.dm"
 #include "code\modules\VR\vr_sleeper.dm"
-#include "interface\skin_not_actual.dmf"
+#include "interface\skin.dmf"
 // END_INCLUDE
