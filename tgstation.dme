@@ -780,5 +780,6 @@
 #include "code\modules\vending\megaseed.dm"
 #include "code\modules\vending\nutrimax.dm"
 #include "code\modules\VR\vr_sleeper.dm"
+#include "interface\interface.dm"
 #include "interface\skin.dmf"
 // END_INCLUDE
