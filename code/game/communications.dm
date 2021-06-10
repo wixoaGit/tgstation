@@ -54,8 +54,7 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 ))
 
 /datum/radio_frequency
-	//var/frequency as num
-	var/frequency//not_actual
+	var/frequency as num
 	//var/list/list/obj/devices = list()
 	var/list/devices = list()//not_actual
 
