@@ -43,6 +43,18 @@
 	if(istype(pda))
 		host_pda = pda
 
+/obj/item/cartridge/medical
+	name = "\improper Med-U cartridge"
+	icon_state = "cart-m"
+	access = CART_MEDICAL
+	bot_access_flags = MED_BOT
+
+/obj/item/cartridge/chemistry
+	name = "\improper ChemWhiz cartridge"
+	icon_state = "cart-chem"
+	access = CART_REAGENT_SCANNER
+	bot_access_flags = MED_BOT
+
 /obj/item/cartridge/janitor
 	name = "\improper CustodiPRO cartridge"
 	desc = "The ultimate in clean-room design."
@@ -62,6 +74,22 @@
 	icon_state = "cart-h"
 	access = CART_MANIFEST | CART_STATUS_DISPLAY | CART_JANITOR | CART_SECURITY | CART_NEWSCASTER | CART_QUARTERMASTER | CART_DRONEPHONE
 	bot_access_flags = MULE_BOT | CLEAN_BOT
+
+/obj/item/cartridge/cmo
+	name = "\improper Med-U DELUXE cartridge"
+	icon_state = "cart-cmo"
+	access = CART_MANIFEST | CART_STATUS_DISPLAY | CART_REAGENT_SCANNER | CART_MEDICAL
+	bot_access_flags = MED_BOT
+
+/obj/item/cartridge/rd
+	name = "\improper Signal Ace DELUXE cartridge"
+	icon_state = "cart-rd"
+	access = CART_MANIFEST | CART_STATUS_DISPLAY | CART_REAGENT_SCANNER | CART_ATMOS | CART_DRONEPHONE
+	bot_access_flags = FLOOR_BOT | CLEAN_BOT | MED_BOT
+
+/obj/item/cartridge/rd/Initialize()
+	. = ..()
+	//radio = new(src)
 
 /obj/item/cartridge/captain
 	name = "\improper Value-PAK cartridge"

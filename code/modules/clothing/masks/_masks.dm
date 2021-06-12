@@ -33,4 +33,4 @@
 			slot_flags = adjusted_flags
 	if(user)
 		user.wear_mask_update(src, toggle_off = mask_adjusted)
-		//user.update_action_buttons_icon()
+		user.update_action_buttons_icon()

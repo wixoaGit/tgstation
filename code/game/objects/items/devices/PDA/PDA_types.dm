@@ -1,3 +1,13 @@
+/obj/item/pda/medical
+	name = "medical PDA"
+	default_cartridge = /obj/item/cartridge/medical
+	icon_state = "pda-medical"
+
+/obj/item/pda/viro
+	name = "virology PDA"
+	default_cartridge = /obj/item/cartridge/medical
+	icon_state = "pda-virology"
+
 /obj/item/pda/engineering
 	name = "engineering PDA"
 	icon_state = "pda-engineer"
@@ -23,6 +33,11 @@
 /obj/item/pda/heads/ce
 	name = "chief engineer PDA"
 	icon_state = "pda-ce"
+
+/obj/item/pda/heads/cmo
+	name = "chief medical officer PDA"
+	default_cartridge = /obj/item/cartridge/cmo
+	icon_state = "pda-cmo"
 
 /obj/item/pda/heads/rd
 	name = "research director PDA"
@@ -73,3 +88,13 @@
 /obj/item/pda/atmos
 	name = "atmospherics PDA"
 	icon_state = "pda-atmos"
+
+/obj/item/pda/chemist
+	name = "chemist PDA"
+	default_cartridge = /obj/item/cartridge/chemistry
+	icon_state = "pda-chemistry"
+
+/obj/item/pda/geneticist
+	name = "geneticist PDA"
+	default_cartridge = /obj/item/cartridge/medical
+	icon_state = "pda-genetics"

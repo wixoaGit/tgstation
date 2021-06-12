@@ -189,5 +189,34 @@
 /datum/action/item_action/toggle_light
 	name = "Toggle Light"
 
+/datum/action/item_action/adjust
+
+/datum/action/item_action/adjust/New(Target)
+	..()
+	name = "Adjust [target.name]"
+	button.name = name
+
 /datum/action/item_action/toggle_helmet
 	name = "Toggle Helmet"
+
+/datum/action/item_action/toggle_research_scanner
+	name = "Toggle Research Scanner"
+	icon_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "scan_mode"
+	var/active = FALSE
+
+/datum/action/item_action/toggle_research_scanner/Trigger()
+	if(IsAvailable())
+		active = !active
+		if(active)
+			owner.research_scanner++
+		else
+			owner.research_scanner--
+		to_chat(owner, "<span class='notice'>[target] research scanner has been [active ? "activated" : "deactivated"].</span>")
+		return 1
+
+/datum/action/item_action/toggle_research_scanner/Remove(mob/M)
+	if(owner && active)
+		owner.research_scanner--
+		active = FALSE
+	..()

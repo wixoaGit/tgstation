@@ -114,6 +114,50 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 /obj/item/proc/suicide_act(mob/user)
 	return
 
+/obj/item/examine(mob/user)
+	..()
+	var/pronoun
+	if(src.gender == PLURAL)
+		pronoun = "They are"
+	else
+		pronoun = "It is"
+	var/size = weightclass2text(src.w_class)
+	to_chat(user, "[pronoun] a [size] item." )
+
+	if(!user.research_scanner)
+		return
+
+	var/list/research_msg = list("<font color='purple'>Research prospects:</font> ")
+	var/sep = ""
+	//var/list/boostable_nodes = techweb_item_boost_check(src)
+	//if (boostable_nodes)
+	//	for(var/id in boostable_nodes)
+	//		var/datum/techweb_node/node = SSresearch.techweb_node_by_id(id)
+	//		if(!node)
+	//			continue
+	//		research_msg += sep
+	//		research_msg += node.display_name
+	//		sep = ", "
+	//var/list/points = techweb_item_point_check(src)
+	//if (length(points))
+	//	sep = ", "
+	//	research_msg += techweb_point_display_generic(points)
+
+	if (!sep)
+		research_msg += "None"
+
+	research_msg += ".<br><font color='purple'>Extractable materials:</font> "
+	if (materials.len)
+		sep = ""
+		for(var/mat in materials)
+			research_msg += sep
+			research_msg += CallMaterialName(mat)
+			sep = ", "
+	else
+		research_msg += "None"
+	research_msg += "."
+	to_chat(user, research_msg.Join())
+
 /obj/item/interact(mob/user)
 	add_fingerprint(user)
 	ui_interact(user)
