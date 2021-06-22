@@ -1305,12 +1305,10 @@
 			paths += path
 
 		if(!paths)
-			//alert("The path list you sent is empty.")
-			to_chat(usr, "The path list you sent is empty.")//not_actual
+			alert("The path list you sent is empty.")
 			return
 		if(length(paths) > 5)
-			//alert("Select fewer object types, (max 5).")
-			to_chat("Select fewer object types, (max 5).")//not_actual
+			alert("Select fewer object types, (max 5).")
 			return
 
 		var/list/offset = splittext(href_list["offset"],",")

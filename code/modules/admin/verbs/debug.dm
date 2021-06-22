@@ -5,7 +5,7 @@
 
 	var/mob/M = usr//not_actual
 	if(!SSticker.HasRoundStarted())
-		//alert("Wait until the game starts")
+		alert("Wait until the game starts")
 		return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -36,8 +36,8 @@
 			else
 				H.equip_to_slot(id,SLOT_WEAR_ID)
 
-	//else
-	//	alert("Invalid mob")
+	else
+		alert("Invalid mob")
 	//SSblackbox.record_feedback("tally", "admin_verb", 1, "Grant Full Access") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	//log_admin("[key_name(src)] has granted [M.key] full access.")
 	//message_admins("<span class='adminnotice'>[key_name_admin(usr)] has granted [M.key] full access.</span>")

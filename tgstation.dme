@@ -783,5 +783,5 @@
 #include "code\modules\vending\nutrimax.dm"
 #include "code\modules\VR\vr_sleeper.dm"
 #include "interface\interface.dm"
-#include "interface\skin.dmf"
+#include "interface\skin_not_actual.dmf"
 // END_INCLUDE

@@ -14,12 +14,11 @@
 	//	B.suicided = suicide_state
 
 /mob/living/carbon/human/verb/suicide()
-	//set hidden = 1
+	set hidden = 1
 	//if(!canSuicide())
 	//	return
 	var/oldkey = ckey
-	//var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
-	var/confirm = "Yes"//not_actual
+	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 	if(ckey != oldkey)
 		return
 	//if(!canSuicide())

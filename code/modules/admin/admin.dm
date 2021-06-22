@@ -35,8 +35,7 @@
 
 	if (!usr.client.holder)
 		return
-	//var/confirm = alert("End the round and  restart the game world?", "End Round", "Yes", "Cancel")
-	var/confirm = "Yes"//not_actual
+	var/confirm = alert("End the round and  restart the game world?", "End Round", "Yes", "Cancel")
 	if(confirm == "Cancel")
 		return
 	if(confirm == "Yes")
