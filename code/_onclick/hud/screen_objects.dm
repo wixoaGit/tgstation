@@ -194,8 +194,7 @@
 /obj/screen/storage
 	name = "storage"
 	icon_state = "block"
-	//screen_loc = "7,7 to 10,8"
-	screen_loc = "7,7"//not_actual
+	screen_loc = "7,7 to 10,8"
 	layer = HUD_LAYER
 	plane = HUD_PLANE
 

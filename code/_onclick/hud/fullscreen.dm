@@ -128,26 +128,22 @@
 
 /obj/screen/fullscreen/flash
 	icon = 'icons/mob/screen_gen.dmi'
-	//screen_loc = "WEST,SOUTH to EAST,NORTH"
-	screen_loc = "WEST,SOUTH"//not_actual
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "flash"
 
 /obj/screen/fullscreen/flash/static
 	icon = 'icons/mob/screen_gen.dmi'
-	//screen_loc = "WEST,SOUTH to EAST,NORTH"
-	screen_loc = "WEST,SOUTH"//not_actual
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "noise"
 
 /obj/screen/fullscreen/high
 	icon = 'icons/mob/screen_gen.dmi'
-	//screen_loc = "WEST,SOUTH to EAST,NORTH"
-	screen_loc = "WEST,SOUTH"//not_actual
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "druggy"
 
 /obj/screen/fullscreen/color_vision
 	icon = 'icons/mob/screen_gen.dmi'
-	//screen_loc = "WEST,SOUTH to EAST,NORTH"
-	screen_loc = "WEST,SOUTH"//not_actual
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "flash"
 	alpha = 80
 

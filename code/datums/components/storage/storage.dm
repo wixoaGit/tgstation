@@ -211,8 +211,7 @@
 	standard_orient_objs(rows, columns, null)//not_actual
 
 /datum/component/storage/proc/standard_orient_objs(rows, cols, list/obj/item/numerical_display_contents)
-	//boxes.screen_loc = "[screen_start_x]:[screen_pixel_x],[screen_start_y]:[screen_pixel_y] to [screen_start_x+cols-1]:[screen_pixel_x],[screen_start_y+rows-1]:[screen_pixel_y]"
-	boxes.screen_loc = "[screen_start_x]:[screen_pixel_x],[screen_start_y]:[screen_pixel_y]"//not_actual
+	boxes.screen_loc = "[screen_start_x]:[screen_pixel_x],[screen_start_y]:[screen_pixel_y] to [screen_start_x+cols-1]:[screen_pixel_x],[screen_start_y+rows-1]:[screen_pixel_y]"
 	var/cx = screen_start_x
 	var/cy = screen_start_y
 	if(islist(numerical_display_contents))
