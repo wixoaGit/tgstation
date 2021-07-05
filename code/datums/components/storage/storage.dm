@@ -196,38 +196,49 @@
 		remove_from_storage(I, _target)
 	return TRUE
 
+/datum/component/storage/proc/_process_numerical_display()
+	. = list()
+	var/atom/real_location = real_location()
+	for(var/obj/item/I in real_location.contents)
+		if(QDELETED(I))
+			continue
+		if(!.["[I.type]-[I.name]"])
+			.["[I.type]-[I.name]"] = new /datum/numbered_display(I, 1)
+		else
+			var/datum/numbered_display/ND = .["[I.type]-[I.name]"]
+			ND.number++
+
 /datum/component/storage/proc/orient2hud()
 	var/atom/real_location = real_location()
 	var/adjusted_contents = real_location.contents.len
 
-	//var/list/datum/numbered_display/numbered_contents
-	//if(display_numerical_stacking)
-	//	numbered_contents = _process_numerical_display()
-	//	adjusted_contents = numbered_contents.len
+	var/list/datum/numbered_display/numbered_contents
+	if(display_numerical_stacking)
+		numbered_contents = _process_numerical_display()
+		adjusted_contents = numbered_contents.len
 
 	var/columns = CLAMP(max_items, 1, screen_max_columns)
 	var/rows = CLAMP(CEILING(adjusted_contents / columns, 1), 1, screen_max_rows)
-	//standard_orient_objs(rows, columns, numbered_contents)
-	standard_orient_objs(rows, columns, null)//not_actual
+	standard_orient_objs(rows, columns, numbered_contents)
 
 /datum/component/storage/proc/standard_orient_objs(rows, cols, list/obj/item/numerical_display_contents)
 	boxes.screen_loc = "[screen_start_x]:[screen_pixel_x],[screen_start_y]:[screen_pixel_y] to [screen_start_x+cols-1]:[screen_pixel_x],[screen_start_y+rows-1]:[screen_pixel_y]"
 	var/cx = screen_start_x
 	var/cy = screen_start_y
 	if(islist(numerical_display_contents))
-		//for(var/type in numerical_display_contents)
-		//	var/datum/numbered_display/ND = numerical_display_contents[type]
-		//	ND.sample_object.mouse_opacity = MOUSE_OPACITY_OPAQUE
-		//	ND.sample_object.screen_loc = "[cx]:[screen_pixel_x],[cy]:[screen_pixel_y]"
-		//	ND.sample_object.maptext = "<font color='white'>[(ND.number > 1)? "[ND.number]" : ""]</font>"
-		//	ND.sample_object.layer = ABOVE_HUD_LAYER
-		//	ND.sample_object.plane = ABOVE_HUD_PLANE
-		//	cx++
-		//	if(cx - screen_start_x >= cols)
-		//		cx = screen_start_x
-		//		cy++
-		//		if(cy - screen_start_y >= rows)
-		//			break
+		for(var/type in numerical_display_contents)
+			var/datum/numbered_display/ND = numerical_display_contents[type]
+			ND.sample_object.mouse_opacity = MOUSE_OPACITY_OPAQUE
+			ND.sample_object.screen_loc = "[cx]:[screen_pixel_x],[cy]:[screen_pixel_y]"
+			//ND.sample_object.maptext = "<font color='white'>[(ND.number > 1)? "[ND.number]" : ""]</font>"
+			ND.sample_object.layer = ABOVE_HUD_LAYER
+			//ND.sample_object.plane = ABOVE_HUD_PLANE
+			cx++
+			if(cx - screen_start_x >= cols)
+				cx = screen_start_x
+				cy++
+				if(cy - screen_start_y >= rows)
+					break
 	else
 		var/atom/real_location = real_location()
 		for(var/obj/O in real_location)

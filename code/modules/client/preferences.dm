@@ -111,12 +111,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		custom_names[custom_name_id] = get_default_name(custom_name_id)
 
 	UI_style = GLOB.available_ui_styles[1]
-	//if(istype(C))
-	//	if(!IsGuestKey(C.key))
-	//		load_path(C.ckey)
-	//		unlock_content = C.IsByondMember()
-	//		if(unlock_content)
-	//			max_save_slots = 8
+	if(istype(C))
+		if(!IsGuestKey(C.key))
+			load_path(C.ckey)
+			//unlock_content = C.IsByondMember()
+			if(unlock_content)
+				max_save_slots = 8
 	var/loaded_preferences_successfully = load_preferences()
 	if(loaded_preferences_successfully)
 		if(load_character())
@@ -589,9 +589,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	dat += "<hr><center>"
 
-	//if(!IsGuestKey(user.key))
-	//	dat += "<a href='?_src_=prefs;preference=load'>Undo</a> "
-	//	dat += "<a href='?_src_=prefs;preference=save'>Save Setup</a> "
+	if(!IsGuestKey(user.key))
+		dat += "<a href='?_src_=prefs;preference=load'>Undo</a> "
+		dat += "<a href='?_src_=prefs;preference=save'>Save Setup</a> "
 
 	dat += "<a href='?_src_=prefs;preference=reset_all'>Reset Setup</a>"
 	dat += "</center>"

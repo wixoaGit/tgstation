@@ -13,6 +13,22 @@
 	else if(dx<0)
 		.+=360
 
+/proc/IsGuestKey(key)
+	if (findtext(key, "Guest-", 1, 7) != 1)
+		return 0
+
+	//var/i, ch, len = length(key)
+	//not_actual
+	var/i
+	var/ch
+	var/len = length(key)
+
+	for (i = 7, i <= len, ++i)
+		ch = text2ascii(key, i)
+		if (ch < 48 || ch > 57)
+			return 0
+	return 1
+
 /proc/DisplayPower(powerused)
 	if(powerused < 1000)
 		return "[powerused] W"
