@@ -5,8 +5,7 @@
 #define WRITE_FILE(file, text) DIRECT_OUTPUT(file, text)
 #define WRITE_LOG(log, text) rustg_log_write(log, text)
 
-//#define WARNING(MSG) warning("[MSG] in [__FILE__] at line [__LINE__] src: [src] usr: [usr].")
-#define WARNING(MSG) warning("[MSG] in (__FILE__ macro not implemented) at line (__LINE__ macro not implemented) src: [src] usr: [usr].")//not_actual
+#define WARNING(MSG) warning("[MSG] in [] at line [__LINE__] src: [src] usr: [usr].")
 /proc/warning(msg)
 	msg = "## WARNING: [msg]"
 	log_world(msg)
