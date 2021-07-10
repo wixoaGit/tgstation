@@ -37,23 +37,14 @@
 			return BODY_ZONE_HEAD
 		if(2)
 			return BODY_ZONE_CHEST
-		//if(3 to 6)
-		//	return BODY_ZONE_L_ARM
-		//if(7 to 10)
-		//	return BODY_ZONE_R_ARM
-		//if(11 to 14)
-		//	return BODY_ZONE_L_LEG
-		///if(15 to 18)
-		//	return BODY_ZONE_R_LEG
-	//not_actual
-	if (t <= 6)
-		return BODY_ZONE_L_ARM
-	else if (t <= 10)
-		return BODY_ZONE_R_ARM
-	else if (t <= 14)
-		return BODY_ZONE_L_LEG
-	else if (t <= 18)
-		return BODY_ZONE_R_LEG
+		if(3 to 6)
+			return BODY_ZONE_L_ARM
+		if(7 to 10)
+			return BODY_ZONE_R_ARM
+		if(11 to 14)
+			return BODY_ZONE_L_LEG
+		/if(15 to 18)
+			return BODY_ZONE_R_LEG
 
 	return zone
 

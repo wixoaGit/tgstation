@@ -293,20 +293,13 @@
 
 
 /obj/structure/bedsheetbin/update_icon()
-	//switch(amount)
-	//	if(0)
-	//		icon_state = "linenbin-empty"
-	//	if(1 to 5)
-	//		icon_state = "linenbin-half"
-	//	else
-	//		icon_state = "linenbin-full"
-	//not_actual
-	if (amount == 0)
-		icon_state = "linenbin-empty"
-	else if (amount <= 5)
-		icon_state = "linenbin-half"
-	else
-		icon_state = "linenbin-full"
+	switch(amount)
+		if(0)
+			icon_state = "linenbin-empty"
+		if(1 to 5)
+			icon_state = "linenbin-half"
+		else
+			icon_state = "linenbin-full"
 
 /obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
 	if(amount)

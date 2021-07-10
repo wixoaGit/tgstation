@@ -297,28 +297,17 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 				pulse_radiation()
 
 			var/overlay_state = null
-			//switch(charge_count)
-			//	if(0 to 20)
-			//		overlay_state = null
-			//	if(21 to 40)
-			//		overlay_state = "startup"
-			//	if(41 to 60)
-			//		overlay_state = "idle"
-			//	if(61 to 80)
-			//		overlay_state = "activating"
-			//	if(81 to 100)
-			//		overlay_state = "activated"
-			//not_actual
-			if (charge_count <= 20)
-				overlay_state = null
-			else if (charge_count <= 40)
-				overlay_state = "startup"
-			else if (charge_count <= 60)
-				overlay_state = "idle"
-			else if (charge_count <= 80)
-				overlay_state = "activating"
-			else if (charge_count <= 100)
-				overlay_state = "activated"
+			switch(charge_count)
+				if(0 to 20)
+					overlay_state = null
+				if(21 to 40)
+					overlay_state = "startup"
+				if(41 to 60)
+					overlay_state = "idle"
+				if(61 to 80)
+					overlay_state = "activating"
+				if(81 to 100)
+					overlay_state = "activated"
 
 			if(overlay_state != current_overlay)
 				if(middle)

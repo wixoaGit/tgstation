@@ -247,74 +247,42 @@
 	return set_selected_zone(choice, usr)
 
 /obj/screen/zone_sel/proc/get_zone_at(icon_x, icon_y)
-	//switch(icon_y)
-	//	if(1 to 9)
-	//		switch(icon_x)
-	//			if(10 to 15)
-	//				return BODY_ZONE_R_LEG
-	//			if(17 to 22)
-	//				return BODY_ZONE_L_LEG
-	//	if(10 to 13)
-	//		switch(icon_x)
-	//			if(8 to 11)
-	//				return BODY_ZONE_R_ARM
-	//			if(12 to 20)
-	//				return BODY_ZONE_PRECISE_GROIN
-	//			if(21 to 24)
-	//				return BODY_ZONE_L_ARM
-	//	if(14 to 22)
-	//		switch(icon_x)
-	//			if(8 to 11)
-	//				return BODY_ZONE_R_ARM
-	//			if(12 to 20)
-	//				return BODY_ZONE_CHEST
-	//			if(21 to 24)
-	//				return BODY_ZONE_L_ARM
-	//	if(23 to 30)
-	//		if(icon_x in 12 to 20)
-	//			switch(icon_y)
-	//				if(23 to 24)
-	//					if(icon_x in 15 to 17)
-	//						return BODY_ZONE_PRECISE_MOUTH
-	//				if(26)
-	//					if(icon_x in 14 to 18)
-	//						return BODY_ZONE_PRECISE_EYES
-	//				if(25 to 27)
-	//					if(icon_x in 15 to 17)
-	//						return BODY_ZONE_PRECISE_EYES
-	//			return BODY_ZONE_HEAD
-	//not_actual
-	if (icon_y >= 1 && icon_y <= 9)
-		if (icon_x >= 10 && icon_x <= 15)
-			return BODY_ZONE_R_LEG
-		else if (icon_x >= 17 && icon_x <= 22)
-			return BODY_ZONE_L_LEG
-	else if (icon_y >= 10 && icon_y <= 13)
-		if (icon_x >= 8 && icon_x <= 11)
-			return BODY_ZONE_R_ARM
-		else if (icon_x >= 12 && icon_x <= 20)
-			return BODY_ZONE_PRECISE_GROIN
-		else if (icon_x >= 21 && icon_x <= 24)
-			return BODY_ZONE_L_ARM
-	else if (icon_y >= 14 && icon_y <= 22)
-		if (icon_x >= 8 && icon_x <= 11)
-			return BODY_ZONE_R_ARM
-		else if (icon_x >= 12 && icon_x <= 20)
-			return BODY_ZONE_CHEST
-		else if (icon_x >= 21 && icon_x <= 24)
-			return BODY_ZONE_L_ARM
-	else if (icon_y >= 23 && icon_y <= 30)
-		if (icon_x >= 12 && icon_x <= 20)
-			if (icon_y == 23 || icon_y == 24)
-				if (icon_x >= 15 && icon_x <= 17)
-					return BODY_ZONE_PRECISE_MOUTH
-			else if (icon_y == 26)
-				if (icon_x >= 14 && icon_x <= 18)
-					return BODY_ZONE_PRECISE_EYES
-			else if (icon_y >= 25 && icon_y <= 27)
-				if (icon_x >= 15 && icon_x <= 17)
-					return BODY_ZONE_PRECISE_EYES
-		return BODY_ZONE_HEAD
+	switch(icon_y)
+		if(1 to 9)
+			switch(icon_x)
+				if(10 to 15)
+					return BODY_ZONE_R_LEG
+				if(17 to 22)
+					return BODY_ZONE_L_LEG
+		if(10 to 13)
+			switch(icon_x)
+				if(8 to 11)
+					return BODY_ZONE_R_ARM
+				if(12 to 20)
+					return BODY_ZONE_PRECISE_GROIN
+				if(21 to 24)
+					return BODY_ZONE_L_ARM
+		if(14 to 22)
+			switch(icon_x)
+				if(8 to 11)
+					return BODY_ZONE_R_ARM
+				if(12 to 20)
+					return BODY_ZONE_CHEST
+				if(21 to 24)
+					return BODY_ZONE_L_ARM
+		if(23 to 30)
+			if(icon_x in 12 to 20)
+				switch(icon_y)
+					if(23 to 24)
+						if(icon_x in 15 to 17)
+							return BODY_ZONE_PRECISE_MOUTH
+					if(26)
+						if(icon_x in 14 to 18)
+							return BODY_ZONE_PRECISE_EYES
+					if(25 to 27)
+						if(icon_x in 15 to 17)
+							return BODY_ZONE_PRECISE_EYES
+				return BODY_ZONE_HEAD
 
 /obj/screen/zone_sel/proc/set_selected_zone(choice, mob/user)
 	if(isobserver(user))

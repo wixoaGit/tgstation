@@ -17,25 +17,17 @@
 		return
 	var/non_whitespace = 0
 	for(var/i=1, i<=length(text), i++)
-		//switch(text2ascii(text,i))
-		//	if(62,60,92,47)
-		//		return
-		//	if(127 to 255)
-		//		return
-		//	if(0 to 31)
-		//		return
-		//	if(32)
-		//		continue
-		//	else
-		//		non_whitespace = 1
-		//not_actual
-		var/t2a = text2ascii(text, i)
-		if (t2a == 62 || t2a == 60 || t2a == 92 || t2a == 47 || (t2a >= 127 && t2a <= 255) || (t2a >= 0 && t2a <= 31))
-			return
-		else if (t2a == 32)
-			continue
-		else
-			non_whitespace = 1
+		switch(text2ascii(text,i))
+			if(62,60,92,47)
+				return
+			if(127 to 255)
+				return
+			if(0 to 31)
+				return
+			if(32)
+				continue
+			else
+				non_whitespace = 1
 	if(non_whitespace)
 		return text
 

@@ -3,34 +3,20 @@
 	var/place = 1
 	for(var/i in length(hex) to 1 step -1)
 		var/num = text2ascii(hex, i)
-		//switch(num)
-		//	if(48 to 57)
-		//		num -= 48
-		//	if(97 to 102)
-		//		num -= 87
-		//	if(65 to 70)
-		//		num -= 55
-		//	if(45)
-		//		return . * -1
-		//	else
-		//		if(safe)
-		//			return null
-		//		else
-		//			CRASH("Malformed hex number")
-		//not_actual
-		if (num >= 48 && num <= 57)
-			num -= 48
-		else if (num >= 97 && num <= 102)
-			num -= 87
-		else if (num >= 65 && num <= 70)
-			num -= 55
-		else if (num == 45)
-			return . * -1
-		else
-			if(safe)
-				return null
+		switch(num)
+			if(48 to 57)
+				num -= 48
+			if(97 to 102)
+				num -= 87
+			if(65 to 70)
+				num -= 55
+			if(45)
+				return . * -1
 			else
-				CRASH("Malformed hex number")
+				if(safe)
+					return null
+				else
+					CRASH("Malformed hex number")
 
 		. += num * place
 		place *= 16
@@ -89,44 +75,25 @@
 
 /proc/angle2dir(degree)
 	degree = SIMPLIFY_DEGREES(degree)
-	//switch(degree)
-	//	if(0 to 22.5)
-	//		return NORTH
-	//	if(22.5 to 67.5)
-	//		return NORTHEAST
-	//	if(67.5 to 112.5)
-	//		return EAST
-	//	if(112.5 to 157.5)
-	//		return SOUTHEAST
-	//	if(157.5 to 202.5)
-	//		return SOUTH
-	//	if(202.5 to 247.5)
-	//		return SOUTHWEST
-	//	if(247.5 to 292.5)
-	//		return WEST
-	//	if(292.5 to 337.5)
-	//		return NORTHWEST
-	//	if(337.5 to 360)
-	//		return NORTH
-	//not_actual
-	if (degree <= 22.5)
-		return NORTH
-	else if (degree <= 67.5)
-		return NORTHEAST
-	else if (degree <= 112.5)
-		return EAST
-	else if (degree <= 157.5)
-		return SOUTHEAST
-	else if (degree <= 202.5)
-		return SOUTH
-	else if (degree <= 247.5)
-		return SOUTHWEST
-	else if (degree <= 292.5)
-		return WEST
-	else if (degree <= 337.5)
-		return NORTHWEST
-	else if (degree <= 360)
-		return NORTH
+	switch(degree)
+		if(0 to 22.5)
+			return NORTH
+		if(22.5 to 67.5)
+			return NORTHEAST
+		if(67.5 to 112.5)
+			return EAST
+		if(112.5 to 157.5)
+			return SOUTHEAST
+		if(157.5 to 202.5)
+			return SOUTH
+		if(202.5 to 247.5)
+			return SOUTHWEST
+		if(247.5 to 292.5)
+			return WEST
+		if(292.5 to 337.5)
+			return NORTHWEST
+		if(337.5 to 360)
+			return NORTH
 
 /proc/dir2angle(D)
 	switch(D)
@@ -250,20 +217,15 @@
 	return a
 
 /proc/fusionpower2text(power)
-	//switch(power)
-	//	if(0 to 5)
-	//		return "low"
-	//	if(5 to 20)
-	//		return "mid"
-	//	if(20 to 50)
-	//		return "high"
-	//	if(50 to INFINITY)
-	//		return "super"
-	//not_actual
-	if (power <= 5) return "low"
-	else if (power <= 20) return "mid"
-	else if (power <= 50) return "high"
-	else return "super"
+	switch(power)
+		if(0 to 5)
+			return "low"
+		if(5 to 20)
+			return "mid"
+		if(20 to 50)
+			return "high"
+		if(50 to INFINITY)
+			return "super"
 
 /proc/type2parent(child)
 	var/string_type = "[child]"

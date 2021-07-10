@@ -27,26 +27,16 @@
 
 /obj/structure/tank_dispenser/update_icon()
 	cut_overlays()
-	//switch(oxygentanks)
-	//	if(1 to 3)
-	//		add_overlay("oxygen-[oxygentanks]")
-	//	if(4 to TANK_DISPENSER_CAPACITY)
-	//		add_overlay("oxygen-4")
-	//not_actual
-	if (oxygentanks <= 3)
-		add_overlay("oxygen-[oxygentanks]")
-	else
-		add_overlay("oxygen-4")
-	//switch(plasmatanks)
-	//	if(1 to 4)
-	//		add_overlay("plasma-[plasmatanks]")
-	//	if(5 to TANK_DISPENSER_CAPACITY)
-	//		add_overlay("plasma-5")
-	//not_actual
-	if (plasmatanks <= 4)
-		add_overlay("plasma-[plasmatanks]")
-	else
-		add_overlay("plasma-5")
+	switch(oxygentanks)
+		if(1 to 3)
+			add_overlay("oxygen-[oxygentanks]")
+		if(4 to TANK_DISPENSER_CAPACITY)
+			add_overlay("oxygen-4")
+	switch(plasmatanks)
+		if(1 to 4)
+			add_overlay("plasma-[plasmatanks]")
+		if(5 to TANK_DISPENSER_CAPACITY)
+			add_overlay("plasma-5")
 
 /obj/structure/tank_dispenser/attackby(obj/item/I, mob/user, params)
 	var/full

@@ -42,19 +42,11 @@
 
 /obj/structure/proc/examine_status(mob/user)
 	var/healthpercent = (obj_integrity/max_integrity) * 100
-	//switch(healthpercent)
-	//	if(50 to 99)
-	//		return  "It looks slightly damaged."
-	//	if(25 to 50)
-	//		return  "It appears heavily damaged."
-	//	if(0 to 25)
-	//		if(!broken)
-	//			return  "<span class='warning'>It's falling apart!</span>"
-	//not_actual
-	if (healthpercent <= 25)
-		if(!broken)
-			return  "<span class='warning'>It's falling apart!</span>"
-	else if (healthpercent <= 50)
-		return  "It appears heavily damaged."
-	else if (healthpercent <= 99)
-		return  "It looks slightly damaged."
+	switch(healthpercent)
+		if(50 to 99)
+			return  "It looks slightly damaged."
+		if(25 to 50)
+			return  "It appears heavily damaged."
+		if(0 to 25)
+			if(!broken)
+				return  "<span class='warning'>It's falling apart!</span>"

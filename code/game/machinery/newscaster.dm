@@ -67,22 +67,15 @@ GLOBAL_LIST_EMPTY(allCasters)
 			if(alert)
 				add_overlay("newscaster_alert")
 	var/hp_percent = obj_integrity * 100 /max_integrity
-	//switch(hp_percent)
-	//	if(75 to 100)
-	//		return
-	//	if(50 to 75)
-	//		add_overlay("crack1")
-	//	if(25 to 50)
-	//		add_overlay("crack2")
-	//	else
-	//		add_overlay("crack3")
-	//not_actual
-	if (hp_percent < 25)
-		add_overlay("crack3")
-	else if (hp_percent <= 50)
-		add_overlay("crack2")
-	else if (hp_percent <= 75)
-		add_overlay("crack3")
+	switch(hp_percent)
+		if(75 to 100)
+			return
+		if(50 to 75)
+			add_overlay("crack1")
+		if(25 to 50)
+			add_overlay("crack2")
+		else
+			add_overlay("crack3")
 
 
 /obj/machinery/newscaster/power_change()
