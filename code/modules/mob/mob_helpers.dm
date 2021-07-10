@@ -43,7 +43,7 @@
 			return BODY_ZONE_R_ARM
 		if(11 to 14)
 			return BODY_ZONE_L_LEG
-		/if(15 to 18)
+		if(15 to 18)
 			return BODY_ZONE_R_LEG
 
 	return zone

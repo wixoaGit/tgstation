@@ -271,16 +271,20 @@
 				if(21 to 24)
 					return BODY_ZONE_L_ARM
 		if(23 to 30)
-			if(icon_x in 12 to 20)
+			//if(icon_x in 12 to 20)
+			if(icon_x >= 12 && icon_x <= 20) //not_actual
 				switch(icon_y)
 					if(23 to 24)
-						if(icon_x in 15 to 17)
+						//if(icon_x in 15 to 17)
+						if (icon_x >= 15 && icon_x <= 17) //not_actual
 							return BODY_ZONE_PRECISE_MOUTH
 					if(26)
-						if(icon_x in 14 to 18)
+						//if(icon_x in 14 to 18)
+						if (icon_x >= 14 && icon_x <= 18) //not_actual
 							return BODY_ZONE_PRECISE_EYES
 					if(25 to 27)
-						if(icon_x in 15 to 17)
+						//if(icon_x in 15 to 17)
+						if (icon_x >= 15 && icon_x <= 17) //not_actual
 							return BODY_ZONE_PRECISE_EYES
 				return BODY_ZONE_HEAD
 

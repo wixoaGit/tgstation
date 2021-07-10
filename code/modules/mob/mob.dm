@@ -279,7 +279,7 @@
 			stat("CPU:", "[world.cpu]")
 			stat("Instances:", "[num2text(world.contents.len, 10)]")
 			stat("World Time:", "[world.time]")
-			//GLOB.stat_entry()
+			GLOB.stat_entry()
 			//config.stat_entry()
 			stat(null)
 			if(Master)
