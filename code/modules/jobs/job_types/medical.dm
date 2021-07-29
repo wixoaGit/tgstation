@@ -41,9 +41,9 @@
 	//suit_store = /obj/item/flashlight/pen
 	//backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/card/id/departmental_budget/med=1)
 
-	backpack = /obj/item/storage/backpack/medic
-	satchel = /obj/item/storage/backpack/satchel/med
-	duffelbag = /obj/item/storage/backpack/duffelbag/med
+	//backpack = /obj/item/storage/backpack/medic
+	//satchel = /obj/item/storage/backpack/satchel/med
+	//duffelbag = /obj/item/storage/backpack/duffelbag/med
 
 	//chameleon_extras = list(/obj/item/gun/syringe, /obj/item/stamp/cmo)
 
@@ -84,9 +84,9 @@
 	l_hand = /obj/item/storage/firstaid/regular
 	//suit_store = /obj/item/flashlight/pen
 
-	backpack = /obj/item/storage/backpack/medic
-	satchel = /obj/item/storage/backpack/satchel/med
-	duffelbag = /obj/item/storage/backpack/duffelbag/med
+	//backpack = /obj/item/storage/backpack/medic
+	//satchel = /obj/item/storage/backpack/satchel/med
+	//duffelbag = /obj/item/storage/backpack/duffelbag/med
 
 	//chameleon_extras = /obj/item/gun/syringe
 
@@ -120,9 +120,9 @@
 	uniform = /obj/item/clothing/under/rank/chemist
 	shoes = /obj/item/clothing/shoes/sneakers/white
 	suit =  /obj/item/clothing/suit/toggle/labcoat/chemist
-	backpack = /obj/item/storage/backpack/chemistry
-	satchel = /obj/item/storage/backpack/satchel/chem
-	duffelbag = /obj/item/storage/backpack/duffelbag/med
+	//backpack = /obj/item/storage/backpack/chemistry
+	//satchel = /obj/item/storage/backpack/satchel/chem
+	//duffelbag = /obj/item/storage/backpack/duffelbag/med
 
 	//chameleon_extras = /obj/item/gun/syringe
 
@@ -158,9 +158,9 @@
 	//suit_store =  /obj/item/flashlight/pen
 	//l_pocket = /obj/item/sequence_scanner
 
-	backpack = /obj/item/storage/backpack/genetics
-	satchel = /obj/item/storage/backpack/satchel/gen
-	duffelbag = /obj/item/storage/backpack/duffelbag/med
+	//backpack = /obj/item/storage/backpack/genetics
+	//satchel = /obj/item/storage/backpack/satchel/gen
+	//duffelbag = /obj/item/storage/backpack/duffelbag/med
 
 /datum/job/virologist
 	title = "Virologist"
@@ -194,6 +194,6 @@
 	suit =  /obj/item/clothing/suit/toggle/labcoat/virologist
 	//suit_store =  /obj/item/flashlight/pen
 
-	backpack = /obj/item/storage/backpack/virology
-	satchel = /obj/item/storage/backpack/satchel/vir
-	duffelbag = /obj/item/storage/backpack/duffelbag/med
+	//backpack = /obj/item/storage/backpack/virology
+	//satchel = /obj/item/storage/backpack/satchel/vir
+	//duffelbag = /obj/item/storage/backpack/duffelbag/med

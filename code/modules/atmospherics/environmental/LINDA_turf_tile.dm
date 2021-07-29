@@ -26,8 +26,7 @@
 
 /turf/open/Initialize()
 	if(!blocks_air)
-		//air = new
-		air = new /datum/gas_mixture/turf()//not_actual
+		air = new
 		air.copy_from_turf(src)
 	. = ..()
 
