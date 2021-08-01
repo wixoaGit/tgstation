@@ -2,20 +2,9 @@
 	if(!rgb)
 		return
 
-	//var/i=1,start=1
-	//not_actual
-	var/i=1
-	var/start=1
+	var/i=1,start=1
 	if(text2ascii(rgb) == 35) ++start
-	//var/ch,which=0,r=0,g=0,b=0,alpha=0,usealpha
-	//not_actual
-	var/ch
-	var/which=0
-	var/r=0
-	var/g=0
-	var/b=0
-	var/alpha=0
-	var/usealpha
+	var/ch,which=0,r=0,g=0,b=0,alpha=0,usealpha
 	var/digits=0
 	for(i=start, i<=length(rgb), ++i)
 		ch = text2ascii(rgb, i)

@@ -18,8 +18,7 @@
 	..()
 	SSair.atmos_machinery += src
 
-	//air_contents = new
-	air_contents = new /datum/gas_mixture()//not_actual
+	air_contents = new
 	air_contents.volume = volume
 	air_contents.temperature = T20C
 

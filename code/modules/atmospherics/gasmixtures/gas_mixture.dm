@@ -29,8 +29,7 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	gases = new
 	if (!isnull(volume))
 		src.volume = volume
-	//reaction_results = new
-	reaction_results = new /list()//not_actual
+	reaction_results = new
 
 /datum/gas_mixture/proc/assert_gas(gas_id)
 	ASSERT_GAS(gas_id, src)

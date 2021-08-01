@@ -17,11 +17,7 @@
 	if (findtext(key, "Guest-", 1, 7) != 1)
 		return 0
 
-	//var/i, ch, len = length(key)
-	//not_actual
-	var/i
-	var/ch
-	var/len = length(key)
+	var/i, ch, len = length(key)
 
 	for (i = 7, i <= len, ++i)
 		ch = text2ascii(key, i)
