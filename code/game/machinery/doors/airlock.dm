@@ -54,6 +54,7 @@
 
 	var/cyclelinkeddir = 0
 	var/obj/machinery/door/airlock/cyclelinkedairlock
+	var/shuttledocked = 0
 	var/delayed_close_requested = FALSE
 
 	var/air_tight = FALSE
