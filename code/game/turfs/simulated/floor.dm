@@ -68,8 +68,7 @@
 		if(1)
 			ScrapeAway(2)
 		if(2)
-			//switch(pick(1,2;75,3))
-			switch(pick(1,2,3))//not_actual
+			switch(pick(1,2;75,3))
 				if(1)
 					if(!length(baseturfs) || !ispath(baseturfs[baseturfs.len-1], /turf/open/floor))
 						ScrapeAway()

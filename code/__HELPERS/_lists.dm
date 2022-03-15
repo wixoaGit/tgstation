@@ -89,14 +89,9 @@
 						L[T] = TRUE
 		return L
 
-///proc/clearlist(list/list)
-//	if(istype(list))
-//		list.len = 0
-//	return
-//not_actual
-/proc/clearlist(list/l)
-	if(istype(l))
-		l.len = 0
+/proc/clearlist(list/list)
+	if(istype(list))
+		list.len = 0
 	return
 
 /proc/listclearnulls(list/L)

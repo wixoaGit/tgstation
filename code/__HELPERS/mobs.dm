@@ -17,28 +17,26 @@
 			return pick(GLOB.facial_hair_styles_list)
 
 /proc/random_blood_type()
-	//return pick(4;"O-", 36;"O+", 3;"A-", 28;"A+", 1;"B-", 20;"B+", 1;"AB-", 5;"AB+")
-	return pick("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+")//not_actual
+	return pick(4;"O-", 36;"O+", 3;"A-", 28;"A+", 1;"B-", 20;"B+", 1;"AB-", 5;"AB+")
 
 /proc/random_eye_color()
-	//switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
-	//	if("brown")
-	//		return "630"
-	//	if("hazel")
-	//		return "542"
-	//	if("grey")
-	//		return pick("666","777","888","999","aaa","bbb","ccc")
-	//	if("blue")
-	//		return "36c"
-	//	if("green")
-	//		return "060"
-	//	if("amber")
-	//		return "fc0"
-	//	if("albino")
-	//		return pick("c","d","e","f") + pick("0","1","2","3","4","5","6","7","8","9") + pick("0","1","2","3","4","5","6","7","8","9")
-	//	else
-	//		return "000"
-	return "630"//not_actual
+	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
+		if("brown")
+			return "630"
+		if("hazel")
+			return "542"
+		if("grey")
+			return pick("666","777","888","999","aaa","bbb","ccc")
+		if("blue")
+			return "36c"
+		if("green")
+			return "060"
+		if("amber")
+			return "fc0"
+		if("albino")
+			return pick("c","d","e","f") + pick("0","1","2","3","4","5","6","7","8","9") + pick("0","1","2","3","4","5","6","7","8","9")
+		else
+			return "000"
 
 /proc/random_underwear(gender)
 	if(!GLOB.underwear_list.len)
