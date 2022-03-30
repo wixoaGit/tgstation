@@ -32,6 +32,32 @@ SUBSYSTEM_DEF(overlays)
 	overlay_icon_cache = SSoverlays.overlay_icon_cache
 	queue = SSoverlays.queue
 
+/datum/controller/subsystem/overlays/fire(resumed = FALSE, mc_check = TRUE)
+	//var/list/queue = src.queue
+	//var/static/count = 0
+	//if (count)
+	//	var/c = count
+	//	count = 0
+	//	queue.Cut(1,c+1)
+
+	//for (var/thing in queue)
+	//	count++
+	//	if(thing)
+	//		STAT_START_STOPWATCH
+	//		var/atom/A = thing
+	//		COMPILE_OVERLAYS(A)
+	//		STAT_STOP_STOPWATCH
+	//		STAT_LOG_ENTRY(stats, A.type)
+	//	if(mc_check)
+	//		if(MC_TICK_CHECK)
+	//			break
+	//	else
+	//		CHECK_TICK
+
+	//if (count)
+	//	queue.Cut(1,count+1)
+	//	count = 0
+
 /atom/proc/cut_overlays()
 	overlays = list()
 
