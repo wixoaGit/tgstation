@@ -1,3 +1,7 @@
+/area/shuttle/auxillary_base
+	name = "Auxillary Base"
+	luminosity = 0
+
 /obj/docking_port/mobile/auxillary_base
 	name = "auxillary base"
 	id = "colony_drop"
