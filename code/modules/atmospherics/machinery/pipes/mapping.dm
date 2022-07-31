@@ -45,29 +45,18 @@
 	HELPER_PARTIAL_NAMED(/obj/machinery/atmospherics/pipe/manifold4w/##Type, "manifold4w", Name, Color)
 
 HELPER(general, null)
-//HELPER(yellow, rgb(255, 198, 0))
-HELPER(yellow, "#FFC600")//not_actual
-//HELPER(cyan, rgb(0, 255, 249))
-HELPER(cyan, "#00FFF9")//not_actual
-//HELPER(green, rgb(30, 255, 0))
-HELPER(green, "#1EFF00")//not_actual
-//HELPER(orange, rgb(255, 129, 25))
-HELPER(orange, "#FF8119")//not_actual
-//HELPER(purple, rgb(128, 0, 182))
-HELPER(purple, "#8000B6")//not_actual
-//HELPER(dark, rgb(69, 69, 69))
-HELPER(dark, "#454545")//not_actual
-//HELPER(brown, rgb(178, 100, 56))
-HELPER(brown, "#B26438")//not_actual
-//HELPER(violet, rgb(64, 0, 128))
-HELPER(violet, "#400080")//not_actual
+HELPER(yellow, rgb(255, 198, 0))
+HELPER(cyan, rgb(0, 255, 249))
+HELPER(green, rgb(30, 255, 0))
+HELPER(orange, rgb(255, 129, 25))
+HELPER(purple, rgb(128, 0, 182))
+HELPER(dark, rgb(69, 69, 69))
+HELPER(brown, rgb(178, 100, 56))
+HELPER(violet, rgb(64, 0, 128))
 
-//HELPER_NAMED(scrubbers, "scrubbers pipe", rgb(255, 0, 0))
-HELPER_NAMED(scrubbers, "scrubbers pipe", "#FF0000")//not_actual
-//HELPER_NAMED(supply, "air supply pipe", rgb(0, 0, 255))
-HELPER_NAMED(supply, "air supply pipe", "#0000FF")//not_actual
-//HELPER_NAMED(supplymain, "main air supply pipe", rgb(130, 43, 255))
-HELPER_NAMED(supplymain, "main air supply pipe", "#822BFF")//not_actual
+HELPER_NAMED(scrubbers, "scrubbers pipe", rgb(255, 0, 0))
+HELPER_NAMED(supply, "air supply pipe", rgb(0, 0, 255))
+HELPER_NAMED(supplymain, "main air supply pipe", rgb(130, 43, 255))
 
 #undef HELPER_NAMED
 #undef HELPER

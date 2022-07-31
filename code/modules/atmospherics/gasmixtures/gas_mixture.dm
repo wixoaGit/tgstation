@@ -317,11 +317,7 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	var/list/sample_gases = sample.gases
 	var/list/cached_gases = gases
 
-	var/list/loop_gases = new /list()//not_actual
-	loop_gases |= cached_gases//not_actual
-	loop_gases |= sample_gases
-	//for(var/id in cached_gases | sample_gases)
-	for(var/id in loop_gases)//not_actual
+	for(var/id in cached_gases | sample_gases)
 		var/gas_moles = cached_gases[id]
 		gas_moles = gas_moles ? gas_moles[MOLES] : 0
 		var/sample_moles = sample_gases[id]

@@ -6,8 +6,7 @@
 	pipe_flags = PIPING_ONE_PER_TURF
 	//construction_type = /obj/item/pipe/directional
 	var/uid
-	//var/static/gl_uid = 1
-	var/global/gl_uid = 1//not_actual
+	var/static/gl_uid = 1
 
 /obj/machinery/atmospherics/components/unary/SetInitDirections()
 	initialize_directions = dir

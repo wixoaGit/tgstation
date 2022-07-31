@@ -17,10 +17,8 @@
 	var/piping_layer = PIPING_LAYER_DEFAULT
 	var/pipe_flags = NONE
 
-	//var/global/list/iconsetids = list()
-	var/list/iconsetids = list()//not_actual
-	//var/global/list/pipeimages = list()
-	var/list/pipeimages = list()//not_actual
+	var/global/list/iconsetids = list()
+	var/global/list/pipeimages = list()
 
 	var/image/pipe_vision_img = null
 
@@ -43,8 +41,7 @@
 		setDir(setdir)
 	if(pipe_flags & PIPING_CARDINAL_AUTONORMALIZE)
 		normalize_cardinal_directions()
-	//nodes = new(device_type)
-	nodes = new /list(device_type)//not_actual
+	nodes = new(device_type)
 	if (!armor)
 		armor = list("melee" = 25, "bullet" = 10, "laser" = 10, "energy" = 100, "bomb" = 0, "bio" = 100, "rad" = 100, "fire" = 100, "acid" = 70)
 	..()

@@ -45,8 +45,7 @@ SUBSYSTEM_DEF(ticker)
 		music = world.file2list(ROUND_START_MUSIC_LIST, "\n")
 		login_music = pick(music)
 	else
-		//login_music = "[global.config.directory]/title_music/sounds/[pick(music)]"
-		login_music = "[config.directory]/title_music/sounds/[pick(music)]"//not_actual
+		login_music = "[global.config.directory]/title_music/sounds/[pick(music)]"
 
 	if(!GLOB.syndicate_code_phrase)
 		GLOB.syndicate_code_phrase	= generate_code_phrase()

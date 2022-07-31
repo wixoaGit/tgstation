@@ -78,7 +78,7 @@
 	update_alpha()
 
 /obj/machinery/atmospherics/pipe/proc/update_alpha()
-	//alpha = invisibility ? 64 : 255
+	alpha = invisibility ? 64 : 255
 
 /obj/machinery/atmospherics/pipe/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
 	if(damage_flag == "melee" && damage_amount < 12)

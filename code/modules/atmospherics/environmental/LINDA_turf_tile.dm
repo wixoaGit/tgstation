@@ -138,8 +138,7 @@
 		else if(our_air.compare(enemy_air))
 			if(!enemy_tile.excited)
 				SSair.add_to_active(enemy_tile)
-			//var/datum/excited_group/EG = our_excited_group || enemy_excited_group || new
-			var/datum/excited_group/EG = our_excited_group || enemy_excited_group || new /datum/excited_group()//not_actual
+			var/datum/excited_group/EG = our_excited_group || enemy_excited_group || new
 			if(!our_excited_group)
 				EG.add_turf(src)
 			if(!enemy_excited_group)
@@ -195,11 +194,8 @@
 /atom/movable/var/last_high_pressure_movement_air_cycle = 0
 
 /atom/movable/proc/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
-	//var/const/PROBABILITY_OFFSET = 25
-	//var/const/PROBABILITY_BASE_PRECENT = 75
-	//not_actual
-	var/PROBABILITY_OFFSET = 25
-	var/PROBABILITY_BASE_PRECENT = 75
+	var/const/PROBABILITY_OFFSET = 25
+	var/const/PROBABILITY_BASE_PRECENT = 75
 	var/max_force = sqrt(pressure_difference)*(MOVE_FORCE_DEFAULT / 5)
 	set waitfor = 0
 	var/move_prob = 100

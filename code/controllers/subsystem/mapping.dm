@@ -6,8 +6,7 @@ SUBSYSTEM_DEF(mapping)
 	var/list/nuke_tiles = list()
 	var/list/nuke_threats = list()
 
-	//var/datum/map_config/config
-	var/datum/map_config/map_config //not_actual, name clashes with the global config variable
+	var/datum/map_config/config
 	var/datum/map_config/next_map_config
 
 	var/list/map_templates = list()
@@ -36,33 +35,23 @@ SUBSYSTEM_DEF(mapping)
 	var/num_of_res_levels = 1
 
 /datum/controller/subsystem/mapping/proc/HACK_LoadMapConfig()
-	//if(!config)
-	if(!map_config)//not_actual
+	if(!config)
 #ifdef FORCE_MAP
-		//config = load_map_config(FORCE_MAP)
-		map_config = load_map_config(FORCE_MAP)//not_actual
+		config = load_map_config(FORCE_MAP)
 #else
-		//config = load_map_config(error_if_missing = FALSE)
-		map_config = load_map_config(error_if_missing = FALSE)//not_actual
+		config = load_map_config(error_if_missing = FALSE)
 #endif
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	HACK_LoadMapConfig()
 	if(initialized)
 		return
-	//if(config.defaulted)
-	//	var/old_config = map_config
-	//	config = global.config.defaultmap
-	//	if(!config || config.defaulted)
-	//		to_chat(world, "<span class='boldannounce'>Unable to load next or default map config, defaulting to Box Station</span>")
-	//		config = old_config
-	//not_actual
-	if(map_config.defaulted)
-		var/old_config = map_config
-		map_config = config.defaultmap
-		if(!map_config || map_config.defaulted)
+	if(config.defaulted)
+		var/old_config = config
+		config = global.config.defaultmap
+		if(!config || config.defaulted)
 			to_chat(world, "<span class='boldannounce'>Unable to load next or default map config, defaulting to Box Station</span>")
-			map_config = old_config
+			config = old_config
 	loadWorld()
 	repopulate_sorted_areas()
 	//process_teleport_locs()
@@ -131,15 +120,8 @@ SUBSYSTEM_DEF(mapping)
 	var/start_z = world.maxz + 1
 	var/i = 0
 	for (var/level in traits)
-		//add_new_zlevel("[name][i ? " [i + 1]" : ""]", level)
-		//++i
-		//not_actual
-		if (i)
-			++i
-			add_new_zlevel("[name][i]", level)
-		else
-			++i
-			add_new_zlevel("[name]", level)
+		add_new_zlevel("[name][i ? " [i + 1]" : ""]", level)
+		++i
 
 	for (var/P in parsed_maps)
 		var/datum/parsed_map/pm = P
@@ -155,11 +137,8 @@ SUBSYSTEM_DEF(mapping)
 	InitializeDefaultZLevels()
 
 	station_start = world.maxz + 1
-	//INIT_ANNOUNCE("Loading [config.map_name]...")
-	//LoadGroup(FailedZs, "Station", config.map_path, config.map_file, config.traits, ZTRAITS_STATION)
-	//not_actual
-	INIT_ANNOUNCE("Loading [map_config.map_name]...")
-	LoadGroup(FailedZs, "Station", map_config.map_path, map_config.map_file, map_config.traits, ZTRAITS_STATION)
+	INIT_ANNOUNCE("Loading [config.map_name]...")
+	LoadGroup(FailedZs, "Station", config.map_path, config.map_file, config.traits, ZTRAITS_STATION)
 
 	//if(SSdbcore.Connect())
 	//	var/datum/DBQuery/query_round_map_name = SSdbcore.NewQuery("UPDATE [format_table_name("round")] SET map_name = '[config.map_name]' WHERE id = [GLOB.round_id]")
@@ -177,8 +156,7 @@ SUBSYSTEM_DEF(mapping)
 	//preloadShelterTemplates()
 
 /datum/controller/subsystem/mapping/proc/preloadShuttleTemplates()
-	//var/list/unbuyable = generateMapList("[global.config.directory]/unbuyableshuttles.txt")
-	var/list/unbuyable = generateMapList("[config.directory]/unbuyableshuttles.txt")//not_actual
+	var/list/unbuyable = generateMapList("[global.config.directory]/unbuyableshuttles.txt")
 
 	for(var/item in subtypesof(/datum/map_template/shuttle))
 		var/datum/map_template/shuttle/shuttle_type = item
@@ -234,7 +212,7 @@ SUBSYSTEM_DEF(mapping)
 		LAZYINITLIST(unused_turfs["[T.z]"])
 		unused_turfs["[T.z]"] |= T
 		T.flags_1 |= UNUSED_RESERVATION_TURF_1
-		//GLOB.areas_by_type[world.area].contents += T
+		GLOB.areas_by_type[world.area].contents += T
 		CHECK_TICK
 
 /datum/controller/subsystem/mapping/proc/reg_in_areas_in_z(list/areas)

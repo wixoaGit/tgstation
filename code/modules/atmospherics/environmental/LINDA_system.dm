@@ -74,25 +74,25 @@
 	if (!alldir)
 		return adjacent_turfs
 
-	//var/turf/curloc = src
+	var/turf/curloc = src
 
-	//for (var/direction in GLOB.diagonals_multiz)
-	//	var/matchingDirections = 0
-	//	var/turf/S = get_step_multiz(curloc, direction)
-	//	if(!S)
-	//		continue
+	for (var/direction in GLOB.diagonals_multiz)
+		var/matchingDirections = 0
+		var/turf/S = get_step_multiz(curloc, direction)
+		if(!S)
+			continue
 
-	//	for (var/checkDirection in GLOB.cardinals_multiz)
-	//		var/turf/checkTurf = get_step(S, checkDirection)
-	//		if(!S.atmos_adjacent_turfs || !S.atmos_adjacent_turfs[checkTurf])
-	//			continue
+		for (var/checkDirection in GLOB.cardinals_multiz)
+			var/turf/checkTurf = get_step(S, checkDirection)
+			if(!S.atmos_adjacent_turfs || !S.atmos_adjacent_turfs[checkTurf])
+				continue
 
-	//		if (adjacent_turfs[checkTurf])
-	//			matchingDirections++
+			if (adjacent_turfs[checkTurf])
+				matchingDirections++
 
-	//		if (matchingDirections >= 2)
-	//			adjacent_turfs += S
-	//			break
+			if (matchingDirections >= 2)
+				adjacent_turfs += S
+				break
 
 	return adjacent_turfs
 

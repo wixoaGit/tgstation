@@ -3,18 +3,12 @@
 	var/showpipe = FALSE
 	var/shift_underlay_only = TRUE
 
-	//var/list/datum/pipeline/parents
-	//var/list/datum/gas_mixture/airs
-	//not_actual
-	var/list/parents
-	var/list/airs	
+	var/list/datum/pipeline/parents
+	var/list/datum/gas_mixture/airs
 
 /obj/machinery/atmospherics/components/New()
-	//parents = new(device_type)
-	//airs = new(device_type)
-	//not_actual
-	parents = new /list(device_type)
-	airs = new /list(device_type)
+	parents = new(device_type)
+	airs = new(device_type)
 
 	..()
 

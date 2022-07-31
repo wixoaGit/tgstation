@@ -154,12 +154,10 @@
 
 /obj/docking_port/stationary/proc/load_roundstart()
 	if(json_key)
-		//var/sid = SSmapping.config.shuttles[json_key]
-		var/sid = SSmapping.map_config.shuttles[json_key]//not_actual
+		var/sid = SSmapping.config.shuttles[json_key]
 		roundstart_template = SSmapping.shuttle_templates[sid]
 		if(!roundstart_template)
-			//CRASH("json_key:[json_key] value \[[sid]\] resulted in a null shuttle template for [src]")
-			CRASH("json_key:[json_key] value ([sid]) resulted in a null shuttle template for [src]")//not_actual
+			CRASH("json_key:[json_key] value \[[sid]\] resulted in a null shuttle template for [src]")
 	else if(roundstart_template)
 		var/sid = "[initial(roundstart_template.port_id)]_[initial(roundstart_template.suffix)]"
 

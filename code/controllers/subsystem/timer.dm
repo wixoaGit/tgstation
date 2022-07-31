@@ -62,4 +62,4 @@ SUBSYSTEM_DEF(timer)
 /proc/addtimer(datum/callback/callback, wait = 0, flags = 0)
 	var/datum/timedevent/timer = new /datum/timedevent(callback, wait)
 
-	timers = timers + timer
+	timers |= timer //not_actual

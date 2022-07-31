@@ -144,22 +144,19 @@ SUBSYSTEM_DEF(research)
 		for(var/p in N.prereq_ids)
 			var/datum/techweb_node/P = techweb_nodes[p]
 			if(!istype(P))
-				//WARNING("Invalid research prerequisite node with ID [p] detected in node [N.display_name]\[[N.id]\] removed.")
-				WARNING("Invalid research prerequisite node with ID [p] detected in node [N.display_name]([N.id]) removed.")//not_actual
+				WARNING("Invalid research prerequisite node with ID [p] detected in node [N.display_name]\[[N.id]\] removed.")
 				N.prereq_ids  -= p
 				research_node_id_error(p)
 		for(var/d in N.design_ids)
 			var/datum/design/D = techweb_designs[d]
 			if(!istype(D))
-				//WARNING("Invalid research design with ID [d] detected in node [N.display_name]\[[N.id]\] removed.")
-				WARNING("Invalid research design with ID [d] detected in node [N.display_name]([N.id]) removed.")//not_actual
+				WARNING("Invalid research design with ID [d] detected in node [N.display_name]\[[N.id]\] removed.")
 				N.design_ids -= d
 				design_id_error(d)
 		for(var/u in N.unlock_ids)
 			var/datum/techweb_node/U = techweb_nodes[u]
 			if(!istype(U))
-				//WARNING("Invalid research unlock node with ID [u] detected in node [N.display_name]\[[N.id]\] removed.")
-				WARNING("Invalid research unlock node with ID [u] detected in node [N.display_name]([N.id]) removed.")//not_actual
+				WARNING("Invalid research unlock node with ID [u] detected in node [N.display_name]\[[N.id]\] removed.")
 				N.unlock_ids -= u
 				research_node_id_error(u)
 		for(var/p in N.boost_item_paths)

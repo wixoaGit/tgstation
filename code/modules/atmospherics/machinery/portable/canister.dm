@@ -112,8 +112,7 @@
 		air_contents.copy_from(existing_mixture)
 	else
 		create_gas()
-	//pump = new(src, FALSE)
-	pump = new /obj/machinery/atmospherics/components/binary/passive_gate(src, FALSE)//not_actual
+	pump = new(src, FALSE)
 	pump.on = TRUE
 	pump.stat = 0
 	pump.build_network()

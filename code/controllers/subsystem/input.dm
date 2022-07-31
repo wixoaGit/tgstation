@@ -94,8 +94,7 @@ SUBSYSTEM_DEF(input)
 	macro_sets = default_macro_sets
 
 /datum/controller/subsystem/input/proc/setup_default_movement_keys()
-	//var/static/list/default_movement_keys = list(
-	var/list/default_movement_keys = list(//not_actual
+	var/static/list/default_movement_keys = list(
 		"W" = NORTH, "A" = WEST, "S" = SOUTH, "D" = EAST,
 		"North" = NORTH, "West" = WEST, "South" = SOUTH, "East" = EAST,
 		)
