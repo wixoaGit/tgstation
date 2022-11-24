@@ -18,7 +18,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	movement_type = GROUND | FLYING
 	var/can_reenter_corpse
 	var/do_not_resuscitate
-	var/datum/hud/living/carbon/hud = null
 	var/bootime = 0
 	var/started_as_observer
 	var/atom/movable/following = null
