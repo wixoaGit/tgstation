@@ -1,6 +1,5 @@
 /datum/round_event
 	var/processing = TRUE
-	var/datum/round_event_control/control
 
 	var/startWhen		= 0
 	var/announceWhen	= 0
