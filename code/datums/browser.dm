@@ -128,4 +128,19 @@
 	if(ref)
 		param = "[REF(ref)]"
 
-	//winset(user, windowid, "on-close=\".windowclose [param]\"")
+	winset(user, windowid, "on-close=\".windowclose [param]\"")
+
+/client/verb/windowclose(atomref as text)
+	set hidden = 1
+	set name = ".windowclose"
+
+	if(atomref!="null")
+		var/hsrc = locate(atomref)
+		var/href = "close=1"
+		if(hsrc)
+			usr = src.mob
+			src.Topic(href, params2list(href), hsrc)
+			return
+
+	if(src && src.mob)
+		src.mob.unset_machine()

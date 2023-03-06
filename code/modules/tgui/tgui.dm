@@ -72,8 +72,8 @@
 	var/debugable = 0//not_actual
 	//user << browse(get_html(debugable), "window=[window_id];[window_size][list2params(window_options)]")
 	user << browse(get_html(debugable), "window=[window_id];[window_size]")//not_actual
-	//if (!custom_browser_id)
-	//	winset(user, window_id, "on-close=\"uiclose [REF(src)]\"")
+	if (!custom_browser_id)
+		winset(user, window_id, "on-close=\"uiclose [REF(src)]\"")
 	SStgui.on_open(src)
 
 /datum/tgui/proc/reinitialize(interface, list/data)

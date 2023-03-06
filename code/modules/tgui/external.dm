@@ -17,3 +17,14 @@
 	var/list/open_uis = list()
 
 /datum/proc/ui_close()
+
+/client/verb/uiclose(ref as text)
+	set name = "uiclose"
+	set hidden = 1
+
+	var/datum/tgui/ui = locate(ref)
+
+	if(istype(ui))
+		ui.close()
+		if(src && src.mob)
+			src.mob.unset_machine()
