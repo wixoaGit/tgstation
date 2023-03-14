@@ -1,6 +1,6 @@
 /mob/verb/say_verb(message as text)
-	//set name = "Say"
-	//set category = "IC"
+	set name = "Say"
+	set category = "IC"
 	//if(GLOB.say_disabled)
 	//	to_chat(usr, "<span class='danger'>Speech is currently admin-disabled.</span>")
 	//	return

@@ -5,7 +5,7 @@ GLOBAL_LIST_INIT(admin_verbs_admin, world.AVerbsAdmin())
 	///client/proc/invisimin,
 	///datum/admins/proc/show_player_panel,
 	///datum/verbs/menu/Admin/verb/playerpanel,
-	///client/proc/game_panel,
+	/client/proc/game_panel,
 	///client/proc/check_ai_laws,
 	///datum/admins/proc/toggleooc,
 	///datum/admins/proc/toggleoocdead,
@@ -56,7 +56,7 @@ GLOBAL_LIST_INIT(admin_verbs_server, world.AVerbsServer())
 	return list(
 	/datum/admins/proc/startnow,
 	///datum/admins/proc/restart,
-	///datum/admins/proc/end_round,
+	/datum/admins/proc/end_round,
 	///datum/admins/proc/delay,
 	///datum/admins/proc/toggleaban,
 	///client/proc/everyone_random,
@@ -145,13 +145,9 @@ GLOBAL_LIST_INIT(admin_verbs_debug, world.AVerbsDebug())
 		//if(rights & R_SPAWN)
 		//	verbs += GLOB.admin_verbs_spawn
 
-///client/proc/game_panel()
-/mob/verb/game_panel()//not_actual
-	//set name = "Game Panel"
-	//set category = "Admin"
-	//if(holder)
-	//	holder.Game()
-	//not_actual
-	if (client.holder)
-		client.holder.Game()
+/client/proc/game_panel()
+	set name = "Game Panel"
+	set category = "Admin"
+	if(holder)
+		holder.Game()
 	//SSblackbox.record_feedback("tally", "admin_verb", 1, "Game Panel")

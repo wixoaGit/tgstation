@@ -21,8 +21,7 @@ SUBSYSTEM_DEF(input)
 	return ..()
 
 /datum/controller/subsystem/input/proc/setup_default_macro_sets()
-	//var/list/static/default_macro_sets
-	var/list/default_macro_sets //not_actual
+	var/list/static/default_macro_sets
 	
 	if(default_macro_sets)
 		macro_sets = default_macro_sets
@@ -56,8 +55,7 @@ SUBSYSTEM_DEF(input)
 
 	var/list/old_default = default_macro_sets["old_default"]
 
-	//var/list/static/oldmode_keys = list(
-	var/list/oldmode_keys = list(//not_actual
+	var/list/static/oldmode_keys = list(
 		"North", "East", "South", "West",
 		"Northeast", "Southeast", "Northwest", "Southwest",
 		"Insert", "Delete", "Ctrl", "Alt",
@@ -69,8 +67,7 @@ SUBSYSTEM_DEF(input)
 		old_default[key] = "\"KeyDown [key]\""
 		old_default["[key]+UP"] = "\"KeyUp [key]\""
 
-	//var/list/static/oldmode_ctrl_override_keys = list(
-	var/list/oldmode_ctrl_override_keys = list(//not_actual
+	var/list/static/oldmode_ctrl_override_keys = list(
 		"W" = "W", "A" = "A", "S" = "S", "D" = "D",
 		"1" = "1", "2" = "2", "3" = "3", "4" = "4",
 		"B" = "B",
@@ -108,7 +105,7 @@ SUBSYSTEM_DEF(input)
 		user.set_macros()
 
 /datum/controller/subsystem/input/fire()
-	//var/list/clients = GLOB.clients
-	//for(var/i in 1 to clients.len)
-	//	var/client/C = clients[i]
-	//	C.keyLoop()
+	var/list/clients = GLOB.clients
+	for(var/i in 1 to clients.len)
+		var/client/C = clients[i]
+		C.keyLoop()

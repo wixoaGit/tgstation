@@ -27,11 +27,10 @@
 	usr << browse(dat, "window=admin2;size=210x200")
 	return
 
-///datum/admins/proc/end_round()
-/mob/verb/end_round()//not_actual
-	//set category = "Server"
-	//set name = "End Round"
-	//set desc = "Attempts to produce a round end report and then restart the server organically."
+/datum/admins/proc/end_round()
+	set category = "Server"
+	set name = "End Round"
+	set desc = "Attempts to produce a round end report and then restart the server organically."
 
 	if (!usr.client.holder)
 		return
@@ -43,9 +42,9 @@
 		//SSblackbox.record_feedback("tally", "admin_verb", 1, "End Round")
 
 /datum/admins/proc/startnow()
-	//set category = "Server"
-	//set desc="Start the round RIGHT NOW"
-	//set name="Start Now"
+	set category = "Server"
+	set desc="Start the round RIGHT NOW"
+	set name="Start Now"
 	if(SSticker.current_state == GAME_STATE_PREGAME || SSticker.current_state == GAME_STATE_STARTUP)
 		SSticker.start_immediately = TRUE
 		log_admin("[usr.key] has started the game.")

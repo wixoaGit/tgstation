@@ -577,9 +577,9 @@
 	return null
 
 /mob/living/simple_animal/parrot/proc/steal_from_mob()
-	//set name = "Steal from mob"
-	//set category = "Parrot"
-	//set desc = "Steals an item right out of a person's hand!"
+	set name = "Steal from mob"
+	set category = "Parrot"
+	set desc = "Steals an item right out of a person's hand!"
 
 	if(stat)
 		return -1
@@ -606,9 +606,9 @@
 	return 0
 
 /mob/living/simple_animal/parrot/proc/drop_held_item(drop_gently = 1)
-	//set name = "Drop held item"
-	//set category = "Parrot"
-	//set desc = "Drop the item you're holding."
+	set name = "Drop held item"
+	set category = "Parrot"
+	set desc = "Drop the item you're holding."
 
 	if(stat)
 		return -1

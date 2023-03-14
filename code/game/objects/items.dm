@@ -55,6 +55,8 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/e
 	var/tool_behaviour = NONE
 	var/toolspeed = 1
 
+	var/list/slot_equipment_priority = null
+
 	var/datum/dog_fashion/dog_fashion = null
 
 	var/force_string

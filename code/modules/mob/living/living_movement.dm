@@ -2,6 +2,10 @@
 	. = ..()
 	update_turf_movespeed(loc)
 
+/mob/living/toggle_move_intent()
+	. = ..()
+	update_move_intent_slowdown()
+
 /mob/living/update_config_movespeed()
 	update_move_intent_slowdown()
 	return ..()

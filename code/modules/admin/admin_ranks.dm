@@ -23,8 +23,7 @@ GLOBAL_LIST_EMPTY(protected_ranks)
 	name = init_name
 	if(!name)
 		qdel(src)
-		//throw EXCEPTION("Admin rank created without name.")
-		CRASH("Admin rank created without name.")//not_actual
+		throw EXCEPTION("Admin rank created without name.")
 		return
 	if(init_rights)
 		rights = init_rights

@@ -108,6 +108,9 @@
 
 	. = ..()
 
+	if(SSinput.initialized)
+		set_macros()
+
 	chatOutput.start()
 
 	if(holder)

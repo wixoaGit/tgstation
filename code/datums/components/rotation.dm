@@ -119,24 +119,24 @@
 	to_chat(user,"<span class='notice'>You [rotation_type == ROTATION_FLIP ? "flip" : "rotate"] [parent].</span>")
 
 /atom/movable/proc/simple_rotate_clockwise()
-	//set name = "Rotate Clockwise"
-	//set category = "Object"
+	set name = "Rotate Clockwise"
+	set category = "Object"
 	//set src in oview(1)
 	GET_COMPONENT(rotcomp,/datum/component/simple_rotation)
 	if(rotcomp)
 		rotcomp.HandRot(null,usr,ROTATION_CLOCKWISE)
 
 /atom/movable/proc/simple_rotate_counterclockwise()
-	//set name = "Rotate Counter-Clockwise"
-	//set category = "Object"
+	set name = "Rotate Counter-Clockwise"
+	set category = "Object"
 	//set src in oview(1)
 	GET_COMPONENT(rotcomp,/datum/component/simple_rotation)
 	if(rotcomp)
 		rotcomp.HandRot(null,usr,ROTATION_COUNTERCLOCKWISE)
 
 /atom/movable/proc/simple_rotate_flip()
-	//set name = "Flip"
-	//set category = "Object"
+	set name = "Flip"
+	set category = "Object"
 	//set src in oview(1)
 	GET_COMPONENT(rotcomp,/datum/component/simple_rotation)
 	if(rotcomp)

@@ -16,7 +16,7 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 
 	//if(length(CONFIG_GET(keyed_list/cross_server)))
 	//	verbs += /mob/dead/proc/server_hop
-	//set_focus(src)
+	set_focus(src)
 	return INITIALIZE_HINT_NORMAL
 
 /mob/dead/canUseStorage()

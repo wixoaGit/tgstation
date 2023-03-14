@@ -27,7 +27,7 @@
 		GLOB.dead_mob_list += src
 	else
 		GLOB.alive_mob_list += src
-	//set_focus(src)
+	set_focus(src)
 	prepare_huds()
 	//for(var/v in GLOB.active_alternate_appearances)
 	//	if(!v)
@@ -174,12 +174,62 @@
 /mob/proc/equip_to_slot_or_del(obj/item/W, slot)
 	return equip_to_slot_if_possible(W, slot, TRUE, TRUE, FALSE, TRUE)
 
+/mob/proc/reset_perspective(atom/A)
+	if(client)
+		if(A)
+			if(ismovableatom(A))
+				if(A != src)
+					client.perspective = EYE_PERSPECTIVE
+					client.eye = A
+				else
+					client.eye = client.mob
+					client.perspective = MOB_PERSPECTIVE
+			else if(isturf(A))
+				if(A != loc)
+					client.perspective = EYE_PERSPECTIVE
+					client.eye = A
+				else
+					client.eye = client.mob
+					client.perspective = MOB_PERSPECTIVE
+			else
+		else
+			if(isturf(loc))
+				client.eye = client.mob
+				client.perspective = MOB_PERSPECTIVE
+			else
+				client.perspective = EYE_PERSPECTIVE
+				client.eye = loc
+		return 1
+
+/mob/proc/equip_to_appropriate_slot(obj/item/W)
+	if(!istype(W))
+		return 0
+	var/slot_priority = W.slot_equipment_priority
+
+	if(!slot_priority)
+		slot_priority = list( \
+			SLOT_BACK, SLOT_WEAR_ID,\
+			SLOT_W_UNIFORM, SLOT_WEAR_SUIT,\
+			SLOT_WEAR_MASK, SLOT_HEAD, SLOT_NECK,\
+			SLOT_SHOES, SLOT_GLOVES,\
+			SLOT_EARS, SLOT_GLASSES,\
+			SLOT_BELT, SLOT_S_STORE,\
+			SLOT_L_STORE, SLOT_R_STORE,\
+			SLOT_GENERC_DEXTROUS_STORAGE\
+		)
+
+	for(var/slot in slot_priority)
+		if(equip_to_slot_if_possible(W, slot, 0, 1, 1))
+			return 1
+
+	return 0
+
 /mob/proc/show_inv(mob/user)
 	return
 
 /mob/verb/examinate(atom/A as mob|obj|turf in view())
-	//set name = "Examine"
-	//set category = "IC"
+	set name = "Examine"
+	set category = "IC"
 
 	//if(isturf(A) && !(sight & SEE_TURFS) && !(A in view(client ? client.view : world.view, src)))
 	//	return
@@ -327,6 +377,58 @@
 	//if(mind)
 	//	add_spells_to_statpanel(mind.spell_list)
 	//add_spells_to_statpanel(mob_spell_list)
+
+#define MOB_FACE_DIRECTION_DELAY 1
+
+/mob/proc/canface()
+	if(world.time < client.last_turn)
+		return FALSE
+	if(stat == DEAD || stat == UNCONSCIOUS)
+		return FALSE
+	if(anchored)
+		return FALSE
+	if(notransform)
+		return FALSE
+	if(restrained())
+		return FALSE
+	return TRUE
+
+/mob/living/canface()
+	if(!(mobility_flags & MOBILITY_MOVE))
+		return FALSE
+	return ..()
+
+/mob/verb/eastface()
+	set hidden = TRUE
+	if(!canface())
+		return FALSE
+	setDir(EAST)
+	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
+	return TRUE
+
+/mob/verb/westface()
+	set hidden = TRUE
+	if(!canface())
+		return FALSE
+	setDir(WEST)
+	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
+	return TRUE
+
+/mob/verb/northface()
+	set hidden = TRUE
+	if(!canface())
+		return FALSE
+	setDir(NORTH)
+	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
+	return TRUE
+
+/mob/verb/southface()
+	set hidden = TRUE
+	if(!canface())
+		return FALSE
+	setDir(SOUTH)
+	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
+	return TRUE
 
 /mob/proc/IsAdvancedToolUser()
 	return FALSE

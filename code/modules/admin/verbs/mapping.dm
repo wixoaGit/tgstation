@@ -34,8 +34,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 ))
 
 /client/proc/enable_debug_verbs()
-	//set category = "Debug"
-	//set name = "Debug verbs - Enable"
+	set category = "Debug"
+	set name = "Debug verbs - Enable"
 	//if(!check_rights(R_DEBUG))
 	//	return
 	verbs -= /client/proc/enable_debug_verbs
@@ -43,8 +43,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	//SSblackbox.record_feedback("tally", "admin_verb", 1, "Enable Debug Verbs")
 
 /client/proc/disable_debug_verbs()
-	//set category = "Debug"
-	//set name = "Debug verbs - Disable"
+	set category = "Debug"
+	set name = "Debug verbs - Disable"
 	verbs.Remove(/client/proc/disable_debug_verbs, GLOB.admin_verbs_debug_mapping)
 	verbs += /client/proc/enable_debug_verbs
 	//SSblackbox.record_feedback("tally", "admin_verb", 1, "Disable Debug Verbs")

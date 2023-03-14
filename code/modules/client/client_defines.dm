@@ -1,9 +1,10 @@
 /client
-	//parent_type = /datum
+	parent_type = /datum
 
 	var/datum/admins/holder = null
 
 	var/datum/preferences/prefs = null
+	var/last_turn = 0
 	var/move_delay = 0
 
 	var/ambience_playing= null

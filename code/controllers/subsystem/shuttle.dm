@@ -132,9 +132,7 @@ SUBSYSTEM_DEF(shuttle)
 		WARNING("requestEvac(): There is no emergency shuttle, but the \
 			shuttle was called. Using the backup shuttle instead.")
 		if(!backup_shuttle)
-			//throw EXCEPTION("requestEvac(): There is no emergency shuttle, \
-			//not_actual
-			CRASH("requestEvac(): There is no emergency shuttle, \
+			throw EXCEPTION("requestEvac(): There is no emergency shuttle, \
 			or backup shuttle! The game will be unresolvable. This is \
 			possibly a mapping error, more likely a bug with the shuttle \
 			manipulation system, or badminry. It is possible to manually \
@@ -239,8 +237,7 @@ SUBSYSTEM_DEF(shuttle)
 
 /datum/controller/subsystem/shuttle/proc/request_transit_dock(obj/docking_port/mobile/M)
 	if(!istype(M))
-		//throw EXCEPTION("[M] is not a mobile docking port")
-		CRASH("[M] is not a mobile docking port")//not_actual
+		throw EXCEPTION("[M] is not a mobile docking port")
 
 	if(M.assigned_transit)
 		return

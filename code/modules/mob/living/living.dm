@@ -139,23 +139,23 @@
 		if(GRAB_KILL)
 			offset = GRAB_PIXEL_SHIFT_NECK
 	M.setDir(get_dir(M, src))
-	//switch(M.dir)
-	//	if(NORTH)
-	//		animate(M, pixel_x = 0, pixel_y = offset, 3)
-	//	if(SOUTH)
-	//		animate(M, pixel_x = 0, pixel_y = -offset, 3)
-	//	if(EAST)
-	//		animate(M, pixel_x = offset, pixel_y = 0, 3)
-	//	if(WEST)
-	//		animate(M, pixel_x = -offset, pixel_y = 0, 3)
+	switch(M.dir)
+		if(NORTH)
+			animate(M, pixel_x = 0, pixel_y = offset, 3)
+		if(SOUTH)
+			animate(M, pixel_x = 0, pixel_y = -offset, 3)
+		if(EAST)
+			animate(M, pixel_x = offset, pixel_y = 0, 3)
+		if(WEST)
+			animate(M, pixel_x = -offset, pixel_y = 0, 3)
 
 /mob/living/proc/reset_pull_offsets(mob/living/M)
-	//animate(M, pixel_x = 0, pixel_y = 0, 1)
+	animate(M, pixel_x = 0, pixel_y = 0, 1)
 
 ///mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))
 /mob/living/verb/pulled(atom/movable/AM as mob|obj)//not_actual
-	//set name = "Pull"
-	//set category = "Object"
+	set name = "Pull"
+	set category = "Object"
 
 	if(istype(AM) && Adjacent(AM))
 		start_pulling(AM)
@@ -169,8 +169,8 @@
 	update_pull_hud_icon()
 
 /mob/living/verb/stop_pulling1()
-	//set name = "Stop Pulling"
-	//set category = "IC"
+	set name = "Stop Pulling"
+	set category = "IC"
 	stop_pulling()
 
 /mob/living/incapacitated(ignore_restraints = FALSE, ignore_grab = FALSE, check_immobilized = FALSE)

@@ -1,9 +1,8 @@
-///client/proc/cmd_admin_grantfullaccess(mob/M in GLOB.mob_list)
-/client/proc/cmd_admin_grantfullaccess()//not_actual
-	//set category = "Admin"
-	//set name = "Grant Full Access"
+/client/proc/cmd_admin_grantfullaccess(mob/M in GLOB.mob_list)
+	set category = "Admin"
+	set name = "Grant Full Access"
 
-	var/mob/M = usr//not_actual
+	M = usr//not_actual
 	if(!SSticker.HasRoundStarted())
 		alert("Wait until the game starts")
 		return

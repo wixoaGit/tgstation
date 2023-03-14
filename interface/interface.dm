@@ -1,5 +1,4 @@
-///client/verb/wiki(query as text)
-/mob/verb/wiki(query as text)//not_actual
+/client/verb/wiki(query as text)
 	set name = "wiki"
 	set desc = "Type what you want to know about.  This will open the wiki in your web browser. Type nothing to go to the main page."
 	set hidden = 1
@@ -80,8 +79,7 @@
 		to_chat(src, "<span class='danger'>The Github URL is not set in the server configuration.</span>")
 	return
 
-///client/verb/hotkeys_help()
-/mob/verb/hotkeys_help()//not_actual
+/client/verb/hotkeys_help()
 	set name = "hotkeys-help"
 	set category = "OOC"
 
@@ -95,15 +93,12 @@ Admin:
 \tCtrl+F8 = Stealthmin
 </font>"}
 
-	//mob.hotkey_help()
-	src.hotkey_help()//not_actual
+	mob.hotkey_help()
 
-	//if(holder)
-	if(client.holder)//not_actual
+	if(holder)
 		to_chat(src, adminhotkeys)
 
-///client/verb/changelog()
-/mob/verb/changelog()//not_actual
+/client/verb/changelog()
 	set name = "Changelog"
 	set category = "OOC"
 	var/datum/asset/changelog = get_asset_datum(/datum/asset/simple/changelog)
