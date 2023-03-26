@@ -5,7 +5,7 @@
 
 	icon             = LIGHTING_ICON
 	icon_state       = "transparent"
-	//color            = LIGHTING_BASE_MATRIX
+	color            = LIGHTING_BASE_MATRIX
 	plane            = LIGHTING_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer            = LIGHTING_LAYER
@@ -58,8 +58,7 @@
 		qdel(src, TRUE)
 		return
 
-	//var/static/datum/lighting_corner/dummy/dummy_lighting_corner = new
-	var/datum/lighting_corner/dummy/dummy_lighting_corner = new//not_actual
+	var/static/datum/lighting_corner/dummy/dummy_lighting_corner = new
 
 	var/list/corners = myturf.corners
 	var/datum/lighting_corner/cr = dummy_lighting_corner
@@ -104,13 +103,13 @@
 		color = null
 	else
 		icon_state = null
-		//color = list(
-		//	rr, rg, rb, 00,
-		//	gr, gg, gb, 00,
-		//	br, bg, bb, 00,
-		//	ar, ag, ab, 00,
-		//	00, 00, 00, 01
-		//)
+		color = list(
+			rr, rg, rb, 00,
+			gr, gg, gb, 00,
+			br, bg, bb, 00,
+			ar, ag, ab, 00,
+			00, 00, 00, 01
+		)
 
 	luminosity = set_luminosity
 
