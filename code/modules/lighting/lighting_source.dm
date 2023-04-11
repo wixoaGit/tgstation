@@ -65,7 +65,6 @@
 	if (needs_update < level)               \
 		needs_update            = level;    \
 
-//not_actual (this comment itself, necessary due to the last backslash in the above define)
 /datum/light_source/proc/update(var/atom/new_top_atom)
 	if (new_top_atom && new_top_atom != top_atom)
 		if(top_atom != source_atom && top_atom.light_sources)
@@ -203,7 +202,6 @@
 		var/oldlum = source_turf.luminosity
 		source_turf.luminosity = CEILING(light_range, 1)
 		for(T in view(CEILING(light_range, 1), source_turf))
-			if (!isturf(T)) continue//not_actual
 			for (thing in T.get_corners(source_turf))
 				C = thing
 				corners[C] = 0

@@ -159,9 +159,9 @@
 /obj/screen/fullscreen/lighting_backdrop
 	icon = 'icons/mob/screen_gen.dmi'
 	icon_state = "flash"
-	//transform = matrix(200, 0, 0, 0, 200, 0)
+	transform = matrix(200, 0, 0, 0, 200, 0)
 	plane = LIGHTING_PLANE
-	//blend_mode = BLEND_OVERLAY
+	blend_mode = BLEND_OVERLAY
 	show_when_dead = TRUE
 
 /obj/screen/fullscreen/lighting_backdrop/lit
@@ -178,5 +178,5 @@
 	icon_state = "nightvision"
 	plane = LIGHTING_PLANE
 	layer = LIGHTING_LAYER
-	//blend_mode = BLEND_ADD
+	blend_mode = BLEND_ADD
 	show_when_dead = TRUE

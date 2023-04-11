@@ -59,8 +59,7 @@
 	if (!corners)
 		corners = list(null, null, null, null)
 
-	//for (var/i = 1 to 4)
-	for (var/i = 1, i<=4, i++)//not_actual
+	for (var/i = 1 to 4)
 		if (corners[i])
 			continue
 

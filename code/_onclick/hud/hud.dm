@@ -25,9 +25,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/list/toggleable_inventory = list()
 	var/list/obj/screen/hotkeybuttons = list()
 	var/list/infodisplay = list()
-	//var/list/inv_slots[SLOTS_AMT]
-	var/list/inv_slots = new /list(SLOTS_AMT)//not_actual
+	var/list/inv_slots[SLOTS_AMT]
 	var/list/hand_slots
+	var/list/obj/screen/plane_master/plane_masters = list()
 
 	var/obj/screen/movable/action_button/hide_toggle/hide_actions_toggle
 	var/action_buttons_hidden = FALSE
@@ -52,10 +52,10 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	hand_slots = list()
 
-	//for(var/mytype in subtypesof(/obj/screen/plane_master))
-	//	var/obj/screen/plane_master/instance = new mytype()
-	//	plane_masters["[instance.plane]"] = instance
-	//	instance.backdrop(mymob)
+	for(var/mytype in subtypesof(/obj/screen/plane_master))
+		var/obj/screen/plane_master/instance = new mytype()
+		plane_masters["[instance.plane]"] = instance
+		instance.backdrop(mymob)
 
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
@@ -85,7 +85,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	//alien_plasma_display = null
 	//alien_queen_finder = null
 
-	//QDEL_LIST_ASSOC_VAL(plane_masters)
+	QDEL_LIST_ASSOC_VAL(plane_masters)
 	//QDEL_LIST(screenoverlays)
 	mymob = null
 
@@ -171,14 +171,20 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	screenmob.reload_fullscreen()
 	//update_parallax_pref(screenmob)
 
-	//if (!viewmob)
-	//	plane_masters_update()
-	//	for(var/M in mymob.observers)
-	//		show_hud(hud_version, M)
-	//else if (viewmob.hud_used)
-	//	viewmob.hud_used.plane_masters_update()
+	if (!viewmob)
+		plane_masters_update()
+		//for(var/M in mymob.observers)
+		//	show_hud(hud_version, M)
+	else if (viewmob.hud_used)
+		viewmob.hud_used.plane_masters_update()
 	
 	return TRUE
+
+/datum/hud/proc/plane_masters_update()
+	for(var/thing in plane_masters)
+		var/obj/screen/plane_master/PM = plane_masters[thing]
+		PM.backdrop(mymob)
+		mymob.client.screen += PM
 
 /datum/hud/proc/hidden_inventory_update()
 	return

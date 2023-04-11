@@ -37,7 +37,6 @@
 		for(var/k in 1 to macro_set.len)
 			var/key = macro_set[k]
 			var/command = macro_set[key]
-			world.log << "winset ["parent=[setname];name=[key];command=[command]"]"
 			winset(src, "[setname]-[REF(key)]", "parent=[setname];name=[key];command=[command]")
 
 	if(prefs.hotkeys)
